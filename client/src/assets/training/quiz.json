@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "question": "How does a second-price bid auction work?",
+    "options": {
+      "A": "The highest bidder wins and pays the highest bid",
+      "B": "The bidder who offers the second highest price gets an item at the second highest price.",
+      "C": "The bidder who offers the second highest price gets an item at the highest price.",
+      "D": "The bidder who offers the highest price gets an item at the second highest price."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "id": 2,
+    "question": "In this game you are in the role of _______?",
+    "options": {
+      "A": "A bidder in an auction.",
+      "B": "An auctioneer in an auction.",
+      "C": "An information provider who holds knowledge regarding the true worth of the auctioned item.",
+      "D": "None of the above."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "id": 3,
+    "question": "What is the difference between the two options (auction setting) presented to you?",
+    "options": {
+      "A": "There is no difference.",
+      "B": "In one auction, all bidders have the same evaluation, and in the second auction, there is a set of probabilities of the second-highest bid.",
+      "C": "In one auction, you know how much the item is worth to you and in the second auction, you don’t know.",
+      "D": "In one auction, you are in the role of a bidder, and in the second auction, you are in the role of an auctioneer."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "id": 4,
+    "question": "What is known to you in a “same evaluation” auction?",
+    "options": {
+      "A": "The number of bidders.",
+      "B": "Your evaluation and thus your bid for the auctioned item.",
+      "C": "The set of probabilities of the different options of the second highest bid.",
+      "D": "Each bidder’s private evaluation."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "id": 5,
+    "question": "What is known to you in a “set of probabilities” auction?",
+    "options": {
+      "A": "The second highest bid.",
+      "B": "The number of bidders.",
+      "C": "The set of probabilities of the different options of the second highest bid.",
+      "D": "Each bidder’s private evaluation"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "id": 6,
+    "question": "Which statement is correct?",
+    "options": {
+      "A": "In the “same evaluation” auction, you will pay the presented bid, while in the “set of probabilities” auction, you will pay the second-highest bid according to the set of probabilities shown.",
+      "B": "In a “same evaluation” auction, you will definitely win, while in a “set of probabilities” auction, you will not win.",
+      "C": "In a “same evaluation” auction, you will pay the presented bid, while in a “set of probabilities” auction, you will pay according to the average of the bids presented.",
+      "D": "In a “same evaluation” auction, you will pay the presented bid, while in a “set of probabilities” auction, you will pay the highest bid presented."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "id": 7,
+    "question": "What is your goal in this game, and how is the score in each round calculated?",
+    "options": {
+      "A": "Your goal is to maximize your expected profit. Your score is the expected profit of the chosen option.",
+      "B": "Your goal is to maximize your expected profit. In case of winning, your profit is your valuation minus your payment (second highest bid plus participation fee if required).",
+      "C": "Your goal is to maximize your expected profit. If you don't win, no payment is required (unless a participation fee is required), and no gain will be received.",
+      "D": "Answers B and C are correct"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "id": 8,
+    "question": "Is negative profit possible?",
+    "options": {
+      "A": "No, because it doesn’t make sense.",
+      "B": "Yes, it can happen when participating in an auction with a participation fee where you win and the second highest bid is the same as your valuation.",
+      "C": "Yes, it can happen when participating in an auction with a participation fee where you win and the second highest bid plus participation fee is below your valuation.",
+      "D": "No, because you win when your valuation equals or surpasses the second-highest bid, and therefore your profit is positive. If you don't win, no payment is required."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "id": 9,
+    "question": "Why one would choose to participate in the “set of probabilities” auction?",
+    "options": {
+      "A": "Because in some cases you may get a higher profit than the “same evaluation” option.",
+      "B": "Because if you don't win, no payment is required, and no gain will be received.",
+      "C": "Because you get a set of second highest bids instated of single evaluation.",
+      "D": "Because sometimes the “same evaluation” option may yield zero profit."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "id": 10,
+    "question": "Why one would not choose to participate in the “set of probabilities” auction?",
+    "options": {
+      "A": "Because in some cases you may get a higher profit in the “same evaluation” option.",
+      "B": "Because in some cases you may lose the auction and gain nothing.",
+      "C": "Because in some cases “set of probabilities” auction may yield negative profit.",
+      "D": "All of the above is correct."
+    },
+    "correct_answer": "D"
+  }
+]
