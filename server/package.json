@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development && ts-node src/index.ts",
     "build": "tsc",
-    "vercel-build": "echo 'vercel-build",
+    "vercel-build": "echo vercel-building...",
     "start": "node dist/index.js",
     "prod": "yarn build && yarn start"
   },
