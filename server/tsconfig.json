@@ -1,16 +1,14 @@
 {
   "extends": "@tsconfig/node-lts/tsconfig.json",
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./api/*"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./src/*"]
     }
   }
 }
