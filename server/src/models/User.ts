@@ -1,31 +1,50 @@
 import mongoose from 'mongoose';
-import { UserInfo } from '@/interfaces/user';
+import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
 import { getCountriesList } from '@/utils/countries';
-import { genderEnums, educationEnums } from '@/enums';
+import { Genders, Educations } from '@/enums/users';
 
 export interface IUser {
   _id: string;
   is_test_eligible?: boolean;
   user_info?: UserInfo;
-  user_test_summary?: {
-    test_duration: string;
-    total_profit: number;
-  };
+  user_instructions?: UserInstructions;
+  user_training?: UserTraining;
+  user_test?: UserTest;
 }
+
+mongoose.SchemaTypeOptions;
 
 const UserSchema = new mongoose.Schema<IUser>({
   _id: { type: String, required: true },
-  is_test_eligible: { type: Boolean, default: true },
   user_info: {
     age: { type: Number, min: 0, max: 120 },
-    gender: { type: String, enum: genderEnums },
-    education: { type: String, enum: educationEnums },
-    nationality: { type: String, enum: getCountriesList() },
+    gender: { type: String, enum: Object.values(Genders) },
+    education: { type: String, enum: Object.values(Educations) },
+    nationality: { type: String, enum: getCountriesList() }
   },
-  user_test_summary: {
-    test_duration: { type: String },
-    total_profit: { type: Number },
+  user_instructions: {
+    score: Number,
+    fails: { type: Number, max: 3 },
+    duration: Number
   },
+  user_training: {
+    rounds: Number,
+    duration: Number
+  },
+  user_test: {
+    rounds: { type: Number, max: 25 },
+    profit: Number,
+    bonus: Number,
+    duration: Number
+  }
+});
+
+UserSchema.pre('save', function (next) {
+  if (this.user_test?.profit) {
+    this.user_test.bonus = this.user_test.profit * 0.1;
+  }
+
+  next();
 });
 
 const User = mongoose.model('User', UserSchema);

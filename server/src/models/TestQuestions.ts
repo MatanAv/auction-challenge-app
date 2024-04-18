@@ -30,7 +30,7 @@ export interface ITestQuestion {
 
 const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   _id: Number,
-  times_used: { type: Number, min: 0, max: 4 },
+  times_used: { type: Number, default: 0, max: 4 },
   User_Val: Number,
   profit_a: Number,
   profit_b: Number,
@@ -53,7 +53,7 @@ const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   PB6: Number,
   PB7: Number,
   PB8: Number,
-  participation_fee: Number,
+  participation_fee: Number
 });
 
 const TestQuestions = mongoose.model('TestQuestions', TestQuestionsSchema);

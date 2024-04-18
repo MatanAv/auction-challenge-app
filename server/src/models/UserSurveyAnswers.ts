@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { SurveyAnswers } from '@/interfaces/survey';
+import { Q1Answers, Q2Answers, Q3Answers } from '@/enums/survey';
 
 export interface IUserSurveyAnswers {
   worker_id: string;
@@ -9,11 +10,11 @@ export interface IUserSurveyAnswers {
 const UserSurveyAnswersSchema = new mongoose.Schema<IUserSurveyAnswers>({
   worker_id: { type: String, ref: 'User', required: true },
   answers: {
-    q1: { type: Number, min: 1, max: 4 },
-    q2: { type: Number, min: 1, max: 3 },
-    q3: { type: Number, min: 1, max: 4 },
-    comment: String,
-  },
+    q1: { type: String, required: true, enum: Object.values(Q1Answers) },
+    q2: { type: String, required: true, enum: Object.values(Q2Answers) },
+    q3: { type: String, required: true, enum: Object.values(Q3Answers) },
+    comment: String
+  }
 });
 
 const UserSurveyAnswers = mongoose.model('UserSurveyAnswers', UserSurveyAnswersSchema);
