@@ -1,4 +1,4 @@
-import { genderEnums, educationEnums } from '@/utils/common-enums';
+import { genderEnums, educationEnums } from '@/enums';
 
 type GenderTypes = keyof typeof genderEnums;
 

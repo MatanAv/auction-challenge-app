@@ -1,19 +1,19 @@
 import mongoose from 'mongoose';
+import { SurveyAnswers } from '@/interfaces/survey';
 
 export interface IUserSurveyAnswers {
   worker_id: string;
-  q1: number;
-  q2: number;
-  q3: number;
-  comment: string;
+  answers: SurveyAnswers;
 }
 
-const UserSurveyAnswersSchema = new mongoose.Schema({
-  worker_id: String,
-  q1: { type: Number, min: 1, max: 4 },
-  q2: { type: Number, min: 1, max: 3 },
-  q3: { type: Number, min: 1, max: 4 },
-  comment: String
+const UserSurveyAnswersSchema = new mongoose.Schema<IUserSurveyAnswers>({
+  worker_id: { type: String, ref: 'User', required: true },
+  answers: {
+    q1: { type: Number, min: 1, max: 4 },
+    q2: { type: Number, min: 1, max: 3 },
+    q3: { type: Number, min: 1, max: 4 },
+    comment: String,
+  },
 });
 
 const UserSurveyAnswers = mongoose.model('UserSurveyAnswers', UserSurveyAnswersSchema);
