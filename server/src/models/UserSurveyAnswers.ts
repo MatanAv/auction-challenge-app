@@ -8,7 +8,7 @@ export interface IUserSurveyAnswers {
 }
 
 const UserSurveyAnswersSchema = new mongoose.Schema<IUserSurveyAnswers>({
-  worker_id: { type: String, ref: 'User', required: true },
+  worker_id: { type: String, ref: 'User.worker_id', required: true },
   answers: {
     q1: { type: String, required: true, enum: Object.values(Q1Answers) },
     q2: { type: String, required: true, enum: Object.values(Q2Answers) },

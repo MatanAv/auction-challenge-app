@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface ITestQuestion {
-  _id: number;
+  question_id: number;
   times_used: number;
   User_Val: number;
   profit_a: number;
@@ -29,7 +29,7 @@ export interface ITestQuestion {
 }
 
 const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
-  _id: Number,
+  question_id: { type: Number, unique: true, required: true },
   times_used: { type: Number, default: 0, max: 4 },
   User_Val: Number,
   profit_a: Number,

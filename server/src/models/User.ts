@@ -4,18 +4,15 @@ import { getCountriesList } from '@/utils/countries';
 import { Genders, Educations } from '@/enums/users';
 
 export interface IUser {
-  _id: string;
-  is_test_eligible?: boolean;
+  worker_id: string;
   user_info?: UserInfo;
   user_instructions?: UserInstructions;
   user_training?: UserTraining;
   user_test?: UserTest;
 }
 
-mongoose.SchemaTypeOptions;
-
 const UserSchema = new mongoose.Schema<IUser>({
-  _id: { type: String, required: true },
+  worker_id: { type: String, unique: true, required: true },
   user_info: {
     age: { type: Number, min: 0, max: 120 },
     gender: { type: String, enum: Object.values(Genders) },
@@ -33,7 +30,7 @@ const UserSchema = new mongoose.Schema<IUser>({
   },
   user_test: {
     rounds: { type: Number, max: 25 },
-    profit: Number,
+    profit: { type: Number, default: 0, min: 0 },
     bonus: Number,
     duration: Number
   }
