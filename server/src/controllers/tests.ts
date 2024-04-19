@@ -1,13 +1,20 @@
 import TestQuestions, { ITestQuestion } from '@/models/TestQuestions';
+import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
 
-const getRandomTestQuestions = async (size: number): Promise<ITestQuestion> => {
-  const testQuestion = await TestQuestions.aggregate([{ $sample: { size }, $match: { times_used: { $lt: 4 } } }]);
+const getRandomQuestions = async (size: number): Promise<ITestQuestion[]> => {
+  const testQuestions = await TestQuestions.aggregate([
+    {
+      $sample: { size },
+      $match: { times_used: { $lt: 4 } }
+    }
+  ]);
 
-  await TestQuestions.updateOne({ _id: testQuestion[0]._id }, { $inc: { times_used: 1 } });
-
-  return testQuestion[0];
+  return testQuestions;
 };
 
-// const submitTest = async (workerId: string, testAnswers: ITestQuestion[]): Promise<> => {};
+const submitQuestions = async (answers: IUserTestAnswer[]): Promise<IUserTestAnswer[]> => {
+  const userAnswers = await UserTestAnswers.insertMany(answers);
+  return userAnswers;
+};
 
-export { getRandomTestQuestions };
+export { getRandomQuestions, submitQuestions };

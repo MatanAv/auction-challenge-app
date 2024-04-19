@@ -29,9 +29,4 @@ const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<I
   return user;
 };
 
-// const updateEligibility = async (workerId: string, isEligible: boolean): Promise<IUser | null> => {
-//   const user = await User.findByIdAndUpdate(workerId, { is_test_eligible: isEligible });
-//   return user;
-// };
-
 export { createUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };

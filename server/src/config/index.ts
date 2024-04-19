@@ -1,6 +1,9 @@
 const config = {
   app: {
-    port: process.env.PORT || 8080
+    port: process.env.PORT || 8080,
+    session: {
+      secret: process.env.SESSION_SECRET
+    }
   },
   db: {
     BASE_URI: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}` || '',

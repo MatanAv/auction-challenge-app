@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import UserSurveyAnswers, { IUserSurveyAnswers } from '@/models/UserSurveyAnswers';
-// import { getCollectionFieldsFromSchema } from '@/utils';
+import { authMiddleware } from '@/middlewares/auth';
 
 const surveyRouter = Router();
 
-surveyRouter.post('/submit', async (req, res) => {});
+surveyRouter.post('/submit', authMiddleware, async (req, res) => {});
 
 // surveyRouter.get('/download', async (req, res) => {
 //   const data: IUserSurveyAnswers[] = await UserSurveyAnswers.find();
