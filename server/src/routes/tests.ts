@@ -1,16 +1,31 @@
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth';
+import { getRandomQuestions, submitQuestions } from '@/controllers/tests';
 
 const testsRouter = Router();
 
 testsRouter.get('/get-questions', authMiddleware, async (req, res) => {
-  // request has a sample count/how many questions to return
-  // ensure random question is returned
+  const { size } = req.body;
+
+  const response = await getRandomQuestions(size);
+
+  res.status(response.status).json(response);
 });
 
-testsRouter.post('/submit', authMiddleware, async (req, res) => {
-  // ensure 25 questions are answered
-  // return score & approval key
+testsRouter.post('/submit/training', authMiddleware, async (req, res) => {
+  const { answers } = req.body;
+
+  const response = await submitQuestions(answers);
+
+  res.status(response.status).json(response);
+});
+
+testsRouter.post('/submit/test', authMiddleware, async (req, res) => {
+  const { answers } = req.body;
+
+  const response = await submitQuestions(answers);
+
+  res.status(response.status).json(response);
 });
 
 export default testsRouter;
