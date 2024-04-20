@@ -1,3 +1,4 @@
+import config from '@/config';
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth';
 import { updateUserTraining } from '@/controllers/users';
@@ -29,6 +30,10 @@ testsRouter.post('/submit/test', authMiddleware, async (req, res) => {
   await submitQuestions(answers);
 
   const response = await getTestSummary(worker_id, answers, duration);
+
+  if (response.data) {
+    response.approval_key = config.test.approvalKey;
+  }
 
   res.status(response.status).json(response);
 });

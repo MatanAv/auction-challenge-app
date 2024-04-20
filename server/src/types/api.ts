@@ -1,11 +1,6 @@
-type ResponseSuccess<T> = {
+export type ResponseFormat = {
   status: number;
-  data?: T | T[];
+  data?: any;
+  message?: string;
+  [key: string]: any;
 };
-
-type ResponseError = {
-  status: number;
-  message: string;
-};
-
-export type ResponseFormat<T> = ResponseSuccess<T> | ResponseError;

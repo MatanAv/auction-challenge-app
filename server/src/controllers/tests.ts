@@ -1,41 +1,37 @@
 import { StatusCodes } from 'http-status-codes';
-import { getResponse } from '@/utils/api';
 import { ResponseFormat } from '@/types/api';
 import { MAX_TIMES_USED } from '@/constants';
-import { UserTest } from '@/interfaces/user';
 import { updateUserTest } from './users';
-import TestQuestions, { ITestQuestion } from '@/models/TestQuestions';
+import { IUser } from '@/models/User';
+import TestQuestions from '@/models/TestQuestions';
 import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
 
-type TestQuestionsResponseData = ITestQuestion | ITestQuestion[] | null;
-type TestAnswersResponseData = IUserTestAnswer | IUserTestAnswer[] | null;
-
-const getRandomQuestions = async (size: number): Promise<ResponseFormat<TestQuestionsResponseData>> => {
+const getRandomQuestions = async (size: number): Promise<ResponseFormat> => {
   try {
     const testQuestions = await TestQuestions.aggregate([
       { $sample: { size }, $match: { times_used: { $lt: MAX_TIMES_USED } } }
     ]);
-    return getResponse(StatusCodes.OK, undefined, testQuestions);
+    return { status: StatusCodes.OK, data: testQuestions };
   } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
   }
 };
 
-const submitQuestions = async (answers: IUserTestAnswer[]): Promise<ResponseFormat<TestAnswersResponseData>> => {
+const submitQuestions = async (answers: IUserTestAnswer[]): Promise<ResponseFormat> => {
   try {
     const userAnswers = await UserTestAnswers.insertMany(answers);
-    return getResponse(StatusCodes.OK, undefined, userAnswers);
+    return { status: StatusCodes.OK, data: userAnswers };
   } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
   }
 };
 
-const updateQuestionsTimesUsed = async (questionsIds: number[]): Promise<void | ResponseFormat<null>> => {
+const updateQuestionsTimesUsed = async (questionsIds: number[]): Promise<void | ResponseFormat> => {
   try {
     await TestQuestions.updateMany({ question_id: { $in: questionsIds } }, { $inc: { times_used: 1 } });
-    return getResponse(StatusCodes.OK);
+    return { status: StatusCodes.OK };
   } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
   }
 };
 
@@ -43,14 +39,14 @@ const getTestSummary = async (
   worker_id: string,
   answers: IUserTestAnswer[],
   duration: number
-): Promise<ResponseFormat<UserTest>> => {
+): Promise<ResponseFormat> => {
   try {
     const rounds = answers.length;
     const profit = answers.reduce((acc, answer) => acc + answer.profit, 0);
-    const user = await updateUserTest(worker_id, { rounds, profit, duration });
-    return getResponse(StatusCodes.OK, undefined, user.user_test);
+    const user = (await updateUserTest(worker_id, { rounds, profit, duration })).data as IUser;
+    return { status: StatusCodes.OK, data: user.user_test };
   } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
   }
 };
 

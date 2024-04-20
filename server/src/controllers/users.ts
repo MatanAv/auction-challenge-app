@@ -1,59 +1,44 @@
 import { StatusCodes } from 'http-status-codes';
-import { getResponse } from '@/utils/api';
 import { ResponseFormat } from '@/types/api';
 import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
 import User, { IUser } from '@/models/User';
 
-type UserResponseData = IUser | IUser[] | null;
-
-const createUser = async (worker_id: string): Promise<ResponseFormat<UserResponseData>> => {
+const createUser = async (worker_id: string): Promise<ResponseFormat> => {
   try {
     const user = await User.create({ worker_id });
-    return getResponse(StatusCodes.CREATED, undefined, user);
+    return { status: StatusCodes.CREATED, data: user as IUser };
   } catch (error: any) {
-    return getResponse(StatusCodes.UNAUTHORIZED, error.message);
+    return { status: StatusCodes.UNAUTHORIZED, message: error.message };
   }
 };
 
-const updateUserInfo = async (worker_id: string, user_info: UserInfo): Promise<ResponseFormat<UserResponseData>> => {
+const updateUser = async (worker_id: string, update: Partial<IUser>): Promise<ResponseFormat> => {
   try {
-    const user = await User.findByIdAndUpdate(worker_id, { user_info });
-    return getResponse(StatusCodes.OK, undefined, user);
+    const user = await User.findOneAndUpdate({ worker_id }, update, { new: true });
+    if (!user) throw new Error('User not found');
+    return { status: StatusCodes.OK, data: user as IUser };
   } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
   }
+};
+
+const updateUserInfo = async (worker_id: string, user_info: UserInfo): Promise<ResponseFormat> => {
+  return updateUser(worker_id, { user_info });
 };
 
 const updateUserInstructions = async (
   worker_id: string,
   user_instructions: UserInstructions
-): Promise<ResponseFormat<UserResponseData>> => {
-  try {
-    const user = await User.findByIdAndUpdate(worker_id, { user_instructions });
-    return getResponse(StatusCodes.OK, undefined, user);
-  } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-  }
+): Promise<ResponseFormat> => {
+  return updateUser(worker_id, { user_instructions });
 };
 
-const updateUserTraining = async (
-  worker_id: string,
-  user_training: UserTraining
-): Promise<ResponseFormat<UserResponseData>> => {
-  try {
-    const user = await User.findByIdAndUpdate(worker_id, { user_training });
-    return getResponse(StatusCodes.OK, undefined, user);
-  } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-  }
+const updateUserTraining = async (worker_id: string, user_training: UserTraining): Promise<ResponseFormat> => {
+  return updateUser(worker_id, { user_training });
 };
 
-const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<IUser> => {
-  const user = await User.findByIdAndUpdate(worker_id, { user_test });
-
-  if (!user) throw new Error('User not found');
-
-  return user;
+const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<ResponseFormat> => {
+  return updateUser(worker_id, { user_test });
 };
 
 export { createUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };
