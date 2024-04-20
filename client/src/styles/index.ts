@@ -1,5 +1,4 @@
 import theme from './theme';
-import { gridClasses } from '@mui/x-data-grid';
 
 const pageStyle = {
   textAlign: 'center',
