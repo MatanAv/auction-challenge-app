@@ -48,13 +48,12 @@ const updateUserTraining = async (
   }
 };
 
-const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<ResponseFormat<UserResponseData>> => {
-  try {
-    const user = await User.findByIdAndUpdate(worker_id, { user_test });
-    return getResponse(StatusCodes.OK, undefined, user);
-  } catch (error: any) {
-    return getResponse(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-  }
+const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<IUser> => {
+  const user = await User.findByIdAndUpdate(worker_id, { user_test });
+
+  if (!user) throw new Error('User not found');
+
+  return user;
 };
 
 export { createUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };

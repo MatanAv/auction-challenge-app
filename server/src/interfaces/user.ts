@@ -21,6 +21,6 @@ export interface UserTraining {
 export interface UserTest {
   rounds: number;
   profit: number;
-  bonus: number;
+  bonus?: number;
   duration: number;
 }
