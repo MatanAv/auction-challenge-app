@@ -7,7 +7,7 @@ const userRouter = Router();
 userRouter.post('/register', async (req, res) => {
   const { worker_id } = req.body;
 
-  const response = await createUser(worker_id);
+  const response = await createUser(worker_id, req);
 
   res.status(response.status).json(response);
 });

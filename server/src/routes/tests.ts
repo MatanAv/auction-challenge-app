@@ -1,8 +1,6 @@
-import config from '@/config';
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth';
-import { updateUserTraining } from '@/controllers/users';
-import { getRandomQuestions, submitQuestions, getTestSummary } from '@/controllers/tests';
+import { getRandomQuestions, submitTraining, submitTest } from '@/controllers/tests';
 
 const testsRouter = Router();
 
@@ -17,9 +15,7 @@ testsRouter.get('/get-questions', authMiddleware, async (req, res) => {
 testsRouter.post('/submit/training', authMiddleware, async (req, res) => {
   const { worker_id, answers, duration } = req.body;
 
-  await submitQuestions(answers);
-
-  const response = await updateUserTraining(worker_id, { rounds: answers.length, duration });
+  const response = await submitTraining(worker_id, answers, duration);
 
   res.status(response.status).json(response);
 });
@@ -27,12 +23,9 @@ testsRouter.post('/submit/training', authMiddleware, async (req, res) => {
 testsRouter.post('/submit/test', authMiddleware, async (req, res) => {
   const { worker_id, answers, duration } = req.body;
 
-  await submitQuestions(answers);
-
-  const response = await getTestSummary(worker_id, answers, duration);
+  const response = await submitTest(worker_id, answers, duration);
 
   if (response.data) {
-    response.approval_key = config.test.approvalKey;
   }
 
   res.status(response.status).json(response);

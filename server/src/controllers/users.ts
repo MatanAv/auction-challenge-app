@@ -1,24 +1,27 @@
+import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
+import { getErrorResponse } from '@/utils/api';
 import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
 import User, { IUser } from '@/models/User';
 
-const createUser = async (worker_id: string): Promise<ResponseFormat> => {
+const createUser = async (worker_id: string, req: Request): Promise<ResponseFormat> => {
   try {
     const user = await User.create({ worker_id });
+    req.session.worker_id = user._id.toString();
     return { status: StatusCodes.CREATED, data: user as IUser };
   } catch (error: any) {
-    return { status: StatusCodes.UNAUTHORIZED, message: error.message };
+    return getErrorResponse(StatusCodes.CONFLICT, 'User already exists');
   }
 };
 
 const updateUser = async (worker_id: string, update: Partial<IUser>): Promise<ResponseFormat> => {
   try {
-    const user = await User.findOneAndUpdate({ worker_id }, update, { new: true });
+    const user = await User.findByIdAndUpdate(worker_id, update, { new: true });
     if (!user) throw new Error('User not found');
     return { status: StatusCodes.OK, data: user as IUser };
   } catch (error: any) {
-    return { status: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message };
+    return getErrorResponse();
   }
 };
 

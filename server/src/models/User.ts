@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema<IUser>({
   },
   user_test: {
     rounds: { type: Number, max: 25 },
-    profit: { type: Number, default: 0, min: 0 },
+    profit: { type: Number, min: 0 },
     bonus: Number,
     duration: Number
   }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongooseAutoPopulate from 'mongoose-autopopulate';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { Q1Answers, Q2Answers, Q3Answers } from '@/enums/survey';
 
@@ -7,8 +8,8 @@ export interface IUserSurveyAnswers {
   answers: SurveyAnswers;
 }
 
-const UserSurveyAnswersSchema = new mongoose.Schema<IUserSurveyAnswers>({
-  worker_id: { type: String, ref: 'User.worker_id', required: true },
+const UserSurveyAnswersSchema = new mongoose.Schema({
+  worker: { type: mongoose.SchemaTypes.ObjectId, ref: 'User', required: true, autopopulate: true },
   answers: {
     q1: { type: String, required: true, enum: Object.values(Q1Answers) },
     q2: { type: String, required: true, enum: Object.values(Q2Answers) },
@@ -16,6 +17,8 @@ const UserSurveyAnswersSchema = new mongoose.Schema<IUserSurveyAnswers>({
     comment: String
   }
 });
+
+UserSurveyAnswersSchema.plugin(mongooseAutoPopulate);
 
 const UserSurveyAnswers = mongoose.model('UserSurveyAnswers', UserSurveyAnswersSchema);
 

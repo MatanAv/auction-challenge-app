@@ -59,4 +59,14 @@ const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
 
 const TestQuestions = mongoose.model('TestQuestions', TestQuestionsSchema);
 
+(async () => {
+  if ((await TestQuestions.countDocuments().exec()) > 0) {
+    return;
+  }
+
+  const questions = require('@/constants/test_questions.json');
+
+  await TestQuestions.insertMany(questions);
+})();
+
 export default TestQuestions;

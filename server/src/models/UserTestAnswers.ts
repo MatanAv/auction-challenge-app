@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
+import mongooseAutoPopulate from 'mongoose-autopopulate';
 
 export interface IUserTestAnswer {
-  worker_id: string;
-  question_id: number;
-  times_used?: number;
+  worker: string;
+  question: string;
   is_training: boolean;
   round: number;
   answer: 'a' | 'b';
@@ -11,18 +11,17 @@ export interface IUserTestAnswer {
   duration: number;
 }
 
-const UserTestAnswersSchema = new mongoose.Schema<IUserTestAnswer>({
-  worker_id: { type: String, ref: 'User', required: true },
-  //
-  question_id: { type: Number, ref: 'TestQuestions.question_id', required: true },
-  times_used: { type: Number, ref: 'TestQuestions.times_used' },
-  //
+const UserTestAnswersSchema = new mongoose.Schema({
+  worker: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, autopopulate: true },
+  question: { type: mongoose.Schema.Types.ObjectId, ref: 'TestQuestions', required: true, autopopulate: true },
   is_training: { type: Boolean, required: true },
   round: { type: Number, required: true },
   answer: { type: String, enum: ['a', 'b'], required: true },
   profit: { type: Number, required: true },
   duration: { type: Number, required: true }
 });
+
+UserTestAnswersSchema.plugin(mongooseAutoPopulate);
 
 const UserTestAnswers = mongoose.model('UserTestAnswers', UserTestAnswersSchema);
 
