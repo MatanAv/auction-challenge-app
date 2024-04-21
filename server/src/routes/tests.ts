@@ -4,8 +4,8 @@ import { getRandomQuestions, submitTraining, submitTest } from '@/controllers/te
 
 const testsRouter = Router();
 
-testsRouter.get('/get-questions', authMiddleware, async (req, res) => {
-  const { size } = req.body;
+testsRouter.get('/questions', authMiddleware, async (req, res) => {
+  const size = Number(req.query.amount);
 
   const response = await getRandomQuestions(size);
 
