@@ -5,23 +5,24 @@ import '@fontsource/roboto/700.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import theme from '@/styles/theme';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@emotion/react';
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from '@/pages/Home.tsx';
-import Instructions from '@/pages/Instructions.tsx';
-import Training from '@/pages/Training.tsx';
 import Test from '@/pages/Test.tsx';
-import ErrorPage from '@/pages/Error.tsx';
+import Error from '@/pages/Error.tsx';
+import Training from '@/pages/Training.tsx';
+import Instructions from '@/pages/Instructions.tsx';
+import Layout from '@/components/RootLayout';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
-    errorElement: <ErrorPage />
+    errorElement: <Error />
   },
   {
     path: '/instructions',
@@ -41,7 +42,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+      <Layout>
+        <RouterProvider router={router} />
+      </Layout>
     </ThemeProvider>
   </React.StrictMode>
 );

@@ -23,7 +23,8 @@
     /* Type checking */
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@api/*": ["./services/api/*"]
     }
   },
   "include": ["src"],
