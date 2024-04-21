@@ -8,7 +8,6 @@ import User, { IUser } from '@/models/User';
 const createUser = async (worker_id: string, req: Request): Promise<ResponseFormat> => {
   try {
     const user = await User.create({ worker_id });
-    req.session.worker_id = user._id.toString();
     return { status: StatusCodes.CREATED, data: user as IUser };
   } catch (error: any) {
     return getErrorResponse(StatusCodes.CONFLICT, 'User already exists');
