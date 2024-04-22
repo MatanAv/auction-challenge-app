@@ -1,6 +1,6 @@
 export enum Genders {
-  Male,
-  Female
+  Male = 'Male',
+  Female = 'Female'
 }
 
 export enum Educations {

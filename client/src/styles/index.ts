@@ -1,9 +1,13 @@
-import theme from './theme';
-
 const pageStyle = {
   textAlign: 'center',
   width: '100%',
-  padding: theme.spacing(3)
+  p: 5
+};
+
+const listBoxStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 3
 };
 
 const listStyle = {
@@ -23,4 +27,4 @@ const buttonStyle = { minWidth: 30 };
 
 const pageButtonStyle = { minWidth: 40, borderRadius: 8 };
 
-export { pageStyle, listStyle, listItemStyle, buttonStyle, pageButtonStyle };
+export { pageStyle, listBoxStyle, listStyle, listItemStyle, buttonStyle, pageButtonStyle };

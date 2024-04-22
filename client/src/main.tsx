@@ -10,11 +10,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
-import Home from '@/pages/Home.tsx';
-import Test from '@/pages/Test.tsx';
-import Error from '@/pages/Error.tsx';
-import Training from '@/pages/Training.tsx';
-import Instructions from '@/pages/Instructions.tsx';
+import Home from '@/pages/Home';
+import Test from '@/pages/Test';
+import Error from '@/pages/Error';
+import Training from '@/pages/Training';
+import UserInfo from '@/pages/UserInfo';
+import Instructions from '@/pages/Instructions';
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: '/training',
     element: <Training />
+  },
+  {
+    path: '/user/info',
+    element: <UserInfo />
   },
   {
     path: '/test',

@@ -9,8 +9,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 const UserRegister = () => {
-  const [workerId, setWorkerId] = useState('');
   const navigate = useNavigate();
+  const [workerId, setWorkerId] = useState('');
 
   const handleRegister = async () => {
     const response = await registerUser(workerId);
@@ -44,7 +44,7 @@ const UserRegister = () => {
 
 export default function Home() {
   return (
-    <Box py={2} display='flex' flexDirection='column' gap={3}>
+    <Box display='flex' flexDirection='column' gap={3}>
       <Typography variant='h5'>Welcome!</Typography>
       <Typography variant='body1'>In order to start the challenge, please enter your Worker ID:</Typography>
       <UserRegister />
