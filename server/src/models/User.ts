@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
-import { getCountriesList } from '@/utils/countries';
 import { Genders, Educations } from '@/enums/users';
 
 export interface IUser {
@@ -17,7 +16,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     age: { type: Number, min: 0, max: 120 },
     gender: { type: String, enum: Object.values(Genders) },
     education: { type: String, enum: Object.values(Educations) },
-    nationality: { type: String, enum: getCountriesList() }
+    nationality: String
   },
   user_instructions: {
     score: Number,
