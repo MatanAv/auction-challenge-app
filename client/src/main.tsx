@@ -13,6 +13,7 @@ import { ThemeProvider } from '@emotion/react';
 import Home from '@/pages/Home';
 import Test from '@/pages/Test';
 import Error from '@/pages/Error';
+import Survey from '@/pages/Survey';
 import Training from '@/pages/Training';
 import UserInfo from '@/pages/UserInfo';
 import Instructions from '@/pages/Instructions';
@@ -33,10 +34,16 @@ const router = createBrowserRouter([
     path: '/training',
     element: <Training />
   },
+
   {
     path: '/user/info',
     element: <UserInfo />
   },
+  {
+    path: '/user/survey',
+    element: <Survey />
+  },
+
   {
     path: '/test',
     element: <Test />

@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NavigationBar from '@/components/NavigationBar';
 
+import { listBoxStyle } from '@/styles';
+
 const MAX_SLIDES = 20;
 
 const imgStyle = {
@@ -16,7 +18,7 @@ export default function Instructions() {
   const [slideId, setSlideId] = useState(1);
 
   return (
-    <Box>
+    <Box sx={listBoxStyle}>
       <Typography mb={1} align='left' variant='h5'>{`${slideId} / ${MAX_SLIDES}`}</Typography>
       <img style={imgStyle} src={getSlideUrlById(slideId)} />
       <NavigationBar currentPage={slideId} totalPages={MAX_SLIDES} setPage={setSlideId} />

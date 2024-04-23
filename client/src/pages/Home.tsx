@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import { listBoxStyle } from '@/styles';
+
 const UserRegister = () => {
   const navigate = useNavigate();
   const [workerId, setWorkerId] = useState('');
@@ -44,7 +46,7 @@ const UserRegister = () => {
 
 export default function Home() {
   return (
-    <Box display='flex' flexDirection='column' gap={3}>
+    <Box sx={listBoxStyle}>
       <Typography variant='h5'>Welcome!</Typography>
       <Typography variant='body1'>In order to start the challenge, please enter your Worker ID:</Typography>
       <UserRegister />

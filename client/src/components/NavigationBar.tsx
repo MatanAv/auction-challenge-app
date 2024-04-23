@@ -12,6 +12,8 @@ export default function NavigationBar({ currentPage, totalPages, setPage, additi
   const isPreviousDisabled = currentPage === 1;
   const isNextDisabled = currentPage === totalPages;
 
+  console.log(additionalButtons); // TODO: handle additionalButtons
+
   return (
     <Box display='flex' justifyContent='space-between' my={5}>
       <Button
