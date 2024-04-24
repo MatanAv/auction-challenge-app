@@ -14,10 +14,9 @@ import { formStyle } from '@/styles';
 const surveyBoxStyle = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
   width: '100%',
   gap: 3,
-  p: 2,
+  py: 2,
   '& *': {
     fontSize: '0.975rem !important'
   }
@@ -66,13 +65,13 @@ export default function Survey() {
               <Typography variant='body1' color='darkorange' fontWeight={500} mb={1}>
                 {question.title}
               </Typography>
-              <RadioGroupField label={question.id} options={question.options} setValue={setFunction} />
+              <RadioGroupField label={question.id} options={question.options} onChange={setFunction} />
             </Box>
           );
         })}
 
         <Box sx={{ width: '100%' }}>
-          <Typography variant='body1' color='darkorange' fontWeight={500} mb={2.5}>
+          <Typography variant='body1' color='darkorange' fontWeight={500} mb={1.5}>
             Do you have any comment?
           </Typography>
           <TextField label='Comment' fullWidth defaultValue='' onChange={(e) => setComment(e.target.value)} />

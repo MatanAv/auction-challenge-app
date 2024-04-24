@@ -5,21 +5,24 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface RadioGroupFieldProps {
   label: string;
-  options: string[];
-  setValue: (value: string) => void;
+  onChange: (value: string) => void;
+  options?: string[];
+  controlledOptions?: React.ReactNode;
 }
 
-export default function RadioGroupField({ label, options, setValue }: RadioGroupFieldProps) {
+export default function RadioGroupField({ label, options = [], onChange, controlledOptions }: RadioGroupFieldProps) {
   const labelId = `radio-buttons-group-${label}`;
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value);
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.value);
+
+  const renderedOptions =
+    controlledOptions ||
+    options.map((option, index) => <FormControlLabel key={index} value={option} control={<Radio />} label={option} />);
 
   return (
     <FormControl>
       <RadioGroup aria-labelledby={labelId} defaultValue='' name='radio-buttons-group' onChange={handleOnChange}>
-        {options.map((option) => (
-          <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
-        ))}
+        {renderedOptions}
       </RadioGroup>
     </FormControl>
   );
