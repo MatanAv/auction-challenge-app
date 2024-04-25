@@ -3,11 +3,13 @@ import { BASE_URL } from '@/constants/api';
 import { UserInfo, UserInstructions } from '@/interfaces/user';
 
 const usersApi = axios.create({
-  baseURL: `${BASE_URL}/users`
+  baseURL: `${BASE_URL}/users`,
+  withCredentials: true
 });
 
 const registerUser = async (worker_id: string) => {
   const response = await usersApi.post('/register', { worker_id });
+
   return response.data;
 };
 

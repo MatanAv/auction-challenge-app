@@ -1,6 +1,10 @@
+import { AnswersValues } from '@/types/users';
+
 export interface ITestQuestion {
-  question_id: number;
+  _id: string;
   times_used: number;
+  LotNumA: number;
+  LotNumB: number;
   User_Val: number;
   profit_a: number;
   profit_b: number;
@@ -31,7 +35,7 @@ export interface IUserTestAnswer {
   question: string;
   is_training: boolean;
   round: number;
-  answer: 'a' | 'b';
+  answer: AnswersValues;
   profit: number;
   duration: number;
 }

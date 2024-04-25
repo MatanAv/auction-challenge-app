@@ -3,7 +3,8 @@ import { BASE_URL } from '@/constants/api';
 import { SurveyAnswers } from '@/interfaces/survey';
 
 const surveyApi = axios.create({
-  baseURL: `${BASE_URL}/surveys`
+  baseURL: `${BASE_URL}/surveys`,
+  withCredentials: true
 });
 
 const submitSurvey = async (answers: SurveyAnswers) => {

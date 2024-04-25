@@ -4,4 +4,6 @@ type GenderTypes = keyof typeof Genders;
 
 type EducationTypes = keyof typeof Educations;
 
-export type { GenderTypes, EducationTypes };
+type AnswersValues = 'a' | 'b';
+
+export type { GenderTypes, EducationTypes, AnswersValues };
