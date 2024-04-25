@@ -13,17 +13,17 @@ testsRouter.get('/questions', authMiddleware, async (req, res) => {
 });
 
 testsRouter.post('/submit/training', authMiddleware, async (req, res) => {
-  const { worker_id, answers, duration } = req.body;
+  const { worker_id, answers } = req.body;
 
-  const response = await submitTraining(worker_id, answers, duration);
+  const response = await submitTraining(worker_id, answers);
 
   res.status(response.status).json(response);
 });
 
 testsRouter.post('/submit/test', authMiddleware, async (req, res) => {
-  const { worker_id, answers, duration } = req.body;
+  const { worker_id, answers } = req.body;
 
-  const response = await submitTest(worker_id, answers, duration);
+  const response = await submitTest(worker_id, answers);
 
   if (response.data) {
   }

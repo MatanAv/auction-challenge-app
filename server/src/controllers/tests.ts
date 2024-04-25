@@ -45,22 +45,20 @@ const getTestSummary = async (
   }
 };
 
-const submitTraining = async (
-  worker_id: string,
-  answers: IUserTestAnswer[],
-  duration: number
-): Promise<ResponseFormat> => {
+const submitTraining = async (worker_id: string, answers: IUserTestAnswer[]): Promise<ResponseFormat> => {
   try {
     await submitQuestions(answers);
+    const duration = answers.reduce((acc, answer) => acc + answer.duration, 0);
     return await updateUserTraining(worker_id, { rounds: answers.length, duration });
   } catch (error: any) {
     return getErrorResponse(error);
   }
 };
 
-const submitTest = async (worker_id: string, answers: IUserTestAnswer[], duration: number): Promise<ResponseFormat> => {
+const submitTest = async (worker_id: string, answers: IUserTestAnswer[]): Promise<ResponseFormat> => {
   try {
     await submitQuestions(answers);
+    const duration = answers.reduce((acc, answer) => acc + answer.duration, 0);
     await updateQuestionsTimesUsed(answers);
     return await getTestSummary(worker_id, answers, duration);
   } catch (error: any) {
