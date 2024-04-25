@@ -4,6 +4,8 @@ import { MAX_TIMES_USED } from '@/constants';
 export interface ITestQuestion {
   question_id: number;
   times_used: number;
+  LotNumA: number;
+  LotNumB: number;
   User_Val: number;
   profit_a: number;
   profit_b: number;
@@ -32,6 +34,8 @@ export interface ITestQuestion {
 const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   question_id: { type: Number, unique: true, required: true },
   times_used: { type: Number, default: 0, max: MAX_TIMES_USED },
+  LotNumA: Number,
+  LotNumB: Number,
   User_Val: Number,
   profit_a: Number,
   profit_b: Number,

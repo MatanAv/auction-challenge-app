@@ -11,11 +11,12 @@ import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
 const getRandomQuestions = async (size: number): Promise<ResponseFormat> => {
   try {
     const testQuestions = await TestQuestions.aggregate([
-      { $sample: { size }, $match: { times_used: { $lt: MAX_TIMES_USED } } }
+      { $sample: { size } },
+      { $match: { times_used: { $lt: MAX_TIMES_USED } } }
     ]);
     return { status: StatusCodes.OK, data: testQuestions };
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 
@@ -40,7 +41,7 @@ const getTestSummary = async (
     const user = (await updateUserTest(worker_id, { rounds, profit, duration })).data as IUser;
     return { status: StatusCodes.OK, data: user.user_test, approval_key: config.test.approvalKey };
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 
@@ -53,7 +54,7 @@ const submitTraining = async (
     await submitQuestions(answers);
     return await updateUserTraining(worker_id, { rounds: answers.length, duration });
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 
@@ -63,7 +64,7 @@ const submitTest = async (worker_id: string, answers: IUserTestAnswer[], duratio
     await updateQuestionsTimesUsed(answers);
     return await getTestSummary(worker_id, answers, duration);
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 

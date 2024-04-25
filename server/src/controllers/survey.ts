@@ -9,7 +9,7 @@ const submitSurvey = async (worker_id: string, answers: SurveyAnswers): Promise<
     await UserSurveyAnswers.create({ worker: worker_id, answers });
     return { status: StatusCodes.CREATED };
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 

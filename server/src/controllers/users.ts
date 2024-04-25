@@ -10,7 +10,7 @@ const createUser = async (worker_id: string, req: Request): Promise<ResponseForm
     const user = await User.create({ worker_id });
     return { status: StatusCodes.CREATED, data: user as IUser };
   } catch (error: any) {
-    return getErrorResponse(StatusCodes.CONFLICT, 'User already exists');
+    return getErrorResponse(error, StatusCodes.CONFLICT, 'User already exists');
   }
 };
 
@@ -20,7 +20,7 @@ const updateUser = async (worker_id: string, update: Partial<IUser>): Promise<Re
     if (!user) throw new Error('User not found');
     return { status: StatusCodes.OK, data: user as IUser };
   } catch (error: any) {
-    return getErrorResponse();
+    return getErrorResponse(error);
   }
 };
 
