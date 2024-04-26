@@ -21,8 +21,6 @@ const UserRegister = () => {
       // TODO: handle error
     }
 
-    window.sessionStorage.setItem('worker_id', response.data._id);
-
     navigate('/instructions');
   };
 

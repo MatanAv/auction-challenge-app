@@ -31,7 +31,6 @@ export default function Training() {
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [userAnswers, setUserAnswers] = useState<IUserTestAnswer[]>([]);
   const [question, setQuestion] = useState<ITestQuestion>({} as ITestQuestion);
-  // const [question, setQuestion] = useState<ITestQuestion>(exampleQuestion);
 
   const setAnswer = (answer: 'a' | 'b') => {
     const userAnswer: IUserTestAnswer = {
@@ -65,6 +64,7 @@ export default function Training() {
     setAnswerDuration();
 
     const response = await submitTraining(userAnswers);
+
     if (response) {
       navigate('/results');
     }

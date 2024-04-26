@@ -9,7 +9,11 @@ const usersApi = axios.create({
 
 const registerUser = async (worker_id: string) => {
   const response = await usersApi.post('/register', { worker_id });
+  return response.data;
+};
 
+const logoutUser = async () => {
+  const response = await usersApi.get('/logout');
   return response.data;
 };
 
@@ -23,4 +27,4 @@ const submitUserInstructions = async (user_instructions: UserInstructions) => {
   return response.data;
 };
 
-export { registerUser, submitUserInfo, submitUserInstructions };
+export { registerUser, logoutUser, submitUserInfo, submitUserInstructions };

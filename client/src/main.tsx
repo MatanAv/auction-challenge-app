@@ -7,6 +7,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { logoutUser } from '@/services/api/users';
+
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
     element: <Test />
   }
 ]);
+
+window.addEventListener('unload', () => {
+  logoutUser();
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
