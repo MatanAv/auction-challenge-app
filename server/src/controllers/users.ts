@@ -15,6 +15,15 @@ const createUser = async (worker_id: string, req: Request): Promise<ResponseForm
   }
 };
 
+const logoutUser = (req: Request): ResponseFormat => {
+  try {
+    req.session.destroy(getErrorResponse);
+    return { status: StatusCodes.OK, data: { message: 'Logged out' } };
+  } catch (error: any) {
+    return getErrorResponse(error);
+  }
+};
+
 const updateUser = async (worker_id: string, update: Partial<IUser>): Promise<ResponseFormat> => {
   try {
     const user = await User.findByIdAndUpdate(worker_id, update, { new: true });
@@ -44,4 +53,4 @@ const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<R
   return updateUser(worker_id, { user_test });
 };
 
-export { createUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };
+export { createUser, logoutUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };
