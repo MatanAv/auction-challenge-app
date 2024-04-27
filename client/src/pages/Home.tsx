@@ -1,6 +1,6 @@
-import { HttpStatusCode } from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { HttpStatusCode } from 'axios';
 import { registerUser } from '@/services/api/users';
 
 import Box from '@mui/material/Box';
@@ -20,6 +20,8 @@ const UserRegister = () => {
     if (response.status !== HttpStatusCode.Created) {
       // TODO: handle error
     }
+
+    window.sessionStorage.setItem('worker_id', response.data._id);
 
     navigate('/instructions');
   };

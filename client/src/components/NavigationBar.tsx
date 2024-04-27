@@ -5,31 +5,23 @@ interface NavigationBarProps {
   currentPage: number;
   totalPages: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  additionalButtons?: React.ReactNode;
+  handleNavigate?: () => void;
 }
 
-export default function NavigationBar({ currentPage, totalPages, setPage, additionalButtons }: NavigationBarProps) {
+export default function NavigationBar({ currentPage, totalPages, setPage, handleNavigate }: NavigationBarProps) {
+  const isLastPage = currentPage === totalPages;
   const isPreviousDisabled = currentPage === 1;
-  const isNextDisabled = currentPage === totalPages;
+  const isNextDisabled = !handleNavigate && isLastPage;
 
-  console.log(additionalButtons); // TODO: handle additionalButtons
+  const handlePrevious = () => setPage((prev: number) => prev - 1);
+  const handleNext = isLastPage ? handleNavigate : () => setPage((prev: number) => prev + 1);
 
   return (
     <Box display='flex' justifyContent='space-between' my={5}>
-      <Button
-        size='large'
-        variant='contained'
-        disabled={isPreviousDisabled}
-        onClick={() => setPage((prev: number) => prev - 1)}
-      >
+      <Button size='large' variant='contained' disabled={isPreviousDisabled} onClick={handlePrevious}>
         Previous
       </Button>
-      <Button
-        size='large'
-        variant='contained'
-        disabled={isNextDisabled}
-        onClick={() => setPage((prev: number) => prev + 1)}
-      >
+      <Button size='large' variant='contained' disabled={isNextDisabled} onClick={handleNext}>
         Next
       </Button>
     </Box>

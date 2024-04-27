@@ -12,7 +12,6 @@ import ProgressBar from '@/components/AuctionGame/ProgressBar';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
-import QuestionResult from '@/components/AuctionGame/Question/QuestionResult';
 
 const testBoxStyle = {
   width: '100%',
@@ -25,19 +24,16 @@ const testBoxStyle = {
 const TIME_PER_QUESTION = 60000 * 6;
 const MIN_ANSWERS = 2;
 
-export default function Training() {
+export default function AuctionGame() {
   const navigate = useNavigate();
 
   const [round, setRound] = useState<number>(1);
   const [points, setPoints] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [startTime, setStartTime] = useState<number>(Date.now());
-  const [isResultView, setIsResultView] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<IUserTestAnswer[]>([]);
   const [question, setQuestion] = useState<ITestQuestion>({} as ITestQuestion);
   const [selectedOption, setSelectedOption] = useState<AnswersValues | null>(null);
-
-  const bonus = points > 0 ? points * 10 : 0;
 
   const addUserAnswer = () => {
     const userAnswer: IUserTestAnswer = {
@@ -53,21 +49,20 @@ export default function Training() {
     const newUserAnswers = [...userAnswers, userAnswer];
 
     setUserAnswers(newUserAnswers);
+
+    return newUserAnswers;
   };
 
-  const handleNext = () => {
-    if (!isResultView) {
-      addUserAnswer();
-      setIsResultView(true);
-    } else {
-      setPoints(points + userAnswers[round - 1].profit);
-      setIsResultView(false);
-      setRound(round + 1);
-    }
+  const handleNextRound = () => {
+    const userAnswers = addUserAnswer();
+    setPoints(points + userAnswers[round - 1].profit);
+    setRound(round + 1);
   };
 
   const handleSubmitTraining = async () => {
-    const response = await submitTraining(userAnswers);
+    const updatedUserAnswers = selectedOption ? addUserAnswer() : userAnswers;
+
+    const response = await submitTraining(updatedUserAnswers);
 
     navigate('/results', { state: { user_results: response.data } });
   };
@@ -83,33 +78,31 @@ export default function Training() {
     });
   }, [round]);
 
-  if (isLoading) return <CircularProgress />;
-
   return (
     <Box sx={{ ...listBoxStyle, gap: 10 }}>
-      {isResultView ? (
-        <QuestionResult question={question} selectedOption={selectedOption!} round={round} />
-      ) : (
-        <Box sx={testBoxStyle}>
-          <ProgressBar round={round} points={points} bonus={bonus} />
+      <Box sx={testBoxStyle}>
+        <ProgressBar round={round} points={points} />
 
-          <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
+        <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
+          {!isLoading ? (
             <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
-          </Box>
-
-          <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={() => navigate('/')} />
+          ) : (
+            <CircularProgress />
+          )}
         </Box>
-      )}
+
+        <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={() => navigate('/')} />
+      </Box>
 
       <Box display='flex' gap={3} justifyContent='flex-end'>
-        <Button onClick={handleNext} disabled={!selectedOption} variant='contained' color='primary'>
-          Next Question
+        <Button onClick={handleNextRound} disabled={!selectedOption} variant='contained' color='primary'>
+          Next
         </Button>
-        {round >= MIN_ANSWERS && isResultView && (
+        {round > MIN_ANSWERS && !isLoading ? (
           <Button onClick={handleSubmitTraining} variant='contained' color='primary'>
             Finish Training
           </Button>
-        )}
+        ) : null}
       </Box>
     </Box>
   );

@@ -3,16 +3,19 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
+import { blueGrey } from '@mui/material/colors';
+
 interface ProgressBarProps {
   round: number;
   points: number;
+  bonus: number;
   totalRounds?: number;
 }
 
 const progressBarStyle = {
   maxWidth: 300,
-  minWidth: 175,
-  backgroundColor: '#6fbf73',
+  minWidth: 200,
+  backgroundColor: blueGrey[600],
   color: 'white',
   display: 'flex',
   flexDirection: 'column',
@@ -21,19 +24,19 @@ const progressBarStyle = {
   py: 1,
   px: 2,
   '& *': {
-    fontSize: '1.025rem !important'
+    fontSize: '1.2rem !important'
   }
 };
 
-export default function ProgressBar({ round = 1, totalRounds = round, points = 0 }: ProgressBarProps) {
+export default function ProgressBar({ round = 1, points = 0, bonus = 0, totalRounds = round }: ProgressBarProps) {
   return (
-    <Paper sx={progressBarStyle} elevation={2}>
+    <Paper sx={progressBarStyle} elevation={5}>
       <Box display='flex'>
         <Typography sx={{ flexGrow: 1 }} variant='body2'>
           Round :
         </Typography>
         <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {round}/{totalRounds}
+          {round} / {totalRounds}
         </Typography>
       </Box>
       <Divider />
@@ -51,7 +54,7 @@ export default function ProgressBar({ round = 1, totalRounds = round, points = 0
           Bonus :
         </Typography>
         <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {points * 10} ¢
+          {bonus} ¢
         </Typography>
       </Box>
     </Paper>

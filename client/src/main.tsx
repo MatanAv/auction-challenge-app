@@ -34,6 +34,14 @@ const router = createBrowserRouter([
     element: <Instructions />
   },
   {
+    path: '/instructions/training',
+    element: <Instructions type='training' />
+  },
+  {
+    path: '/instructions/game',
+    element: <Instructions type='game' />
+  },
+  {
     path: '/instructions/summary',
     element: <InstructionsSummary />
   },
@@ -50,7 +58,7 @@ const router = createBrowserRouter([
     element: <Survey />
   },
   {
-    path: '/test',
+    path: '/game',
     element: <Test />
   }
 ]);

@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     duration: Number
   },
   user_test: {
-    rounds: { type: Number, max: 25 },
+    rounds: { type: Number, max: 20 },
     profit: { type: Number, min: 0 },
     bonus: Number,
     duration: Number
@@ -37,7 +37,8 @@ const UserSchema = new mongoose.Schema<IUser>({
 
 UserSchema.pre('save', function (next) {
   if (this.user_test?.profit) {
-    this.user_test.bonus = this.user_test.profit * 0.1;
+    const bonus = this.user_test.profit * 10;
+    this.user_test.bonus = bonus < 0 ? 0 : bonus;
   }
 
   next();

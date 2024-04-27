@@ -20,9 +20,10 @@ const FAILS_LIMIT = 2;
 interface SummaryResultsProps {
   score: number;
   setIsReview: (value: boolean) => void;
+  handleNext: () => void;
 }
 
-function SummaryResults({ score, setIsReview }: SummaryResultsProps) {
+function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps) {
   return (
     <Box>
       <Typography variant='h4' fontWeight={600}>
@@ -53,9 +54,15 @@ function SummaryResults({ score, setIsReview }: SummaryResultsProps) {
               </Button>
             </>
           ) : (
-            <Typography variant='h5' color='green' fontWeight={500}>
-              You have passed the test. Congratulations!
-            </Typography>
+            <>
+              <Typography variant='h5' color='green' fontWeight={500}>
+                You have passed the test. Congratulations!
+              </Typography>
+              <br></br>
+              <Button variant='contained' onClick={handleNext}>
+                Next
+              </Button>
+            </>
           )}
         </Box>
       </Box>
@@ -163,7 +170,7 @@ export default function InstructionsSummary() {
   return (
     <Box sx={listBoxStyle}>
       {hasSubmitted && !isReview ? (
-        <SummaryResults score={score} setIsReview={setIsReview} />
+        <SummaryResults score={score} setIsReview={setIsReview} handleNext={() => navigate('/instructions/training')} />
       ) : (
         <>
           <Typography variant='h4' fontWeight={600}>
