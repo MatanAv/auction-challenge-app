@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { blueGrey, grey } from '@mui/material/colors';
 
 const optionsTableStyle = {
+  minWidth: 270,
   my: 1,
   '& *': {
     textAlign: 'center !important'

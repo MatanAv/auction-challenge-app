@@ -30,12 +30,14 @@ export default function QuestionResult({ question, selectedOption, round }: Ques
 
   return (
     <Box width='100%' display='flex' flexDirection='column'>
-      <Typography variant='h5'>Round {round} Results</Typography>
+      <Typography variant='h5' mb={8}>
+        Round {round} Results
+      </Typography>
 
-      <Box display='flex' gap={5}>
+      <Box display='flex' alignItems='flex-start' gap={10}>
         <OptionTable rows={optionRows} />
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 3, '& strong': { color: 'red' } }}>
           <Typography variant='body1'>
             You decided to choose option <strong>{upperCaseOption}</strong>.
           </Typography>

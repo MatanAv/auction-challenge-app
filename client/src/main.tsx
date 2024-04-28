@@ -18,8 +18,10 @@ import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';
 import Training from '@/pages/Training';
 import UserInfo from '@/pages/UserInfo';
+import GameResults from '@/pages/GameResults';
 import Instructions from '@/pages/Instructions/Instructions';
 import InstructionsSummary from '@/pages/Instructions/Summary';
+
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -46,10 +48,6 @@ const router = createBrowserRouter([
     element: <InstructionsSummary />
   },
   {
-    path: '/training',
-    element: <Training />
-  },
-  {
     path: '/user/info',
     element: <UserInfo />
   },
@@ -58,8 +56,16 @@ const router = createBrowserRouter([
     element: <Survey />
   },
   {
+    path: '/training',
+    element: <Training />
+  },
+  {
     path: '/game',
     element: <Test />
+  },
+  {
+    path: '/results',
+    element: <GameResults />
   }
 ]);
 

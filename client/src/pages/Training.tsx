@@ -13,6 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
 import QuestionResult from '@/components/AuctionGame/Question/QuestionResult';
+import { GameResultsInfo } from './GameResults';
 
 const testBoxStyle = {
   width: '100%',
@@ -50,9 +51,7 @@ export default function Training() {
       duration: Date.now() - startTime
     };
 
-    const newUserAnswers = [...userAnswers, userAnswer];
-
-    setUserAnswers(newUserAnswers);
+    setUserAnswers([...userAnswers, userAnswer]);
   };
 
   const handleNext = () => {
@@ -67,9 +66,16 @@ export default function Training() {
   };
 
   const handleSubmitTraining = async () => {
-    const response = await submitTraining(userAnswers);
+    await submitTraining(userAnswers);
 
-    navigate('/results', { state: { user_results: response.data } });
+    navigate('/results', {
+      state: {
+        round,
+        points,
+        bonus,
+        type: 'training'
+      } as GameResultsInfo
+    });
   };
 
   useEffect(() => {
@@ -101,7 +107,7 @@ export default function Training() {
         </Box>
       )}
 
-      <Box display='flex' gap={3} justifyContent='flex-end'>
+      <Box display='flex' gap={3} justifyContent='center'>
         <Button onClick={handleNext} disabled={!selectedOption} variant='contained' color='primary'>
           Next Question
         </Button>
