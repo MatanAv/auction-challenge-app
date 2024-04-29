@@ -28,7 +28,7 @@ const progressBarStyle = {
   }
 };
 
-export default function ProgressBar({ round = 1, points = 0, bonus = 0, totalRounds = round }: ProgressBarProps) {
+export default function ProgressBar({ round, points, bonus, totalRounds = round }: ProgressBarProps) {
   return (
     <Paper sx={progressBarStyle} elevation={5}>
       <Box display='flex'>

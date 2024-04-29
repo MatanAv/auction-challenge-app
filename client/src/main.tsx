@@ -13,10 +13,9 @@ import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
 import Home from '@/pages/Home';
-import Test from '@/pages/Test';
+import Game from '@/pages/Game';
 import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';
-import Training from '@/pages/Training';
 import UserInfo from '@/pages/UserInfo';
 import GameResults from '@/pages/GameResults';
 import Instructions from '@/pages/Instructions/Instructions';
@@ -57,11 +56,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/training',
-    element: <Training />
+    element: <Game gameType='training' />
   },
   {
     path: '/game',
-    element: <Test />
+    element: <Game />
   },
   {
     path: '/results',

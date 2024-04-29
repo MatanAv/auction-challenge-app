@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import ProgressBar from '@/components/AuctionGame/ProgressBar';
+import ProgressBar from '@/components/GameRound/ProgressBar';
 
 export type GameResultsInfo = {
   type: 'training' | 'game';
