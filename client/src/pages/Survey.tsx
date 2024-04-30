@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { submitSurvey } from '@/services/api/survey';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
@@ -23,6 +24,8 @@ const surveyBoxStyle = {
 };
 
 export default function Survey() {
+  const navigate = useNavigate();
+
   const [q1, setQ1] = useState('');
   const [q2, setQ2] = useState('');
   const [q3, setQ3] = useState('');
@@ -37,9 +40,9 @@ export default function Survey() {
         comment
       };
 
-      console.log(userSurvey);
-
       await submitSurvey(userSurvey as SurveyAnswers);
+
+      navigate('/end');
     } catch (error) {
       // TODO: handle error
       console.error(error);

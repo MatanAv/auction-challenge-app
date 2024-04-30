@@ -27,7 +27,7 @@ const submitQuestions = async (answers: IUserTestAnswer[]): Promise<IUserTestAns
 
 const updateQuestionsTimesUsed = async (answers: IUserTestAnswer[]): Promise<void> => {
   const questionsIds = answers.map((answer) => answer.question);
-  await TestQuestions.updateMany({ question: { $in: questionsIds } }, { $inc: { times_used: 1 } });
+  await TestQuestions.updateMany({ _id: { $in: questionsIds } }, { $inc: { times_used: 1 } });
 };
 
 const getTestSummary = async (

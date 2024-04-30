@@ -25,9 +25,6 @@ testsRouter.post('/submit/test', authMiddleware, async (req, res) => {
 
   const response = await submitTest(worker_id, answers);
 
-  if (response.data) {
-  }
-
   res.status(response.status).json(response);
 });
 

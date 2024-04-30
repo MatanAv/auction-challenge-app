@@ -74,7 +74,7 @@ export default function InstructionsSummary() {
   const navigate = useNavigate();
 
   const [score, setScore] = useState(0);
-  const [fails, setFails] = useState(0);
+  const [fails, setFails] = useState(Number(window.sessionStorage.getItem('instructions_fails')));
   const [startTime] = useState(Date.now());
   const [isReview, setIsReview] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -85,34 +85,35 @@ export default function InstructionsSummary() {
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
 
   const getQuizSummary = (): UserInstructions => {
-    let summaryScore = 0;
-    const duration = Date.now() - startTime;
+    const summary: UserInstructions = {
+      score: 0,
+      fails: fails,
+      duration: Date.now() - startTime
+    };
 
-    userAnswers.forEach((answer, index) => {
-      if (answer === correctAnswers[index]) {
-        summaryScore++;
-      }
-    });
-
-    setScore(summaryScore);
+    userAnswers.forEach((answer, index) => answer === correctAnswers[index] && summary.score++);
 
     if (score < MIN_PASS_SCORE) {
-      setFails(fails + 1);
+      summary.fails++;
     }
 
-    return { score, fails, duration };
+    setScore(summary.score);
+    setFails(summary.fails);
+
+    return summary;
   };
 
   const handleSubmit = async () => {
-    setHasSubmitted(true);
-
     try {
       const quizSummary = getQuizSummary();
+
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
         return navigate('/');
       }
+
+      setHasSubmitted(true);
     } catch (error) {
       // TODO: handle errors
       console.error(error);
@@ -120,6 +121,7 @@ export default function InstructionsSummary() {
   };
 
   const handleRetakeTest = () => {
+    window.sessionStorage.setItem('instructions_fails', `${fails}`);
     return navigate(0);
   };
 

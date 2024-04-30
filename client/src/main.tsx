@@ -13,16 +13,17 @@ import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
 import Home from '@/pages/Home';
-import Game from '@/pages/Game';
+import Game from '@/pages/Game/Game';
 import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';
 import UserInfo from '@/pages/UserInfo';
-import GameResults from '@/pages/GameResults';
+import GameResults from '@/pages/Game/GameResults';
 import Instructions from '@/pages/Instructions/Instructions';
 import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
+import Finish from './pages/Finish';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
   {
     path: '/results',
     element: <GameResults />
+  },
+  {
+    path: '/end',
+    element: <Finish />
   }
 ]);
 
