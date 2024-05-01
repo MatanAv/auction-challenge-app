@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useError } from '@/hooks/error';
 import { submitSurvey } from '@/services/api/survey';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
@@ -25,6 +26,7 @@ const surveyBoxStyle = {
 
 export default function Survey() {
   const navigate = useNavigate();
+  const { handleError, clearError, ErrorDisplay } = useError();
 
   const [q1, setQ1] = useState('');
   const [q2, setQ2] = useState('');
@@ -33,19 +35,12 @@ export default function Survey() {
 
   const handleSubmit = async () => {
     try {
-      const userSurvey = {
-        q1,
-        q2,
-        q3,
-        comment
-      };
-
-      await submitSurvey(userSurvey as SurveyAnswers);
-
-      navigate('/end');
+      clearError();
+      const surveyAnswers = { q1, q2, q3, comment } as SurveyAnswers;
+      const { approval_key } = await submitSurvey(surveyAnswers);
+      navigate('/end', { state: { approval_key } });
     } catch (error) {
-      // TODO: handle error
-      console.error(error);
+      handleError(error);
     }
   };
 
@@ -84,6 +79,8 @@ export default function Survey() {
       <Button sx={{ width: 300 }} variant='contained' color='primary' onClick={handleSubmit}>
         Submit
       </Button>
+
+      <ErrorDisplay />
     </Box>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useError } from '@/hooks/error';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -21,6 +22,7 @@ const userFormStyle = {
 
 export default function UserInfo() {
   const navigate = useNavigate();
+  const { handleError, clearError, ErrorDisplay } = useError();
 
   const [age, setAge] = useState<number>(0);
   const [gender, setGender] = useState<string>('');
@@ -36,19 +38,12 @@ export default function UserInfo() {
 
   const handleSubmit = async () => {
     try {
-      const userInfo = {
-        age,
-        gender,
-        education,
-        nationality
-      };
-
+      clearError();
+      const userInfo = { age, gender, education, nationality };
       await submitUserInfo(userInfo as IUserInfo);
-
       navigate('/test');
     } catch (error) {
-      // TODO: handle error
-      console.error(error);
+      handleError(error);
     }
   };
 
@@ -70,6 +65,7 @@ export default function UserInfo() {
       >
         Submit
       </Button>
+      <ErrorDisplay />
     </Box>
   );
 }

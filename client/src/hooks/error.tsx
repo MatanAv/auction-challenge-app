@@ -1,20 +1,17 @@
 import { useState } from 'react';
-import { ErrorType } from '@/types/errors';
+import { AnyError } from '@/types/errors';
+import { getErrorFromAxiosError } from '@/utils/errors';
 
-export const useError = (): {
-  error: ErrorType | null;
-  handleError: (error: ErrorType) => void;
-  clearError: () => void;
-} => {
-  const [error, setError] = useState<ErrorType | null>(null);
+import Error from '@/components/Errors';
 
-  const handleError = (error: ErrorType) => {
-    setError(error);
-  };
+export const useError = () => {
+  const [error, setError] = useState<AnyError | null>(null);
 
-  const clearError = () => {
-    setError(null);
-  };
+  const handleError = (error: unknown) => setError(getErrorFromAxiosError(error));
 
-  return { error, handleError, clearError };
+  const clearError = () => setError(null);
+
+  const ErrorDisplay = () => <Error error={error} />;
+
+  return { handleError, clearError, ErrorDisplay };
 };

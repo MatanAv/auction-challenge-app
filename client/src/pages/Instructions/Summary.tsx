@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useError } from '@/hooks/error';
 import { UserInstructions } from '@/interfaces/user';
 import { submitUserInstructions } from '@/services/api/users';
 import data from '@/data/training/quiz.json';
@@ -72,6 +73,7 @@ function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps)
 
 export default function InstructionsSummary() {
   const navigate = useNavigate();
+  const { handleError, clearError, ErrorDisplay } = useError();
 
   const [score, setScore] = useState(0);
   const [fails, setFails] = useState(Number(window.sessionStorage.getItem('instructions_fails')));
@@ -105,8 +107,9 @@ export default function InstructionsSummary() {
 
   const handleSubmit = async () => {
     try {
-      const quizSummary = getQuizSummary();
+      clearError();
 
+      const quizSummary = getQuizSummary();
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
@@ -115,8 +118,7 @@ export default function InstructionsSummary() {
 
       setHasSubmitted(true);
     } catch (error) {
-      // TODO: handle errors
-      console.error(error);
+      handleError(error);
     }
   };
 
@@ -198,6 +200,7 @@ export default function InstructionsSummary() {
           )}
         </>
       )}
+      <ErrorDisplay />
     </Box>
   );
 }

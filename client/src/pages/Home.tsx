@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HttpStatusCode } from 'axios';
+import { useError } from '@/hooks/error';
 import { registerUser } from '@/services/api/users';
 
 import Box from '@mui/material/Box';
@@ -12,22 +12,23 @@ import { listBoxStyle } from '@/styles';
 
 const UserRegister = () => {
   const navigate = useNavigate();
+  const { handleError, clearError, ErrorDisplay } = useError();
+
   const [workerId, setWorkerId] = useState('');
 
   const handleRegister = async () => {
-    const response = await registerUser(workerId);
-
-    if (response.status !== HttpStatusCode.Created) {
-      // TODO: handle error
+    try {
+      clearError();
+      const response = await registerUser(workerId);
+      window.sessionStorage.setItem('worker_id', response.data._id);
+      navigate('/instructions');
+    } catch (error) {
+      handleError(error);
     }
-
-    window.sessionStorage.setItem('worker_id', response.data._id);
-
-    navigate('/instructions');
   };
 
   return (
-    <Box component='form' noValidate autoComplete='off'>
+    <Box display='flex' flexDirection='column' gap={3} component='form' noValidate autoComplete='off'>
       <TextField
         label='Worker ID'
         value={workerId}
@@ -40,6 +41,7 @@ const UserRegister = () => {
           )
         }}
       />
+      <ErrorDisplay />
     </Box>
   );
 };

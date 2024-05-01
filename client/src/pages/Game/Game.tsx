@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useError } from '@/hooks/error';
+import { GameResultsInfo } from './GameResults';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
-import { getQuestions, submitTest, submitTraining } from '@/services/api/tests';
-import type { GameResultsInfo } from './GameResults';
+import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/services/api/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
 import CircularProgress from '@mui/material/CircularProgress';
+import { UserTest, UserTraining } from '@/interfaces/user';
 
 interface GameProps {
   gameType?: 'training' | 'game';
@@ -15,6 +17,7 @@ interface GameProps {
 
 export default function Game({ gameType = 'game' }: GameProps) {
   const navigate = useNavigate();
+  const { handleError, clearError, ErrorDisplay } = useError();
 
   const [questions, setQuestions] = useState<ITestQuestion[]>([]);
   const [userAnswers, setUserAnswers] = useState<IUserTestAnswer[]>([]);
@@ -30,15 +33,20 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const questionAmount = isTraining ? TRAINING_QUESTIONS : GAME_QUESTIONS;
   const currentQuestion = isTraining ? questions[0] : questions[round - 1];
 
+  const submitGame = isTraining ? submitTraining : submitTest;
+
   const fetchQuestions = async (amount: number) => {
-    // TODO: handle error
+    try {
+      clearError();
+      setIsLoading(true);
 
-    setIsLoading(true);
+      const { data } = await getQuestions(amount);
+      setQuestions(data);
 
-    const { data } = await getQuestions(amount);
-    setQuestions(data);
-
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   const addUserAnswer = (answer: IUserTestAnswer) => {
@@ -58,24 +66,21 @@ export default function Game({ gameType = 'game' }: GameProps) {
   };
 
   const handleSubmit = async () => {
-    // TODO: handle error
-
-    const submitGame = isTraining ? submitTraining : submitTest;
-
     try {
+      clearError();
       await submitGame(userAnswers);
-
       const gameResults: GameResultsInfo = { round, points, bonus, type: gameType };
-
       navigate('/results', { state: gameResults });
     } catch (error) {
-      console.error(error);
+      handleError(error);
     }
   };
 
   const handleTimerEnd = async () => {
-    // TODO: fix this
-    await handleSubmit();
+    const results = isTraining
+      ? ({ rounds: round, duration: 0 } as UserTraining)
+      : ({ rounds: round, profit: points, duration: 0 } as UserTest);
+    await sendTimeout(isTraining, results);
     navigate('/');
   };
 
@@ -86,7 +91,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
   if (isLoading) return <CircularProgress />;
 
   return (
-    <Box>
+    <Box display='flex' flexDirection='column' alignItems='center' gap={3}>
       <GameRound
         key={round}
         isTraining={isTraining}
@@ -101,6 +106,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
         addUserAnswer={addUserAnswer}
         addAnswerProfit={addAnswerProfit}
       />
+      <ErrorDisplay />
     </Box>
   );
 }

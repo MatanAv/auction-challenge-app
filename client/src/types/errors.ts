@@ -1,3 +1,3 @@
-import { AxiosError } from 'axios';
+import { StatusError } from '@/interfaces/errors';
 
-export type ErrorType = AxiosError | TypeError;
+export type AnyError = StatusError | Error;
