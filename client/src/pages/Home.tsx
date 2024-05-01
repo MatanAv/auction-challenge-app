@@ -27,12 +27,20 @@ const UserRegister = () => {
     }
   };
 
+  const onEnterDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleRegister();
+    }
+  };
+
   return (
     <Box display='flex' flexDirection='column' gap={3} component='form' noValidate autoComplete='off'>
       <TextField
         label='Worker ID'
         value={workerId}
         onChange={(e) => setWorkerId(e.target.value.trim())}
+        onKeyDown={onEnterDown}
         InputProps={{
           endAdornment: (
             <Button variant='contained' color='primary' onClick={handleRegister} disabled={!workerId}>

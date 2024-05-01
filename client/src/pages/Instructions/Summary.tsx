@@ -2,10 +2,12 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { UserInstructions } from '@/interfaces/user';
-import { submitUserInstructions } from '@/services/api/users';
+import { QUIZ_DURATION } from '@/constants/instructions';
+import { logoutUser, submitUserInstructions } from '@/services/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';
+import Timer from '@/components/Timer';
 import Radio from '@mui/material/Radio';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -95,7 +97,7 @@ export default function InstructionsSummary() {
 
     userAnswers.forEach((answer, index) => answer === correctAnswers[index] && summary.score++);
 
-    if (score < MIN_PASS_SCORE) {
+    if (summary.score < MIN_PASS_SCORE) {
       summary.fails++;
     }
 
@@ -113,6 +115,7 @@ export default function InstructionsSummary() {
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
+        window.sessionStorage.removeItem('instructions_fails');
         return navigate('/');
       }
 
@@ -125,6 +128,13 @@ export default function InstructionsSummary() {
   const handleRetakeTest = () => {
     window.sessionStorage.setItem('instructions_fails', `${fails}`);
     return navigate(0);
+  };
+
+  const handleTimerEnd = async () => {
+    const quizSummary = getQuizSummary();
+    await submitUserInstructions(quizSummary);
+    logoutUser();
+    return navigate('/');
   };
 
   const renderQuestions = () => {
@@ -172,7 +182,7 @@ export default function InstructionsSummary() {
   };
 
   return (
-    <Box sx={listBoxStyle}>
+    <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
       {hasSubmitted && !isReview ? (
         <SummaryResults score={score} setIsReview={setIsReview} handleNext={() => navigate('/instructions/training')} />
       ) : (
@@ -180,6 +190,8 @@ export default function InstructionsSummary() {
           <Typography variant='h4' fontWeight={600}>
             Summary Quiz
           </Typography>
+
+          <Timer countTime={startTime + QUIZ_DURATION} onTimeEnd={handleTimerEnd} />
 
           <Box sx={{ width: '80%', m: 'auto' }}>{renderQuestions()}</Box>
 

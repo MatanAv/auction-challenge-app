@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { logoutUser } from '@/services/api/users';
 import { submitSurvey } from '@/services/api/survey';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
@@ -36,8 +37,10 @@ export default function Survey() {
   const handleSubmit = async () => {
     try {
       clearError();
-      const surveyAnswers = { q1, q2, q3, comment } as SurveyAnswers;
-      const { approval_key } = await submitSurvey(surveyAnswers);
+
+      const { approval_key } = await submitSurvey({ q1, q2, q3, comment } as SurveyAnswers);
+
+      logoutUser();
       navigate('/end', { state: { approval_key } });
     } catch (error) {
       handleError(error);

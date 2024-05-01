@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { logoutUser } from '@/services/api/users';
 import { GameResultsInfo } from './GameResults';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
@@ -80,7 +81,10 @@ export default function Game({ gameType = 'game' }: GameProps) {
     const results = isTraining
       ? ({ rounds: round, duration: 0 } as UserTraining)
       : ({ rounds: round, profit: points, duration: 0 } as UserTest);
+
     await sendTimeout(isTraining, results);
+
+    logoutUser();
     navigate('/');
   };
 

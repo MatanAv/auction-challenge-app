@@ -4,7 +4,7 @@ import { TIME_PER_QUESTION } from '@/constants/tests';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 
 import Box from '@mui/material/Box';
-import Timer from '@/components/GameRound/Timer';
+import Timer from '@/components/Timer';
 import Button from '@mui/material/Button';
 import Question from '@/components/GameRound/Question/Question';
 import ProgressBar from '@/components/GameRound/ProgressBar';
