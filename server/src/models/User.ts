@@ -28,20 +28,11 @@ const UserSchema = new mongoose.Schema<IUser>({
     duration: Number
   },
   user_test: {
-    rounds: { type: Number, max: 20 },
+    rounds: { type: Number, max: 25 },
     profit: { type: Number, min: 0 },
-    bonus: Number,
+    bonus: { type: Number, min: 0 },
     duration: Number
   }
-});
-
-UserSchema.pre('save', function (next) {
-  if (this.user_test?.profit) {
-    const bonus = this.user_test.profit * 10;
-    this.user_test.bonus = bonus < 0 ? 0 : bonus;
-  }
-
-  next();
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -1,10 +1,10 @@
-import config from '@/config';
+import { IUser } from '@/models/User';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
-import { MAX_TIMES_USED } from '@/constants';
 import { getErrorResponse } from '@/utils/api';
+import { UserTest, UserTraining } from '@/interfaces/user';
+import { BONUS_MULTIPLIER, MAX_TIMES_USED } from '@/constants';
 import { updateUserTest, updateUserTraining } from './users';
-import { IUser } from '@/models/User';
 import TestQuestions from '@/models/TestQuestions';
 import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
 
@@ -38,8 +38,9 @@ const getTestSummary = async (
   try {
     const rounds = answers.length;
     const profit = answers.reduce((acc, answer) => acc + answer.profit, 0);
-    const user = (await updateUserTest(worker_id, { rounds, profit, duration })).data as IUser;
-    return { status: StatusCodes.OK, data: user.user_test, approval_key: config.test.approvalKey };
+    const bonus = profit > 0 ? profit * BONUS_MULTIPLIER : 0;
+    const user = (await updateUserTest(worker_id, { rounds, profit, bonus, duration })).data as IUser;
+    return { status: StatusCodes.OK, data: user.user_test };
   } catch (error: any) {
     return getErrorResponse(error);
   }
@@ -66,4 +67,18 @@ const submitTest = async (worker_id: string, answers: IUserTestAnswer[]): Promis
   }
 };
 
-export { getRandomQuestions, submitTraining, submitTest };
+const handleTimeout = async (
+  worker_id: string,
+  isTraining: boolean,
+  results: UserTraining | UserTest
+): Promise<ResponseFormat> => {
+  try {
+    return isTraining
+      ? await updateUserTraining(worker_id, results as UserTraining)
+      : await updateUserTest(worker_id, results as UserTest);
+  } catch (error: any) {
+    return getErrorResponse(error);
+  }
+};
+
+export { getRandomQuestions, submitTraining, submitTest, handleTimeout };

@@ -1,3 +1,5 @@
 const MAX_TIMES_USED = 4;
 
-export { MAX_TIMES_USED };
+const BONUS_MULTIPLIER = 10;
+
+export { MAX_TIMES_USED, BONUS_MULTIPLIER };
