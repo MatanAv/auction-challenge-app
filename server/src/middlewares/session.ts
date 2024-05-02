@@ -1,6 +1,8 @@
+import config from '@/config';
+import MongoStore from 'connect-mongo';
 import { Express } from 'express';
 import session, { SessionData } from 'express-session';
-import config from '@/config';
+import { MONGO_URI } from '@/constants/db';
 
 declare module 'express-session' {
   interface SessionData {
@@ -13,7 +15,8 @@ const useSession = (app: Express) =>
     session({
       secret: config.app.session.secret || 'secret-key', // a secret string used to sign the session ID cookie
       resave: false, // don't save session if unmodified
-      saveUninitialized: false // don't create session until something stored
+      saveUninitialized: false, // don't create session until something stored,
+      store: MongoStore.create({ mongoUrl: MONGO_URI })
     })
   );
 
