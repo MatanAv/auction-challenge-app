@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { BASE_URL } from '@/constants/api';
+import config from '@/config';
 import { IUserTestAnswer } from '@/interfaces/tests';
 import { UserTest, UserTraining } from '@/interfaces/user';
 
 const testsApi = axios.create({
-  baseURL: `${BASE_URL}/tests`,
+  baseURL: `${config.api.BASE_URL}/tests`,
   withCredentials: true
 });
 

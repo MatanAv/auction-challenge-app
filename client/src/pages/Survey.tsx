@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { logoutUser } from '@/services/api/users';
-import { submitSurvey } from '@/services/api/survey';
+import { logoutUser } from '@/api/users';
+import { submitSurvey } from '@/api/survey';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
 

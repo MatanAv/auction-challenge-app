@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { logoutUser } from '@/services/api/users';
+import { logoutUser } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
-import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/services/api/tests';
+import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';

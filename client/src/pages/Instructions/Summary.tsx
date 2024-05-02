@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { UserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
-import { logoutUser, submitUserInstructions } from '@/services/api/users';
+import { logoutUser, submitUserInstructions } from '@/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';

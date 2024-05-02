@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { registerUser } from '@/services/api/users';
+import { registerUser } from '@/api/users';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';

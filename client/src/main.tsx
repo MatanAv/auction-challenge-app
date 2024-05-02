@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { logoutUser } from '@/services/api/users';
+import { logoutUser } from '@/api/users';
 
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';

@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { BASE_URL } from '@/constants/api';
+import config from '@/config';
 import { SurveyAnswers } from '@/interfaces/survey';
 
 const surveyApi = axios.create({
-  baseURL: `${BASE_URL}/surveys`,
+  baseURL: `${config.api.BASE_URL}/surveys`,
   withCredentials: true
 });
 

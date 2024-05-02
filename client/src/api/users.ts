@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { BASE_URL } from '@/constants/api';
+import config from '@/config';
 import { UserInfo, UserInstructions } from '@/interfaces/user';
 
 const usersApi = axios.create({
-  baseURL: `${BASE_URL}/users`,
+  baseURL: `${config.api.BASE_URL}/users`,
   withCredentials: true
 });
 
