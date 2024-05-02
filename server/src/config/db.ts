@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
-import config from '.';
-
-const MONGO_URI = `${config.db.BASE_URI}/${config.db.URI_PARAMS}` || '';
+import { MONGO_URI } from '@/constants/db';
 
 const connectDB = async (): Promise<void> => {
   try {
