@@ -18,8 +18,7 @@ const useSession = (app: Express) =>
       saveUninitialized: false, // don't create session until something stored,
       store: MongoStore.create({ mongoUrl: MONGO_URI }),
       cookie: {
-        sameSite: 'none',
-        secure: true
+        sameSite: true
       }
     })
   );
