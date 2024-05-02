@@ -2,7 +2,10 @@ const config = {
   app: {
     port: process.env.PORT || 8080,
     session: {
-      secret: process.env.SESSION_SECRET
+      secret: process.env.SESSION_SECRET,
+      cookie: {
+        domain: process.env.COOKIE_DOMAIN
+      }
     }
   },
   db: {
