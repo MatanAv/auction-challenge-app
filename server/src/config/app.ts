@@ -12,4 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 useSession(app);
 useRoutes(app);
 
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
 export default app;
