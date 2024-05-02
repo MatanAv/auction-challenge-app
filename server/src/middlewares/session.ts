@@ -16,7 +16,11 @@ const useSession = (app: Express) =>
       secret: config.app.session.secret || 'secret-key', // a secret string used to sign the session ID cookie
       resave: false, // don't save session if unmodified
       saveUninitialized: false, // don't create session until something stored,
-      store: MongoStore.create({ mongoUrl: MONGO_URI })
+      store: MongoStore.create({ mongoUrl: MONGO_URI }),
+      cookie: {
+        sameSite: 'none',
+        secure: true
+      }
     })
   );
 

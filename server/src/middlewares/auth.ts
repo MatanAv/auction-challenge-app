@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   console.log('authMiddleware Test:');
-  console.log(req);
+  console.log(req.body);
   console.log(req.session);
   console.log(req.sessionID);
   console.log(req.session.worker_id);
