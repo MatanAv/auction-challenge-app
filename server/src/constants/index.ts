@@ -1,0 +1,5 @@
+const MAX_TIMES_USED = 4;
+
+const BONUS_MULTIPLIER = 10;
+
+export { MAX_TIMES_USED, BONUS_MULTIPLIER };

@@ -1,0 +1,3 @@
+const QUIZ_DURATION = 15 * 60000;
+
+export { QUIZ_DURATION };

@@ -1,12 +1,15 @@
 import express from 'express';
 import cors from 'cors';
+import useSession from '@/middlewares/session';
+import useRoutes from '@/middlewares/routes';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+useSession(app);
+useRoutes(app);
 
 export default app;
