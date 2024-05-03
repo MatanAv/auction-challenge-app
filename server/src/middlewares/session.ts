@@ -19,7 +19,9 @@ const useSession = (app: Express) =>
       store: MongoStore.create({ mongoUrl: MONGO_URI }),
       cookie: {
         maxAge: config.app.session.cookie.maxAge || 1000 * 60 * 60 * 24, // 1 day,
-        domain: config.app.session.cookie.domain || 'localhost'
+        domain: config.app.session.cookie.domain || 'localhost',
+        sameSite: 'none',
+        secure: true
       }
     })
   );
