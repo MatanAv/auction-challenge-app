@@ -4,7 +4,8 @@ const config = {
     session: {
       secret: process.env.SESSION_SECRET,
       cookie: {
-        domain: process.env.COOKIE_DOMAIN
+        maxAge: Number(process.env.SESSION_MAX_AGE) || 1000 * 60 * 60 * 24, // 1 day,
+        domain: process.env.SESSION_DOMAIN || 'localhost'
       }
     }
   },

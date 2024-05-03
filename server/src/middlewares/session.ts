@@ -18,6 +18,7 @@ const useSession = (app: Express) =>
       saveUninitialized: false, // don't create session until something stored,
       store: MongoStore.create({ mongoUrl: MONGO_URI }),
       cookie: {
+        maxAge: config.app.session.cookie.maxAge || 1000 * 60 * 60 * 24, // 1 day,
         domain: config.app.session.cookie.domain || 'localhost'
       }
     })
