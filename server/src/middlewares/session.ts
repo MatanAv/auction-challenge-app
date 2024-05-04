@@ -16,13 +16,13 @@ const useSession = (app: Express) =>
       secret: config.app.session.secret || 'secret-key', // a secret string used to sign the session ID cookie
       resave: false, // don't save session if unmodified
       saveUninitialized: false, // don't create session until something stored,
-      store: MongoStore.create({ mongoUrl: MONGO_URI }),
-      cookie: {
-        maxAge: config.app.session.cookie.maxAge || 1000 * 60 * 60 * 24, // 1 day,
-        domain: config.app.session.cookie.domain || 'localhost',
-        sameSite: 'none',
-        secure: true
-      }
+      store: MongoStore.create({ mongoUrl: MONGO_URI })
+      // cookie: {
+      //   maxAge: config.app.session.cookie.maxAge || 1000 * 60 * 60 * 24, // 1 day,
+      //   domain: config.app.session.cookie.domain || 'localhost',
+      //   sameSite: 'none',
+      //   secure: true
+      // }
     })
   );
 
