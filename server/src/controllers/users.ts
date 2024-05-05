@@ -19,7 +19,7 @@ const createUser = async (worker_id: string, req: Request): Promise<ResponseForm
 const logoutUser = (req: Request): ResponseFormat => {
   try {
     req.session.destroy(() => {});
-    return { status: StatusCodes.OK, data: { message: 'Logged out' } };
+    return { status: StatusCodes.OK, data: { message: 'User has logged out' } };
   } catch (error: any) {
     return getErrorResponse(error);
   }
