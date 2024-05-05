@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     bonus: { type: Number, min: 0 },
     duration: Number
   },
-  failure_reason: { type: String, default: '', enum: Object.values(FailureReasons) }
+  failure_reason: { type: String, default: null, enum: Object.values(FailureReasons) }
 });
 
 const User = mongoose.model('User', UserSchema);
