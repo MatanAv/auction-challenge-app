@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { submitSurvey } from '@/api/survey';
-import { SurveyAnswers } from '@/interfaces/survey';
+import { ISurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
 
 import Box from '@mui/material/Box';
@@ -37,7 +37,7 @@ export default function Survey() {
     clearError();
 
     try {
-      const { approval_key } = await submitSurvey({ q1, q2, q3, comment } as SurveyAnswers);
+      const { approval_key } = await submitSurvey({ q1, q2, q3, comment } as ISurveyAnswers);
       navigate('/end', { state: { approval_key } });
     } catch (error) {
       handleError(error);

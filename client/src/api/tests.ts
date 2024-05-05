@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '@/config';
 import { IUserTestAnswer } from '@/interfaces/tests';
-import { UserTest, UserTraining } from '@/interfaces/user';
+import { IUserTest, IUserTraining } from '@/interfaces/user';
 
 const testsApi = axios.create({
   baseURL: `${config.api.BASE_URL}/tests`,
@@ -23,7 +23,7 @@ const submitTest = async (answers: IUserTestAnswer[], timeout = false) => {
   return response.data;
 };
 
-const sendTimeout = async (isTraining: boolean, results: UserTraining | UserTest) => {
+const sendTimeout = async (isTraining: boolean, results: IUserTraining | IUserTest) => {
   const response = await testsApi.post('/timeout', { isTraining, results });
   return response.data;
 };

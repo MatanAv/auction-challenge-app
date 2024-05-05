@@ -12,7 +12,7 @@ export default function End() {
   const approvalKey = location.state?.approval_key;
 
   useEffect(() => {
-    logoutUser();
+    logoutUser().finally(() => window.sessionStorage.clear());
   }, []);
 
   return (

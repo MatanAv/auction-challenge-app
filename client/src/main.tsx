@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { logoutUser } from '@/api/users';
+import { logoutUser, sendFailureReason } from '@/api/users';
 
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
@@ -24,6 +24,7 @@ import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
+import { FailureReasons } from './enums/users';
 
 const router = createBrowserRouter([
   {
@@ -73,8 +74,11 @@ const router = createBrowserRouter([
   }
 ]);
 
-window.addEventListener('unload', () => {
-  logoutUser();
+window.addEventListener('beforeunload', () => {
+  if (window.sessionStorage.getItem('worker_id')) {
+    sendFailureReason(FailureReasons.UserLeft);
+    logoutUser();
+  }
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

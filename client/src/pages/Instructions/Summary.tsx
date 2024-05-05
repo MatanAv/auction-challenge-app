@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { FailureReasons } from '@/enums/users';
+import { IUserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
-import { UserInstructions } from '@/interfaces/user';
-import { submitUserInstructions } from '@/api/users';
+import { sendFailureReason, submitUserInstructions } from '@/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';
@@ -88,8 +89,8 @@ export default function InstructionsSummary() {
 
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
 
-  const getQuizSummary = (): UserInstructions => {
-    const summary: UserInstructions = {
+  const getQuizSummary = (): IUserInstructions => {
+    const summary: IUserInstructions = {
       score: 0,
       fails: fails,
       duration: Date.now() - startTime
@@ -115,6 +116,7 @@ export default function InstructionsSummary() {
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
+        sendFailureReason(FailureReasons.SummaryQuiz);
         return navigate('/end');
       }
 
@@ -132,6 +134,7 @@ export default function InstructionsSummary() {
   const handleTimerEnd = async () => {
     const quizSummary = getQuizSummary();
     await submitUserInstructions(quizSummary);
+    sendFailureReason(FailureReasons.Timeout);
     return navigate('/end');
   };
 

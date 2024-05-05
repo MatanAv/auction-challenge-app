@@ -8,10 +8,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import SelectField from '@/components/Form/SelectField';
 
+import { IUserInfo } from '@/interfaces/user';
 import { submitUserInfo } from '@/api/users';
 import { getCountriesList } from '@/utils/countries';
 import { Educations, Genders } from '@/enums/users';
-import { UserInfo as IUserInfo } from '@/interfaces/user';
 
 import { formStyle } from '@/styles';
 

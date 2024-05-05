@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { FailureReasons } from '@/enums/users';
+import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
+import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
-import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
+import { GAME_QUESTIONS, TRAINING_QUESTIONS, TIME_PER_QUESTION } from '@/constants/tests';
 import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
 import CircularProgress from '@mui/material/CircularProgress';
-import { UserTest, UserTraining } from '@/interfaces/user';
 
 interface GameProps {
   gameType?: 'training' | 'game';
@@ -78,11 +80,13 @@ export default function Game({ gameType = 'game' }: GameProps) {
   };
 
   const handleTimerEnd = async () => {
-    const results = isTraining
-      ? ({ rounds: round, duration: 0 } as UserTraining)
-      : ({ rounds: round, profit: points, duration: 0 } as UserTest);
+    const duration = userAnswers.reduce((acc, { duration }) => acc + duration, TIME_PER_QUESTION);
+    const results: IUserTraining | IUserTest = isTraining
+      ? ({ rounds: round, duration } as IUserTraining)
+      : ({ rounds: round, profit: points, duration } as IUserTest);
 
     await sendTimeout(isTraining, results);
+    sendFailureReason(FailureReasons.Timeout);
 
     navigate('/end');
   };
