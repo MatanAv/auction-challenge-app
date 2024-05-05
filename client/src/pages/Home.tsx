@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { useLoading } from '@/hooks/loading';
 import { registerUser } from '@/api/users';
 
 import Box from '@mui/material/Box';
@@ -13,11 +14,13 @@ import { listBoxStyle } from '@/styles';
 const UserRegister = () => {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [workerId, setWorkerId] = useState('');
 
   const handleRegister = async () => {
     clearError();
+    startLoading();
 
     try {
       const response = await registerUser(workerId);
@@ -28,6 +31,8 @@ const UserRegister = () => {
       navigate('/instructions');
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -53,6 +58,8 @@ const UserRegister = () => {
           )
         }}
       />
+
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );

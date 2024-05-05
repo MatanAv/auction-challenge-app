@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { useLoading } from '@/hooks/loading';
 import { FailureReasons } from '@/enums/users';
 import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
@@ -11,7 +12,6 @@ import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tes
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
-import CircularProgress from '@mui/material/CircularProgress';
 
 interface GameProps {
   gameType?: 'training' | 'game';
@@ -20,14 +20,13 @@ interface GameProps {
 export default function Game({ gameType = 'game' }: GameProps) {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { loading, startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [questions, setQuestions] = useState<ITestQuestion[]>([]);
   const [userAnswers, setUserAnswers] = useState<IUserTestAnswer[]>([]);
 
   const [round, setRound] = useState<number>(1);
   const [points, setPoints] = useState<number>(0);
-
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const bonus = points > 0 ? points * 10 : 0;
 
@@ -39,7 +38,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
 
   const fetchQuestions = async (amount: number) => {
     clearError();
-    setIsLoading(true);
+    startLoading();
 
     try {
       const { data } = await getQuestions(amount);
@@ -47,7 +46,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
     } catch (error) {
       handleError(error);
     } finally {
-      setIsLoading(false);
+      stopLoading();
     }
   };
 
@@ -69,6 +68,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
 
   const handleSubmit = async () => {
     clearError();
+    startLoading();
 
     try {
       await submitGame(userAnswers);
@@ -76,6 +76,8 @@ export default function Game({ gameType = 'game' }: GameProps) {
       navigate('/results', { state: gameResults });
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -95,7 +97,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
     fetchQuestions(questionAmount);
   }, []);
 
-  if (isLoading) return <CircularProgress />;
+  if (loading) return <LoadingDisplay />;
 
   if (!currentQuestion) return <ErrorDisplay />;
 
@@ -115,6 +117,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
         addUserAnswer={addUserAnswer}
         addAnswerProfit={addAnswerProfit}
       />
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );

@@ -44,11 +44,11 @@ export default function QuestionResult({
 
   return (
     <Box width='100%' display='flex' flexDirection='column'>
-      <Typography variant='h5' mb={8}>
+      <Typography variant='h4' color={'red'} fontWeight={500} mb={10}>
         Round {round} Results
       </Typography>
 
-      <Box display='flex' alignItems='flex-start' gap={10}>
+      <Box display='flex' alignItems='flex-start' gap={10} mb={10}>
         <OptionTable rows={optionRows} />
 
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 3, '& strong': { color: 'red' } }}>
@@ -67,7 +67,7 @@ export default function QuestionResult({
         </Box>
       </Box>
 
-      <Box display='flex'>
+      <Box display='flex' m={'auto'} justifyContent={'space-evenly'} width='50%'>
         {isNextAppear && (
           <Button onClick={handleNext} variant='contained' color='primary'>
             Next Question

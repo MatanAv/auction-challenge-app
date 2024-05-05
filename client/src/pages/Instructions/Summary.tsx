@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { useLoading } from '@/hooks/loading';
 import { FailureReasons } from '@/enums/users';
 import { IUserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
@@ -77,6 +78,7 @@ function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps)
 export default function InstructionsSummary() {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [score, setScore] = useState(0);
   const [fails, setFails] = useState(Number(window.sessionStorage.getItem('instructions_fails')));
@@ -88,6 +90,10 @@ export default function InstructionsSummary() {
   const correctAnswers = useMemo(() => data.map(({ correct_answer }) => correct_answer), []);
 
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
+
+  // useEffect(() => {
+  //   window.sessionStorage.removeItem('is_navigating');
+  // }, []);
 
   const getQuizSummary = (): IUserInstructions => {
     const summary: IUserInstructions = {
@@ -110,6 +116,7 @@ export default function InstructionsSummary() {
 
   const handleSubmit = async () => {
     clearError();
+    startLoading();
 
     try {
       const quizSummary = getQuizSummary();
@@ -123,11 +130,14 @@ export default function InstructionsSummary() {
       setHasSubmitted(true);
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
   const handleRetakeTest = () => {
     window.sessionStorage.setItem('instructions_fails', `${fails}`);
+    // window.sessionStorage.setItem('is_navigating', 'true');
     return navigate(0);
   };
 
@@ -213,9 +223,8 @@ export default function InstructionsSummary() {
           )}
         </>
       )}
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );
 }
-
-// TODO: Make it cleaner

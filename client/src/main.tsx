@@ -7,7 +7,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { logoutUser, sendFailureReason } from '@/api/users';
+// import { FailureReasons } from '@/enums/users';
+// import { logoutUser, sendFailureReason } from '@/api/users';
 
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
@@ -24,7 +25,6 @@ import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
-import { FailureReasons } from './enums/users';
 
 const router = createBrowserRouter([
   {
@@ -74,12 +74,14 @@ const router = createBrowserRouter([
   }
 ]);
 
-window.addEventListener('beforeunload', () => {
-  if (window.sessionStorage.getItem('worker_id')) {
-    sendFailureReason(FailureReasons.UserLeft);
-    logoutUser();
-  }
-});
+// window.addEventListener('beforeunload', () => {
+//   const isUserLeft = window.sessionStorage.getItem('worker_id') && !window.sessionStorage.getItem('is_navigating');
+
+//   if (isUserLeft) {
+//     sendFailureReason(FailureReasons.UserLeft);
+//     logoutUser();
+//   }
+// });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

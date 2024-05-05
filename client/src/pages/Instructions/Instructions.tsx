@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSlideUrlById } from '@/utils/images';
 
@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import NavigationBar from '@/components/NavigationBar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
 
@@ -18,11 +19,22 @@ const imgStyle = {
 
 function IntroSlides() {
   const navigate = useNavigate();
-  const [slideId, setSlideId] = useState(1);
 
+  const [slideId, setSlideId] = useState(1);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const slideSrc = getSlideUrlById(slideId);
   const isLastSlide = slideId === MAX_INTRO_SLIDES;
 
   const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
+
+  const handleImageLoad = () => setIsImageLoaded(true);
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = slideSrc;
+    image.onload = handleImageLoad;
+  }, [slideSrc]);
 
   return (
     <Box sx={listBoxStyle}>
@@ -33,7 +45,7 @@ function IntroSlides() {
         color={isLastSlide ? 'red' : 'black'}
         fontWeight={600}
       >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
-      <img style={imgStyle} src={getSlideUrlById(slideId)} />
+      {isImageLoaded ? <img style={imgStyle} src={slideSrc} /> : <CircularProgress />}
       <NavigationBar
         currentPage={slideId}
         totalPages={MAX_INTRO_SLIDES}
@@ -57,8 +69,10 @@ export default function Instructions({ type }: InstructionsProps) {
   }
 
   return (
-    <Box sx={listBoxStyle}>
-      <Typography variant='h4'>{type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}</Typography>
+    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 5 }}>
+      <Typography variant='h4' color='red' fontWeight={500}>
+        {type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}
+      </Typography>
       {type === 'game' && (
         <Typography variant='subtitle2' color='primary'>
           You will now participate in 25 different rounds.

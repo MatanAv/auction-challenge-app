@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { useLoading } from '@/hooks/loading';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -23,6 +24,7 @@ const userFormStyle = {
 export default function UserInfo() {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [age, setAge] = useState<number>(0);
   const [gender, setGender] = useState<string>('');
@@ -38,6 +40,7 @@ export default function UserInfo() {
 
   const handleSubmit = async () => {
     clearError();
+    startLoading();
 
     try {
       const userInfo = { age, gender, education, nationality };
@@ -45,6 +48,8 @@ export default function UserInfo() {
       navigate('/instructions/game');
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -66,6 +71,8 @@ export default function UserInfo() {
       >
         Start Game
       </Button>
+
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );
