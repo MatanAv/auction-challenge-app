@@ -2,7 +2,8 @@ import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
 import { getErrorResponse } from '@/utils/api';
-import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
+import { FailureReasonsTypes } from '@/types/users';
+import { IUserInfo, IUserInstructions, IUserTraining, IUserTest } from '@/interfaces/user';
 import ServerError from '@/services/errors/ServerError';
 import User, { IUser } from '@/models/User';
 
@@ -35,23 +36,35 @@ const updateUser = async (worker_id: string, update: Partial<IUser>): Promise<Re
   }
 };
 
-const updateUserInfo = async (worker_id: string, user_info: UserInfo): Promise<ResponseFormat> => {
+const updateUserInfo = async (worker_id: string, user_info: IUserInfo): Promise<ResponseFormat> => {
   return updateUser(worker_id, { user_info });
 };
 
 const updateUserInstructions = async (
   worker_id: string,
-  user_instructions: UserInstructions
+  user_instructions: IUserInstructions
 ): Promise<ResponseFormat> => {
   return updateUser(worker_id, { user_instructions });
 };
 
-const updateUserTraining = async (worker_id: string, user_training: UserTraining): Promise<ResponseFormat> => {
+const updateUserTraining = async (worker_id: string, user_training: IUserTraining): Promise<ResponseFormat> => {
   return updateUser(worker_id, { user_training });
 };
 
-const updateUserTest = async (worker_id: string, user_test: UserTest): Promise<ResponseFormat> => {
+const updateUserTest = async (worker_id: string, user_test: IUserTest): Promise<ResponseFormat> => {
   return updateUser(worker_id, { user_test });
 };
 
-export { createUser, logoutUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };
+const updateUserFail = async (worker_id: string, failure_reason: FailureReasonsTypes): Promise<ResponseFormat> => {
+  return updateUser(worker_id, { failure_reason });
+};
+
+export {
+  createUser,
+  logoutUser,
+  updateUserInfo,
+  updateUserInstructions,
+  updateUserTraining,
+  updateUserTest,
+  updateUserFail
+};

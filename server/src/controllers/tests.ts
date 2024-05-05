@@ -1,10 +1,10 @@
-import { IUser } from '@/models/User';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
 import { getErrorResponse } from '@/utils/api';
-import { UserTest, UserTraining } from '@/interfaces/user';
+import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { BONUS_MULTIPLIER, MAX_TIMES_USED } from '@/constants';
 import { updateUserTest, updateUserTraining } from './users';
+import { IUser } from '@/models/User';
 import TestQuestions from '@/models/TestQuestions';
 import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
 
@@ -70,12 +70,12 @@ const submitTest = async (worker_id: string, answers: IUserTestAnswer[]): Promis
 const handleTimeout = async (
   worker_id: string,
   isTraining: boolean,
-  results: UserTraining | UserTest
+  results: IUserTraining | IUserTest
 ): Promise<ResponseFormat> => {
   try {
     return isTraining
-      ? await updateUserTraining(worker_id, results as UserTraining)
-      : await updateUserTest(worker_id, results as UserTest);
+      ? await updateUserTraining(worker_id, results as IUserTraining)
+      : await updateUserTest(worker_id, results as IUserTest);
   } catch (error: any) {
     return getErrorResponse(error);
   }

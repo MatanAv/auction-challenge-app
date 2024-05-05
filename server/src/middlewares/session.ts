@@ -1,7 +1,7 @@
 import config from '@/config';
+import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { Express } from 'express';
-import session, { SessionData } from 'express-session';
 import { MONGO_URI } from '@/constants/db';
 
 declare module 'express-session' {

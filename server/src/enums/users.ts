@@ -1,6 +1,6 @@
 export enum Genders {
-  Male,
-  Female
+  Male = 'Male',
+  Female = 'Female'
 }
 
 export enum Educations {
@@ -9,4 +9,10 @@ export enum Educations {
   BachelorsDegree = "Bachelor's Degree",
   MastersDegree = "Master's Degree",
   PhdOrHigher = 'Ph.D. or higher'
+}
+
+export enum FailureReasons {
+  Timeout = 'Timeout',
+  SummaryQuiz = 'SummaryQuiz',
+  UserLeft = 'UserLeft'
 }
