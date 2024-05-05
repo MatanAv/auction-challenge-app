@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { logoutUser } from '@/api/users';
 import { submitSurvey } from '@/api/survey';
 import { SurveyAnswers } from '@/interfaces/survey';
 import { surveyQuestions } from '@/constants/survey';
@@ -35,12 +34,10 @@ export default function Survey() {
   const [comment, setComment] = useState('');
 
   const handleSubmit = async () => {
+    clearError();
+
     try {
-      clearError();
-
       const { approval_key } = await submitSurvey({ q1, q2, q3, comment } as SurveyAnswers);
-
-      logoutUser();
       navigate('/end', { state: { approval_key } });
     } catch (error) {
       handleError(error);
@@ -80,7 +77,7 @@ export default function Survey() {
       </Box>
 
       <Button sx={{ width: 300 }} variant='contained' color='primary' onClick={handleSubmit}>
-        Submit
+        Submit HIT
       </Button>
 
       <ErrorDisplay />

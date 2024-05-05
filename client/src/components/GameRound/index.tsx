@@ -93,7 +93,7 @@ export default function GameRound({
 
           <Box display='flex' justifyContent='center'>
             <Button onClick={handleAnswerNext} disabled={!selectedOption} variant='contained' color='primary'>
-              Next Question
+              Submit Answer
             </Button>
           </Box>
         </>

@@ -17,7 +17,7 @@ export default function GameResults() {
   const location = useLocation();
   const { type, round, points, bonus } = location.state as GameResultsInfo;
 
-  const handleOnClick = type === 'training' ? () => navigate('/instructions/game') : () => navigate('/user/survey');
+  const handleOnClick = type === 'training' ? () => navigate('/user/info') : () => navigate('/user/survey');
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' gap={3}>

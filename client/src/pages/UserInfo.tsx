@@ -37,11 +37,12 @@ export default function UserInfo() {
   );
 
   const handleSubmit = async () => {
+    clearError();
+
     try {
-      clearError();
       const userInfo = { age, gender, education, nationality };
       await submitUserInfo(userInfo as IUserInfo);
-      navigate('/test');
+      navigate('/instructions/game');
     } catch (error) {
       handleError(error);
     }
@@ -63,7 +64,7 @@ export default function UserInfo() {
         onClick={handleSubmit}
         disabled={isSubmitDisabled}
       >
-        Submit
+        Start Game
       </Button>
       <ErrorDisplay />
     </Box>

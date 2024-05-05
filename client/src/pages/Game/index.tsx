@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { logoutUser } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
@@ -37,16 +36,16 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const submitGame = isTraining ? submitTraining : submitTest;
 
   const fetchQuestions = async (amount: number) => {
-    try {
-      clearError();
-      setIsLoading(true);
+    clearError();
+    setIsLoading(true);
 
+    try {
       const { data } = await getQuestions(amount);
       setQuestions(data);
-
-      setIsLoading(false);
     } catch (error) {
       handleError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,8 +66,9 @@ export default function Game({ gameType = 'game' }: GameProps) {
   };
 
   const handleSubmit = async () => {
+    clearError();
+
     try {
-      clearError();
       await submitGame(userAnswers);
       const gameResults: GameResultsInfo = { round, points, bonus, type: gameType };
       navigate('/results', { state: gameResults });
@@ -84,8 +84,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
 
     await sendTimeout(isTraining, results);
 
-    logoutUser();
-    navigate('/');
+    navigate('/end');
   };
 
   useEffect(() => {
@@ -93,6 +92,8 @@ export default function Game({ gameType = 'game' }: GameProps) {
   }, []);
 
   if (isLoading) return <CircularProgress />;
+
+  if (!currentQuestion) return <ErrorDisplay />;
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' gap={3}>

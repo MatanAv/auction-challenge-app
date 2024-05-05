@@ -12,8 +12,9 @@ import { logoutUser } from '@/api/users';
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
+import End from '@/pages/End';
 import Home from '@/pages/Home';
-import Game from '@/pages/Game/Game';
+import Game from '@/pages/Game';
 import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';
 import UserInfo from '@/pages/UserInfo';
@@ -23,7 +24,6 @@ import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
-import Finish from './pages/Finish';
 
 const router = createBrowserRouter([
   {
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/end',
-    element: <Finish />
+    element: <End />
   }
 ]);
 

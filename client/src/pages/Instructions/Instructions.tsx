@@ -20,17 +20,26 @@ function IntroSlides() {
   const navigate = useNavigate();
   const [slideId, setSlideId] = useState(1);
 
-  const handleNavigate = slideId === MAX_INTRO_SLIDES ? () => navigate('/instructions/summary') : undefined;
+  const isLastSlide = slideId === MAX_INTRO_SLIDES;
+
+  const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
 
   return (
     <Box sx={listBoxStyle}>
-      <Typography mb={1} align='left' variant='h5'>{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
+      <Typography
+        mb={1}
+        align='left'
+        variant='h5'
+        color={isLastSlide ? 'red' : 'black'}
+        fontWeight={600}
+      >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
       <img style={imgStyle} src={getSlideUrlById(slideId)} />
       <NavigationBar
         currentPage={slideId}
         totalPages={MAX_INTRO_SLIDES}
         setPage={setSlideId}
         handleNavigate={handleNavigate}
+        nextButtonTitle={isLastSlide ? 'Start Quiz' : 'Next'}
       />
     </Box>
   );
@@ -50,6 +59,11 @@ export default function Instructions({ type }: InstructionsProps) {
   return (
     <Box sx={listBoxStyle}>
       <Typography variant='h4'>{type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}</Typography>
+      {type === 'game' && (
+        <Typography variant='subtitle2' color='primary'>
+          You will now participate in 25 different rounds.
+        </Typography>
+      )}
       <Typography variant='body1'>
         For each round you are allocated 6 minutes (which is plenty of time). If you don't respond within 3 minutes, you
         will be warned. If after being warned you don't respond again, the session will be terminated and you will lose

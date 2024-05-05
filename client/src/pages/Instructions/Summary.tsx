@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { UserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
-import { logoutUser, submitUserInstructions } from '@/api/users';
+import { UserInstructions } from '@/interfaces/user';
+import { submitUserInstructions } from '@/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';
@@ -108,15 +108,14 @@ export default function InstructionsSummary() {
   };
 
   const handleSubmit = async () => {
-    try {
-      clearError();
+    clearError();
 
+    try {
       const quizSummary = getQuizSummary();
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
-        window.sessionStorage.removeItem('instructions_fails');
-        return navigate('/');
+        return navigate('/end');
       }
 
       setHasSubmitted(true);
@@ -133,8 +132,7 @@ export default function InstructionsSummary() {
   const handleTimerEnd = async () => {
     const quizSummary = getQuizSummary();
     await submitUserInstructions(quizSummary);
-    logoutUser();
-    return navigate('/');
+    return navigate('/end');
   };
 
   const renderQuestions = () => {
@@ -187,7 +185,7 @@ export default function InstructionsSummary() {
         <SummaryResults score={score} setIsReview={setIsReview} handleNext={() => navigate('/instructions/training')} />
       ) : (
         <>
-          <Typography variant='h4' fontWeight={600}>
+          <Typography variant='h4' fontWeight={600} color='red'>
             Summary Quiz
           </Typography>
 

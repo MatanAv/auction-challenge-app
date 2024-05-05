@@ -17,10 +17,14 @@ const UserRegister = () => {
   const [workerId, setWorkerId] = useState('');
 
   const handleRegister = async () => {
+    clearError();
+
     try {
-      clearError();
       const response = await registerUser(workerId);
+
+      window.sessionStorage.clear();
       window.sessionStorage.setItem('worker_id', response.data._id);
+
       navigate('/instructions');
     } catch (error) {
       handleError(error);
