@@ -27,25 +27,34 @@ function IntroSlides() {
   const isLastSlide = slideId === MAX_INTRO_SLIDES;
 
   const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
-
   const handleImageLoad = () => setIsImageLoaded(true);
 
   useEffect(() => {
-    const image = new Image();
-    image.src = slideSrc;
-    image.onload = handleImageLoad;
+    setIsImageLoaded(false);
   }, [slideSrc]);
 
   return (
     <Box sx={listBoxStyle}>
       <Typography
-        mb={1}
         align='left'
         variant='h5'
         color={isLastSlide ? 'red' : 'black'}
         fontWeight={600}
       >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
-      {isImageLoaded ? <img style={imgStyle} src={slideSrc} /> : <CircularProgress />}
+
+      {slideId === 1 && (
+        <Typography variant='h4' color='primary' fontWeight={600}>
+          The Choice Challenge App
+        </Typography>
+      )}
+
+      <img style={imgStyle} src={slideSrc} onLoad={handleImageLoad} />
+      {!isImageLoaded && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress />
+        </Box>
+      )}
+
       <NavigationBar
         currentPage={slideId}
         totalPages={MAX_INTRO_SLIDES}

@@ -24,7 +24,7 @@ export default function NavigationBar({
   const handleNext = isLastPage ? handleNavigate : () => setPage((prev: number) => prev + 1);
 
   return (
-    <Box display='flex' justifyContent='space-between' my={5}>
+    <Box display='flex' justifyContent='space-between'>
       <Button size='large' variant='contained' disabled={isPreviousDisabled} onClick={handlePrevious}>
         Previous
       </Button>
