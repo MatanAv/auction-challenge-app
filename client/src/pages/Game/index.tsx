@@ -8,7 +8,13 @@ import { GameResultsInfo } from './GameResults';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
-import { GAME_QUESTIONS, TRAINING_QUESTIONS, TIME_PER_QUESTION, BONUS_MULTIPLIER } from '@/constants/tests';
+import {
+  GAME_QUESTIONS,
+  TRAINING_QUESTIONS,
+  TIME_PER_QUESTION,
+  BONUS_MULTIPLIER,
+  TRAINING_MIN_ANSWERS
+} from '@/constants/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
@@ -28,11 +34,12 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const [round, setRound] = useState<number>(1);
   const [points, setPoints] = useState<number>(0);
 
-  const bonus = points > 0 ? points * BONUS_MULTIPLIER : 0;
-
   const isTraining = gameType === 'training';
   const questionAmount = isTraining ? TRAINING_QUESTIONS : GAME_QUESTIONS;
   const currentQuestion = isTraining ? questions[0] : questions[round - 1];
+
+  const bonus = points > 0 ? points * BONUS_MULTIPLIER : 0;
+  const totalRounds = !isTraining ? GAME_QUESTIONS : round > TRAINING_MIN_ANSWERS ? round : TRAINING_MIN_ANSWERS;
 
   const submitGame = isTraining ? submitTraining : submitTest;
 
@@ -109,7 +116,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
         round={round}
         points={points}
         bonus={bonus}
-        totalRounds={isTraining ? round : GAME_QUESTIONS}
+        totalRounds={totalRounds}
         question={currentQuestion}
         handleSubmit={handleSubmit}
         handleTimerEnd={handleTimerEnd}

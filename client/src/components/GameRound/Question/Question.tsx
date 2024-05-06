@@ -3,7 +3,7 @@ import { getOptionRows } from '@/utils/auction';
 import { ITestQuestion } from '@/interfaces/tests';
 
 import Box from '@mui/material/Box';
-import Radio from '@mui/material/Radio';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import OptionTable from './OptionTable';
 
@@ -19,7 +19,8 @@ const questionOptionsBoxStyle = {
 const optionBoxStyle = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center'
+  alignItems: 'center',
+  gap: 1
 };
 
 interface QuestionProps {
@@ -52,20 +53,38 @@ export default function Question({ question, selectedOption, setSelected }: Ques
 
       <Box sx={questionOptionsBoxStyle}>
         <Box sx={optionBoxStyle}>
-          <Typography variant='button'>Option A</Typography>
-          <Radio size='small' value='a' checked={selectedOption === 'a'} onClick={handleOnClick} />
+          <Button
+            sx={{ boxShadow: 3, minWidth: 50, fontSize: 17, fontWeight: 800 }}
+            variant='outlined'
+            color='primary'
+            size='large'
+            disabled={selectedOption === 'a'}
+            onClick={handleOnClick}
+            value='a'
+          >
+            A
+          </Button>
           <OptionTable rows={optionA} />
         </Box>
 
         <Box sx={optionBoxStyle}>
-          <Typography variant='button'>Option B</Typography>
-          <Radio size='small' value='b' checked={selectedOption === 'b'} onClick={handleOnClick} />
+          <Button
+            sx={{ boxShadow: 4, minWidth: 50, fontSize: 17, fontWeight: 800 }}
+            variant='outlined'
+            color='primary'
+            size='large'
+            disabled={selectedOption === 'b'}
+            onClick={handleOnClick}
+            value='b'
+          >
+            B
+          </Button>
           <OptionTable rows={optionB} />
-          {question.participation_fee ? (
+          {question.participation_fee && (
             <Typography variant='body1' fontWeight={500} color='red'>
               Participation Fee: ${question.participation_fee}
             </Typography>
-          ) : null}
+          )}
         </Box>
       </Box>
     </Box>
