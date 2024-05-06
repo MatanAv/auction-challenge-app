@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { UserInstructions } from '@/interfaces/user';
+import { useLoading } from '@/hooks/loading';
+import { FailureReasons } from '@/enums/users';
+import { IUserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
-import { logoutUser, submitUserInstructions } from '@/api/users';
+import { sendFailureReason, submitUserInstructions } from '@/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';
@@ -76,6 +78,7 @@ function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps)
 export default function InstructionsSummary() {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [score, setScore] = useState(0);
   const [fails, setFails] = useState(Number(window.sessionStorage.getItem('instructions_fails')));
@@ -88,8 +91,12 @@ export default function InstructionsSummary() {
 
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
 
-  const getQuizSummary = (): UserInstructions => {
-    const summary: UserInstructions = {
+  // useEffect(() => {
+  //   window.sessionStorage.removeItem('is_navigating');
+  // }, []);
+
+  const getQuizSummary = (): IUserInstructions => {
+    const summary: IUserInstructions = {
       score: 0,
       fails: fails,
       duration: Date.now() - startTime
@@ -108,33 +115,37 @@ export default function InstructionsSummary() {
   };
 
   const handleSubmit = async () => {
-    try {
-      clearError();
+    clearError();
+    startLoading();
 
+    try {
       const quizSummary = getQuizSummary();
       await submitUserInstructions(quizSummary);
 
       if (quizSummary.fails > FAILS_LIMIT) {
-        window.sessionStorage.removeItem('instructions_fails');
-        return navigate('/');
+        sendFailureReason(FailureReasons.SummaryQuiz);
+        return navigate('/end');
       }
 
       setHasSubmitted(true);
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
   const handleRetakeTest = () => {
     window.sessionStorage.setItem('instructions_fails', `${fails}`);
+    // window.sessionStorage.setItem('is_navigating', 'true');
     return navigate(0);
   };
 
   const handleTimerEnd = async () => {
     const quizSummary = getQuizSummary();
     await submitUserInstructions(quizSummary);
-    logoutUser();
-    return navigate('/');
+    sendFailureReason(FailureReasons.Timeout);
+    return navigate('/end');
   };
 
   const renderQuestions = () => {
@@ -187,7 +198,7 @@ export default function InstructionsSummary() {
         <SummaryResults score={score} setIsReview={setIsReview} handleNext={() => navigate('/instructions/training')} />
       ) : (
         <>
-          <Typography variant='h4' fontWeight={600}>
+          <Typography variant='h4' fontWeight={600} color='red'>
             Summary Quiz
           </Typography>
 
@@ -212,9 +223,8 @@ export default function InstructionsSummary() {
           )}
         </>
       )}
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );
 }
-
-// TODO: Make it cleaner

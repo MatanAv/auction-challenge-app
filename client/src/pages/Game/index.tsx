@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
-import { logoutUser } from '@/api/users';
+import { useLoading } from '@/hooks/loading';
+import { FailureReasons } from '@/enums/users';
+import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
+import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
-import { GAME_QUESTIONS, TRAINING_QUESTIONS } from '@/constants/tests';
+import { GAME_QUESTIONS, TRAINING_QUESTIONS, TIME_PER_QUESTION } from '@/constants/tests';
 import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
-import CircularProgress from '@mui/material/CircularProgress';
-import { UserTest, UserTraining } from '@/interfaces/user';
 
 interface GameProps {
   gameType?: 'training' | 'game';
@@ -19,14 +20,13 @@ interface GameProps {
 export default function Game({ gameType = 'game' }: GameProps) {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { loading, startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [questions, setQuestions] = useState<ITestQuestion[]>([]);
   const [userAnswers, setUserAnswers] = useState<IUserTestAnswer[]>([]);
 
   const [round, setRound] = useState<number>(1);
   const [points, setPoints] = useState<number>(0);
-
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const bonus = points > 0 ? points * 10 : 0;
 
@@ -37,16 +37,16 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const submitGame = isTraining ? submitTraining : submitTest;
 
   const fetchQuestions = async (amount: number) => {
-    try {
-      clearError();
-      setIsLoading(true);
+    clearError();
+    startLoading();
 
+    try {
       const { data } = await getQuestions(amount);
       setQuestions(data);
-
-      setIsLoading(false);
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -67,32 +67,39 @@ export default function Game({ gameType = 'game' }: GameProps) {
   };
 
   const handleSubmit = async () => {
+    clearError();
+    startLoading();
+
     try {
-      clearError();
       await submitGame(userAnswers);
       const gameResults: GameResultsInfo = { round, points, bonus, type: gameType };
       navigate('/results', { state: gameResults });
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
   const handleTimerEnd = async () => {
-    const results = isTraining
-      ? ({ rounds: round, duration: 0 } as UserTraining)
-      : ({ rounds: round, profit: points, duration: 0 } as UserTest);
+    const duration = userAnswers.reduce((acc, { duration }) => acc + duration, TIME_PER_QUESTION);
+    const results: IUserTraining | IUserTest = isTraining
+      ? ({ rounds: round, duration } as IUserTraining)
+      : ({ rounds: round, profit: points, duration } as IUserTest);
 
     await sendTimeout(isTraining, results);
+    sendFailureReason(FailureReasons.Timeout);
 
-    logoutUser();
-    navigate('/');
+    navigate('/end');
   };
 
   useEffect(() => {
     fetchQuestions(questionAmount);
   }, []);
 
-  if (isLoading) return <CircularProgress />;
+  if (loading) return <LoadingDisplay />;
+
+  if (!currentQuestion) return <ErrorDisplay />;
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' gap={3}>
@@ -110,6 +117,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
         addUserAnswer={addUserAnswer}
         addAnswerProfit={addAnswerProfit}
       />
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );

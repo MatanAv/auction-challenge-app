@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from '@/config';
-import { UserInfo, UserInstructions } from '@/interfaces/user';
+import { FailureReasonsTypes } from '@/types/users';
+import { IUserInfo, IUserInstructions } from '@/interfaces/user';
 
 const usersApi = axios.create({
   baseURL: `${config.api.BASE_URL}/users`,
@@ -17,14 +18,22 @@ const logoutUser = async () => {
   return response.data;
 };
 
-const submitUserInfo = async (user_info: UserInfo) => {
+const submitUserInfo = async (user_info: IUserInfo) => {
   const response = await usersApi.put('/info', { user_info });
   return response.data;
 };
 
-const submitUserInstructions = async (user_instructions: UserInstructions) => {
+const submitUserInstructions = async (user_instructions: IUserInstructions) => {
   const response = await usersApi.put('/instructions', { user_instructions });
   return response.data;
 };
 
-export { registerUser, logoutUser, submitUserInfo, submitUserInstructions };
+const sendFailureReason = async (failure_reason: FailureReasonsTypes) => {
+  const response = await usersApi.put('/fail', {
+    worker_id: window.sessionStorage.getItem('worker_id'),
+    failure_reason
+  });
+  return response.data;
+};
+
+export { registerUser, logoutUser, submitUserInfo, submitUserInstructions, sendFailureReason };

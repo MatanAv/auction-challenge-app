@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import mongooseAutoPopulate from 'mongoose-autopopulate';
-import { SurveyAnswers } from '@/interfaces/survey';
+import { ISurveyAnswers } from '@/interfaces/survey';
 import { Q1Answers, Q2Answers, Q3Answers } from '@/enums/survey';
 
 export interface IUserSurveyAnswers {
   worker_id: string;
-  answers: SurveyAnswers;
+  answers: ISurveyAnswers;
 }
 
 const UserSurveyAnswersSchema = new mongoose.Schema({

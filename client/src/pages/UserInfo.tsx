@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
+import { useLoading } from '@/hooks/loading';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,10 +9,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import SelectField from '@/components/Form/SelectField';
 
+import { IUserInfo } from '@/interfaces/user';
 import { submitUserInfo } from '@/api/users';
 import { getCountriesList } from '@/utils/countries';
 import { Educations, Genders } from '@/enums/users';
-import { UserInfo as IUserInfo } from '@/interfaces/user';
 
 import { formStyle } from '@/styles';
 
@@ -23,6 +24,7 @@ const userFormStyle = {
 export default function UserInfo() {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
+  const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
   const [age, setAge] = useState<number>(0);
   const [gender, setGender] = useState<string>('');
@@ -37,13 +39,17 @@ export default function UserInfo() {
   );
 
   const handleSubmit = async () => {
+    clearError();
+    startLoading();
+
     try {
-      clearError();
       const userInfo = { age, gender, education, nationality };
       await submitUserInfo(userInfo as IUserInfo);
-      navigate('/test');
+      navigate('/instructions/game');
     } catch (error) {
       handleError(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -63,8 +69,10 @@ export default function UserInfo() {
         onClick={handleSubmit}
         disabled={isSubmitDisabled}
       >
-        Submit
+        Start Game
       </Button>
+
+      <LoadingDisplay />
       <ErrorDisplay />
     </Box>
   );

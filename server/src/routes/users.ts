@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth';
-import { createUser, logoutUser, updateUserInfo, updateUserInstructions } from '@/controllers/users';
+import { createUser, logoutUser, updateUserInfo, updateUserInstructions, updateUserFail } from '@/controllers/users';
 
 const userRouter = Router();
 
@@ -30,6 +30,14 @@ userRouter.put('/instructions', authMiddleware, async (req, res) => {
   const { worker_id, user_instructions } = req.body;
 
   const response = await updateUserInstructions(worker_id, user_instructions);
+
+  res.status(response.status).json(response);
+});
+
+userRouter.put('/fail', async (req, res) => {
+  const { worker_id, failure_reason } = req.body;
+
+  const response = await updateUserFail(worker_id, failure_reason);
 
   res.status(response.status).json(response);
 });

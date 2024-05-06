@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSlideUrlById } from '@/utils/images';
 
@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import NavigationBar from '@/components/NavigationBar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
 
@@ -18,19 +19,39 @@ const imgStyle = {
 
 function IntroSlides() {
   const navigate = useNavigate();
-  const [slideId, setSlideId] = useState(1);
 
-  const handleNavigate = slideId === MAX_INTRO_SLIDES ? () => navigate('/instructions/summary') : undefined;
+  const [slideId, setSlideId] = useState(1);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const slideSrc = getSlideUrlById(slideId);
+  const isLastSlide = slideId === MAX_INTRO_SLIDES;
+
+  const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
+
+  const handleImageLoad = () => setIsImageLoaded(true);
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = slideSrc;
+    image.onload = handleImageLoad;
+  }, [slideSrc]);
 
   return (
     <Box sx={listBoxStyle}>
-      <Typography mb={1} align='left' variant='h5'>{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
-      <img style={imgStyle} src={getSlideUrlById(slideId)} />
+      <Typography
+        mb={1}
+        align='left'
+        variant='h5'
+        color={isLastSlide ? 'red' : 'black'}
+        fontWeight={600}
+      >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
+      {isImageLoaded ? <img style={imgStyle} src={slideSrc} /> : <CircularProgress />}
       <NavigationBar
         currentPage={slideId}
         totalPages={MAX_INTRO_SLIDES}
         setPage={setSlideId}
         handleNavigate={handleNavigate}
+        nextButtonTitle={isLastSlide ? 'Start Quiz' : 'Next'}
       />
     </Box>
   );
@@ -48,8 +69,15 @@ export default function Instructions({ type }: InstructionsProps) {
   }
 
   return (
-    <Box sx={listBoxStyle}>
-      <Typography variant='h4'>{type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}</Typography>
+    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 5 }}>
+      <Typography variant='h4' color='red' fontWeight={500}>
+        {type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}
+      </Typography>
+      {type === 'game' && (
+        <Typography variant='subtitle2' color='primary'>
+          You will now participate in 25 different rounds.
+        </Typography>
+      )}
       <Typography variant='body1'>
         For each round you are allocated 6 minutes (which is plenty of time). If you don't respond within 3 minutes, you
         will be warned. If after being warned you don't respond again, the session will be terminated and you will lose

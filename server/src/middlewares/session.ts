@@ -1,7 +1,7 @@
 import config from '@/config';
+import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { Express } from 'express';
-import session, { SessionData } from 'express-session';
 import { MONGO_URI } from '@/constants/db';
 
 declare module 'express-session' {
@@ -21,8 +21,8 @@ const useSession = (app: Express) => {
       cookie: {
         maxAge: config.app.session.cookie.maxAge || 1000 * 60 * 60 * 24, // 1 day,
         domain: config.app.session.cookie.domain || 'localhost',
-        sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production' ? true : false
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production'
       }
     })
   );

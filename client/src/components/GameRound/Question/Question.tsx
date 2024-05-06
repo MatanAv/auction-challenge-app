@@ -39,11 +39,9 @@ export default function Question({ question, selectedOption, setSelected }: Ques
   const optionB = getOptionRows(question, 'B');
 
   return (
-    <Box sx={{ ...listBoxStyle, mt: 3 }}>
-      <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 3 }}>
-        <Typography variant='h5' fontWeight={500}>
-          Your value is:
-        </Typography>
+    <Box sx={{ ...listBoxStyle }}>
+      <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 1 }}>
+        <Typography variant='h5'>Your value is:</Typography>
         <Typography variant='h4' color='coral' fontWeight={1000} p={1}>
           ${question.User_Val}
         </Typography>

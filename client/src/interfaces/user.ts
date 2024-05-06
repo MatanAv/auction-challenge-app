@@ -1,24 +1,24 @@
-import type { GenderTypes, EducationTypes } from '@/types/users';
+import type { GenderTypes, EducationTypes, FailureReasonsTypes } from '@/types/users';
 
-export interface UserInfo {
+export interface IUserInfo {
   age: number;
   gender: GenderTypes;
   education: EducationTypes;
   nationality: string;
 }
 
-export interface UserInstructions {
+export interface IUserInstructions {
   score: number;
   fails: number;
   duration: number;
 }
 
-export interface UserTraining {
+export interface IUserTraining {
   rounds: number;
   duration: number;
 }
 
-export interface UserTest {
+export interface IUserTest {
   rounds: number;
   profit: number;
   bonus?: number;
@@ -27,8 +27,9 @@ export interface UserTest {
 
 export interface IUser {
   worker_id: string;
-  user_info?: UserInfo;
-  user_instructions?: UserInstructions;
-  user_training?: UserTraining;
-  user_test?: UserTest;
+  user_info?: IUserInfo;
+  user_instructions?: IUserInstructions;
+  user_training?: IUserTraining;
+  user_test?: IUserTest;
+  failure_reason?: FailureReasonsTypes;
 }

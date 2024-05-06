@@ -4,21 +4,15 @@ import { TIME_PER_QUESTION } from '@/constants/tests';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Timer from '@/components/Timer';
 import Button from '@mui/material/Button';
-import Question from '@/components/GameRound/Question/Question';
+import Typography from '@mui/material/Typography';
 import ProgressBar from '@/components/GameRound/ProgressBar';
+import Question from '@/components/GameRound/Question/Question';
 import QuestionResult from '@/components/GameRound/Question/QuestionResult';
 
 import { listBoxStyle } from '@/styles';
-
-const testBoxStyle = {
-  width: '100%',
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between',
-  gap: 3
-};
 
 interface GameRoundProps {
   isTraining: boolean;
@@ -81,19 +75,26 @@ export default function GameRound({
         />
       ) : (
         <>
-          <Box sx={testBoxStyle}>
-            <ProgressBar round={round} points={points} bonus={bonus} totalRounds={totalRounds} />
-
-            <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
-              <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
-            </Box>
-
-            <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={handleTimerEnd} />
-          </Box>
+          <Grid container spacing={10}>
+            <Grid item xs={2} md={2}>
+              <ProgressBar round={round} points={points} bonus={bonus} totalRounds={totalRounds} />
+            </Grid>
+            <Grid item xs={8} md={8}>
+              <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
+                <Typography variant='h4' color={'red'} fontWeight={500}>
+                  Round {round}
+                </Typography>
+                <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
+              </Box>
+            </Grid>
+            <Grid item xs={2} md={2}>
+              <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={handleTimerEnd} />
+            </Grid>
+          </Grid>
 
           <Box display='flex' justifyContent='center'>
             <Button onClick={handleAnswerNext} disabled={!selectedOption} variant='contained' color='primary'>
-              Next Question
+              Submit Answer
             </Button>
           </Box>
         </>

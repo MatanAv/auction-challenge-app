@@ -6,9 +6,16 @@ interface NavigationBarProps {
   totalPages: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   handleNavigate?: () => void;
+  nextButtonTitle?: string;
 }
 
-export default function NavigationBar({ currentPage, totalPages, setPage, handleNavigate }: NavigationBarProps) {
+export default function NavigationBar({
+  currentPage,
+  totalPages,
+  setPage,
+  handleNavigate,
+  nextButtonTitle = 'Next'
+}: NavigationBarProps) {
   const isLastPage = currentPage === totalPages;
   const isPreviousDisabled = currentPage === 1;
   const isNextDisabled = !handleNavigate && isLastPage;
@@ -22,7 +29,7 @@ export default function NavigationBar({ currentPage, totalPages, setPage, handle
         Previous
       </Button>
       <Button size='large' variant='contained' disabled={isNextDisabled} onClick={handleNext}>
-        Next
+        {nextButtonTitle}
       </Button>
     </Box>
   );

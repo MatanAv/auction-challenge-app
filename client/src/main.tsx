@@ -7,13 +7,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { logoutUser } from '@/api/users';
+// import { FailureReasons } from '@/enums/users';
+// import { logoutUser, sendFailureReason } from '@/api/users';
 
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
+import End from '@/pages/End';
 import Home from '@/pages/Home';
-import Game from '@/pages/Game/Game';
+import Game from '@/pages/Game';
 import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';
 import UserInfo from '@/pages/UserInfo';
@@ -23,7 +25,6 @@ import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
-import Finish from './pages/Finish';
 
 const router = createBrowserRouter([
   {
@@ -69,13 +70,18 @@ const router = createBrowserRouter([
   },
   {
     path: '/end',
-    element: <Finish />
+    element: <End />
   }
 ]);
 
-window.addEventListener('unload', () => {
-  logoutUser();
-});
+// window.addEventListener('beforeunload', () => {
+//   const isUserLeft = window.sessionStorage.getItem('worker_id') && !window.sessionStorage.getItem('is_navigating');
+
+//   if (isUserLeft) {
+//     sendFailureReason(FailureReasons.UserLeft);
+//     logoutUser();
+//   }
+// });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

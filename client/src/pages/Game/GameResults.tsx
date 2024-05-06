@@ -17,11 +17,13 @@ export default function GameResults() {
   const location = useLocation();
   const { type, round, points, bonus } = location.state as GameResultsInfo;
 
-  const handleOnClick = type === 'training' ? () => navigate('/instructions/game') : () => navigate('/user/survey');
+  const handleOnClick = type === 'training' ? () => navigate('/user/info') : () => navigate('/user/survey');
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' gap={3}>
-      <Typography variant='h4'>Game Results</Typography>
+      <Typography variant='h4' color={'red'} fontWeight={500}>
+        Game Results
+      </Typography>
       <ProgressBar round={round} points={points} bonus={bonus} />
       <Button variant='contained' color='primary' onClick={handleOnClick}>
         Next

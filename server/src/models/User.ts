@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
-import { UserInfo, UserInstructions, UserTraining, UserTest } from '@/interfaces/user';
-import { Genders, Educations } from '@/enums/users';
+import { IUserInfo, IUserInstructions, IUserTraining, IUserTest } from '@/interfaces/user';
+import { Genders, Educations, FailureReasons } from '@/enums/users';
+import type { FailureReasonsTypes } from '@/types/users';
 
 export interface IUser {
   worker_id: string;
-  user_info?: UserInfo;
-  user_instructions?: UserInstructions;
-  user_training?: UserTraining;
-  user_test?: UserTest;
+  user_info?: IUserInfo;
+  user_instructions?: IUserInstructions;
+  user_training?: IUserTraining;
+  user_test?: IUserTest;
+  failure_reason?: FailureReasonsTypes;
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -32,7 +34,8 @@ const UserSchema = new mongoose.Schema<IUser>({
     profit: { type: Number, min: 0 },
     bonus: { type: Number, min: 0 },
     duration: Number
-  }
+  },
+  failure_reason: { type: String, default: null, enum: Object.values(FailureReasons) }
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -1,24 +1,24 @@
 import type { GenderTypes, EducationTypes } from '@/types/users';
 
-export interface UserInfo {
+export interface IUserInfo {
   age: number;
   gender: GenderTypes;
   education: EducationTypes;
   nationality: string;
 }
 
-export interface UserInstructions {
+export interface IUserInstructions {
   score: number;
   fails: number;
   duration: number;
 }
 
-export interface UserTraining {
+export interface IUserTraining {
   rounds: number;
   duration: number;
 }
 
-export interface UserTest {
+export interface IUserTest {
   rounds: number;
   profit: number;
   bonus?: number;
