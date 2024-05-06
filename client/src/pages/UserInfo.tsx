@@ -42,11 +42,8 @@ export default function UserInfo() {
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const age = Number(e.target.value);
-    if (age < MIN_AGE) {
-      setAge(MIN_AGE);
-    } else {
-      setAge(age);
-    }
+    const validAge = age < MIN_AGE ? MIN_AGE : age;
+    setAge(validAge);
   };
 
   const handleSubmit = async () => {
