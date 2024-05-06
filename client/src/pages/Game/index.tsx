@@ -7,8 +7,8 @@ import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
-import { GAME_QUESTIONS, TRAINING_QUESTIONS, TIME_PER_QUESTION } from '@/constants/tests';
 import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
+import { GAME_QUESTIONS, TRAINING_QUESTIONS, TIME_PER_QUESTION, BONUS_MULTIPLIER } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
@@ -28,7 +28,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const [round, setRound] = useState<number>(1);
   const [points, setPoints] = useState<number>(0);
 
-  const bonus = points > 0 ? points * 10 : 0;
+  const bonus = points > 0 ? points * BONUS_MULTIPLIER : 0;
 
   const isTraining = gameType === 'training';
   const questionAmount = isTraining ? TRAINING_QUESTIONS : GAME_QUESTIONS;
