@@ -11,9 +11,9 @@ import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tes
 import {
   GAME_QUESTIONS,
   TRAINING_QUESTIONS,
+  TRAINING_MIN_ANSWERS,
   TIME_PER_QUESTION,
-  BONUS_MULTIPLIER,
-  TRAINING_MIN_ANSWERS
+  BONUS_MULTIPLIER
 } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
