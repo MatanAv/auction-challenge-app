@@ -1,3 +1,4 @@
+import { Parser } from 'html-to-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
@@ -173,7 +174,7 @@ export default function InstructionsSummary() {
       return (
         <Box key={id} sx={{ p: 1, textAlign: 'left' }}>
           <Typography variant='body1' color='primary' py={1} fontWeight={500}>
-            {`${index + 1}. ${question}`}
+            {`${index + 1}.`} {Parser().parse(question)}
           </Typography>
 
           <RadioGroupField
@@ -181,7 +182,6 @@ export default function InstructionsSummary() {
             controlledOptions={renderedOptions}
             onChange={(value) => {
               if (hasSubmitted) return;
-
               const newAnswers = [...userAnswers];
               newAnswers[index] = value;
               setUserAnswers(newAnswers);
