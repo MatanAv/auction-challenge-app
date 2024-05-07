@@ -27,31 +27,46 @@ export default function QuestionResult({
 }: QuestionResultProps) {
   const upperCaseOption = selectedOption.toUpperCase();
   const soldForValue = selectedOption === 'a' ? question['VA1'] : question.actual_B_bid;
+  const userProfit = question[`profit_${selectedOption}`];
+  const userLost = userProfit <= 0;
+
   const optionRows = getOptionRows(question, upperCaseOption as 'A' | 'B');
 
   const isNextAppear = isTraining || round < GAME_QUESTIONS;
   const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= GAME_QUESTIONS;
 
   const getPrizeCollectedString = () => {
+    if (userLost) return `$${userProfit}`;
+
     const calculatedNumbers = [question.User_Val, soldForValue];
 
     if (selectedOption === 'b' && question.participation_fee) {
       calculatedNumbers.push(question.participation_fee);
     }
 
-    return `${calculatedNumbers.join(' - ')} = $${question[`profit_${selectedOption}`]}`;
+    return `${calculatedNumbers.join(' - ')} = $${userProfit}`;
   };
 
   return (
-    <Box width='100%' display='flex' flexDirection='column'>
-      <Typography variant='h4' color={'red'} fontWeight={500} mb={10}>
+    <Box width='100%' display='flex' flexDirection='column' gap={10}>
+      <Typography variant='h4' color={'red'} fontWeight={500}>
         Round {round} Results
       </Typography>
 
-      <Box display='flex' alignItems='flex-start' gap={10} mb={10}>
+      <Box display='flex' alignItems='flex-start' gap={10}>
         <OptionTable rows={optionRows} />
 
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 3, '& strong': { color: 'red' } }}>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: 1.5,
+            '& strong': { color: '#2962ff' },
+            '& p': { fontWeight: 500 }
+          }}
+        >
           <Typography variant='body1'>
             You decided to choose option <strong>{upperCaseOption}</strong>.
           </Typography>
@@ -59,7 +74,10 @@ export default function QuestionResult({
             Sold for <strong>${soldForValue}</strong>.
           </Typography>
           <Typography variant='body1'>
-            V = <strong>${question.User_Val}</strong>
+            Your value is = <strong>${question.User_Val}</strong>
+          </Typography>
+          <Typography variant='h6' mt={2} color={userLost ? 'red' : 'green'}>
+            {userLost ? 'You did not win the auction!' : 'You won the auction!'}
           </Typography>
           <Typography variant='body1'>
             Prize collected: <strong>{getPrizeCollectedString()}</strong>

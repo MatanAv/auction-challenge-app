@@ -11,7 +11,7 @@ const formStyle = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: 5
+  gap: 3
 };
 
 const listBoxStyle = {

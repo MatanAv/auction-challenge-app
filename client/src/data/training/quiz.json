@@ -89,7 +89,7 @@
   },
   {
     "id": 9,
-    "question": "Why one would choose to participate in the “set of probabilities” auction?",
+    "question": "Why one would <strong style='color: black; font-size: 1.08rem'>choose</strong> to participate in the “set of probabilities” auction?",
     "options": {
       "A": "Because in some cases you may get a higher profit than the “same evaluation” option.",
       "B": "Because if you don't win, no payment is required, and no gain will be received.",
@@ -100,7 +100,7 @@
   },
   {
     "id": 10,
-    "question": "Why one would not choose to participate in the “set of probabilities” auction?",
+    "question": "Why one would <strong style='color: black; font-size: 1.08rem'>not choose</strong> to participate in the “set of probabilities” auction?",
     "options": {
       "A": "Because in some cases you may get a higher profit in the “same evaluation” option.",
       "B": "Because in some cases you may lose the auction and gain nothing.",

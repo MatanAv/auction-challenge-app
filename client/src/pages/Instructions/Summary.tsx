@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { Parser } from 'html-to-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
@@ -25,10 +26,20 @@ const FAILS_LIMIT = 2;
 interface SummaryResultsProps {
   score: number;
   setIsReview: (value: boolean) => void;
-  handleNext: () => void;
+  handleRetakeTest: () => void;
 }
 
-function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps) {
+function SummaryResults({ score, setIsReview, handleRetakeTest }: SummaryResultsProps) {
+  const navigate = useNavigate();
+  const fails = Number(window.sessionStorage.getItem('instructions_fails'));
+  const isUserOverFailLimit = fails > FAILS_LIMIT;
+
+  useEffect(() => {
+    if (isUserOverFailLimit) {
+      setTimeout(() => navigate('/end'), 5000);
+    }
+  }, [fails, isUserOverFailLimit, navigate]);
+
   return (
     <Box>
       <Typography variant='h4' fontWeight={600}>
@@ -53,19 +64,25 @@ function SummaryResults({ score, setIsReview, handleNext }: SummaryResultsProps)
               <Typography variant='h5' color='error' fontWeight={500}>
                 You have failed the test.
               </Typography>
+
               <br></br>
-              <Button variant='outlined' color='primary' onClick={() => setIsReview(true)}>
-                Review Test
-              </Button>
+
+              {!isUserOverFailLimit && (
+                <Button variant='contained' onClick={handleRetakeTest}>
+                  Retake Test
+                </Button>
+              )}
             </>
           ) : (
             <>
               <Typography variant='h5' color='green' fontWeight={500}>
                 You have passed the test. Congratulations!
               </Typography>
+
               <br></br>
-              <Button variant='contained' onClick={handleNext}>
-                Next
+
+              <Button variant='outlined' color='primary' onClick={() => setIsReview(true)}>
+                Review Test
               </Button>
             </>
           )}
@@ -88,7 +105,6 @@ export default function InstructionsSummary() {
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
 
   const correctAnswers = useMemo(() => data.map(({ correct_answer }) => correct_answer), []);
-
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
 
   // useEffect(() => {
@@ -106,6 +122,7 @@ export default function InstructionsSummary() {
 
     if (summary.score < MIN_PASS_SCORE) {
       summary.fails++;
+      window.sessionStorage.setItem('instructions_fails', `${summary.fails}`);
     }
 
     setScore(summary.score);
@@ -124,7 +141,6 @@ export default function InstructionsSummary() {
 
       if (quizSummary.fails > FAILS_LIMIT) {
         sendFailureReason(FailureReasons.SummaryQuiz);
-        return navigate('/end');
       }
 
       setHasSubmitted(true);
@@ -136,7 +152,6 @@ export default function InstructionsSummary() {
   };
 
   const handleRetakeTest = () => {
-    window.sessionStorage.setItem('instructions_fails', `${fails}`);
     // window.sessionStorage.setItem('is_navigating', 'true');
     return navigate(0);
   };
@@ -173,7 +188,7 @@ export default function InstructionsSummary() {
       return (
         <Box key={id} sx={{ p: 1, textAlign: 'left' }}>
           <Typography variant='body1' color='primary' py={1} fontWeight={500}>
-            {`${index + 1}. ${question}`}
+            {`${index + 1}.`} {Parser().parse(question)}
           </Typography>
 
           <RadioGroupField
@@ -181,7 +196,6 @@ export default function InstructionsSummary() {
             controlledOptions={renderedOptions}
             onChange={(value) => {
               if (hasSubmitted) return;
-
               const newAnswers = [...userAnswers];
               newAnswers[index] = value;
               setUserAnswers(newAnswers);
@@ -195,20 +209,25 @@ export default function InstructionsSummary() {
   return (
     <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
       {hasSubmitted && !isReview ? (
-        <SummaryResults score={score} setIsReview={setIsReview} handleNext={() => navigate('/instructions/training')} />
+        <SummaryResults score={score} setIsReview={setIsReview} handleRetakeTest={handleRetakeTest} />
       ) : (
         <>
           <Typography variant='h4' fontWeight={600} color='red'>
             Summary Quiz
           </Typography>
 
-          <Timer countTime={startTime + QUIZ_DURATION} onTimeEnd={handleTimerEnd} />
+          {!isReview && <Timer countTime={startTime + QUIZ_DURATION} onTimeEnd={handleTimerEnd} />}
 
           <Box sx={{ width: '80%', m: 'auto' }}>{renderQuestions()}</Box>
 
           {isReview ? (
-            <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={handleRetakeTest}>
-              Retake Test
+            <Button
+              variant='contained'
+              color='primary'
+              sx={{ mt: 2 }}
+              onClick={() => navigate('/instructions/training')}
+            >
+              Go to Training
             </Button>
           ) : (
             <Button
