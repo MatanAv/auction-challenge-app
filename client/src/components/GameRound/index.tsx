@@ -8,8 +8,8 @@ import Grid from '@mui/material/Grid';
 import Timer from '@/components/Timer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Question from '@/components/GameRound/Question';
 import ProgressBar from '@/components/GameRound/ProgressBar';
-import Question from '@/components/GameRound/Question/Question';
 import QuestionResult from '@/components/GameRound/Question/QuestionResult';
 
 import { listBoxStyle } from '@/styles';
