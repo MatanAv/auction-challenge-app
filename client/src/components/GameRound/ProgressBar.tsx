@@ -54,7 +54,7 @@ export default function ProgressBar({ round, points, bonus, totalRounds = round 
           Bonus :
         </Typography>
         <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {bonus.toPrecision(4)} ¢
+          {bonus.toPrecision(2)} ¢
         </Typography>
       </Box>
     </Paper>
