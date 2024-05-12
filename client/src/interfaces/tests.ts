@@ -1,6 +1,7 @@
 import { AnswersValues } from '@/types/users';
 
 export interface ITestQuestion {
+  _id: string;
   question_id: number;
   class: number;
   group_id?: number;
