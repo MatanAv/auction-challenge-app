@@ -1,6 +1,5 @@
 import axios from 'axios';
 import config from '@/config';
-import { FailureReasonsTypes } from '@/types/users';
 import { IUserInfo, IUserInstructions } from '@/interfaces/user';
 
 const usersApi = axios.create({
@@ -28,12 +27,4 @@ const submitUserInstructions = async (user_instructions: IUserInstructions) => {
   return response.data;
 };
 
-const sendFailureReason = async (failure_reason: FailureReasonsTypes) => {
-  const response = await usersApi.put('/fail', {
-    worker_id: window.sessionStorage.getItem('worker_id'),
-    failure_reason
-  });
-  return response.data;
-};
-
-export { registerUser, logoutUser, submitUserInfo, submitUserInstructions, sendFailureReason };
+export { registerUser, logoutUser, submitUserInfo, submitUserInstructions };

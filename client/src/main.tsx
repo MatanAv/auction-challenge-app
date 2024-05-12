@@ -7,9 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// import { FailureReasons } from '@/enums/users';
-// import { logoutUser, sendFailureReason } from '@/api/users';
-
 import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
@@ -73,15 +70,6 @@ const router = createBrowserRouter([
     element: <End />
   }
 ]);
-
-// window.addEventListener('beforeunload', () => {
-//   const isUserLeft = window.sessionStorage.getItem('worker_id') && !window.sessionStorage.getItem('is_navigating');
-
-//   if (isUserLeft) {
-//     sendFailureReason(FailureReasons.UserLeft);
-//     logoutUser();
-//   }
-// });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
-import { FailureReasons } from '@/enums/users';
-import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
@@ -95,8 +93,6 @@ export default function Game({ gameType = 'game' }: GameProps) {
       : ({ rounds: round, profit: points, duration } as IUserTest);
 
     await sendTimeout(isTraining, results);
-    sendFailureReason(FailureReasons.Timeout);
-
     navigate('/end');
   };
 

@@ -1,4 +1,4 @@
-import type { GenderTypes, EducationTypes, FailureReasonsTypes } from '@/types/users';
+import type { GenderTypes, EducationTypes } from '@/types/users';
 
 export interface IUserInfo {
   age: number;
@@ -31,5 +31,4 @@ export interface IUser {
   user_instructions?: IUserInstructions;
   user_training?: IUserTraining;
   user_test?: IUserTest;
-  failure_reason?: FailureReasonsTypes;
 }
