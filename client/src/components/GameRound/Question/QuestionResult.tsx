@@ -36,7 +36,7 @@ export default function QuestionResult({
   const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= GAME_QUESTIONS;
 
   const getPrizeCollectedString = () => {
-    if (userLost) return `$${userProfit}`;
+    if (userLost) return `${userProfit} points`;
 
     const calculatedNumbers = [question.User_Val, soldForValue];
 
@@ -44,7 +44,7 @@ export default function QuestionResult({
       calculatedNumbers.push(question.participation_fee);
     }
 
-    return `${calculatedNumbers.join(' - ')} = $${userProfit}`;
+    return `${calculatedNumbers.join(' - ')} = ${userProfit} points`;
   };
 
   return (
