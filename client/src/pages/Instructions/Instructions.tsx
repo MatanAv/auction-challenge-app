@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
 
-const MAX_INTRO_SLIDES = 20;
+const TOTAL_INTRO_SLIDES = 19;
 
 const imgStyle = {
   width: '100%',
@@ -26,7 +26,7 @@ function IntroSlides() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const slideSrc = getSlideUrlById(slideId);
-  const isLastSlide = slideId === MAX_INTRO_SLIDES;
+  const isLastSlide = slideId === TOTAL_INTRO_SLIDES;
 
   const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
   const handleImageLoad = () => setIsImageLoaded(true);
@@ -42,13 +42,11 @@ function IntroSlides() {
         variant='h5'
         color={isLastSlide ? 'red' : 'black'}
         fontWeight={600}
-      >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
+      >{`${slideId} / ${TOTAL_INTRO_SLIDES}`}</Typography>
 
-      {slideId === 1 && (
-        <Typography variant='h4' color='primary' fontWeight={600}>
-          The Choice Challenge App
-        </Typography>
-      )}
+      <Typography variant='h4' color='success.light' fontWeight={600} mt={-5}>
+        The Choice Challenge App
+      </Typography>
 
       <img style={imgStyle} src={slideSrc} onLoad={handleImageLoad} />
       {!isImageLoaded && (
@@ -59,7 +57,7 @@ function IntroSlides() {
 
       <NavigationBar
         currentPage={slideId}
-        totalPages={MAX_INTRO_SLIDES}
+        totalPages={TOTAL_INTRO_SLIDES}
         setPage={setSlideId}
         handleNavigate={handleNavigate}
         nextButtonTitle={isLastSlide ? 'Start Quiz' : 'Next'}
@@ -80,7 +78,7 @@ export default function Instructions({ type }: InstructionsProps) {
   }
 
   return (
-    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 5 }}>
+    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 3 }}>
       <Typography variant='h4' color='red' fontWeight={500}>
         {type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}
       </Typography>
