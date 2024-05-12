@@ -165,21 +165,18 @@ export default function InstructionsSummary() {
 
   const renderQuestions = () => {
     return data.map(({ id, question, options }, index) => {
-      const questionsOptionsTuple = Object.entries(options);
-      const questionOptions = questionsOptionsTuple.map(([key, value]) => `${key}.  ${value}`);
-
-      const renderedOptions = questionOptions.map((option) => {
-        const isChecked = userAnswers[index] === option[0];
-        const isCorrectAnswer = correctAnswers[index] === option[0];
+      const renderedOptions = Object.entries(options).map(([id, question]) => {
+        const isChecked = userAnswers[index] === id;
+        const isCorrectAnswer = correctAnswers[index] === id;
         const optionStyle = hasSubmitted && isCorrectAnswer ? { color: 'green' } : {};
 
         return (
           <FormControlLabel
             sx={optionStyle}
-            key={`${index}${option[0]}`}
+            key={`${index}${id}`}
             checked={isChecked}
-            value={option[0]}
-            label={option}
+            value={id}
+            label={question}
             control={<Radio />}
           />
         );

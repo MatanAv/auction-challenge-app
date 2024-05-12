@@ -39,7 +39,7 @@
       "A": "The number of bidders.",
       "B": "Your evaluation and thus your bid for the auctioned item.",
       "C": "The set of probabilities of the different options of the second highest bid.",
-      "D": "Each bidder’s private evaluation."
+      "D": "The auctioneer’s private evaluation."
     },
     "correct_answer": "B"
   },
@@ -94,7 +94,7 @@
       "A": "Because in some cases you may get a higher profit than the “same evaluation” option.",
       "B": "Because if you don't win, no payment is required, and no gain will be received.",
       "C": "Because you get a set of second highest bids instated of single evaluation.",
-      "D": "Because sometimes the “same evaluation” option may yield zero profit."
+      "D": "Because in the “same evaluation” option you always lose."
     },
     "correct_answer": "A"
   },
@@ -105,7 +105,7 @@
       "A": "Because in some cases you may get a higher profit in the “same evaluation” option.",
       "B": "Because in some cases you may lose the auction and gain nothing.",
       "C": "Because in some cases “set of probabilities” auction may yield negative profit.",
-      "D": "All of the above is correct."
+      "D": "All of the above are correct."
     },
     "correct_answer": "D"
   }
