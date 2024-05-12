@@ -28,7 +28,7 @@ export default function QuestionResult({
   const upperCaseOption = selectedOption.toUpperCase();
   const soldForValue = selectedOption === 'a' ? question['VA1'] : question.actual_B_bid;
   const userProfit = question[`profit_${selectedOption}`];
-  const userLost = userProfit <= 0;
+  const userWin = question[`win_${selectedOption}`];
 
   const optionRows = getOptionRows(question, upperCaseOption as 'A' | 'B');
 
@@ -36,7 +36,7 @@ export default function QuestionResult({
   const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= GAME_QUESTIONS;
 
   const getPrizeCollectedString = () => {
-    if (userLost) return `${userProfit} points`;
+    if (!userWin) return `${userProfit} points`;
 
     const calculatedNumbers = [question.User_Val, soldForValue];
 
@@ -64,7 +64,8 @@ export default function QuestionResult({
             alignItems: 'flex-start',
             gap: 1.5,
             '& strong': { color: '#2962ff' },
-            '& p': { fontWeight: 500 }
+            '& p': { fontWeight: 500 },
+            '& > *': { textAlign: 'left' }
           }}
         >
           <Typography variant='body1'>
@@ -76,8 +77,8 @@ export default function QuestionResult({
           <Typography variant='body1'>
             Your value is = <strong>${question.User_Val}</strong>
           </Typography>
-          <Typography variant='h6' mt={2} color={userLost ? 'red' : 'green'}>
-            {userLost ? 'You did not win the auction!' : 'You won the auction!'}
+          <Typography variant='h6' mt={2} color={userWin ? 'green' : 'red'}>
+            {userWin ? 'You won the auction!' : 'You did not win the auction!'}
           </Typography>
           <Typography variant='body1'>
             Prize collected: <strong>{getPrizeCollectedString()}</strong>

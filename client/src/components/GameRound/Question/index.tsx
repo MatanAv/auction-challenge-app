@@ -24,6 +24,7 @@ const optionBoxStyle = {
 };
 
 const optionButtonStyle = {
+  mb: 1,
   boxShadow: 3,
   minWidth: 50,
   fontSize: 17,
