@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { IUserInfo, IUserInstructions, IUserTraining, IUserTest } from '@/interfaces/user';
-import { Genders, Educations, FailureReasons } from '@/enums/users';
-import type { FailureReasonsTypes } from '@/types/users';
+import { Genders, Educations } from '@/enums/users';
 
 export interface IUser {
   worker_id: string;
@@ -9,7 +8,6 @@ export interface IUser {
   user_instructions?: IUserInstructions;
   user_training?: IUserTraining;
   user_test?: IUserTest;
-  failure_reason?: FailureReasonsTypes;
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -34,8 +32,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     profit: { type: Number, min: 0 },
     bonus: { type: Number, min: 0 },
     duration: Number
-  },
-  failure_reason: { type: String, default: null, enum: Object.values(FailureReasons) }
+  }
 });
 
 const User = mongoose.model('User', UserSchema);

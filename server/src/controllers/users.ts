@@ -2,7 +2,6 @@ import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
 import { getErrorResponse } from '@/utils/api';
-import { FailureReasonsTypes } from '@/types/users';
 import { IUserInfo, IUserInstructions, IUserTraining, IUserTest } from '@/interfaces/user';
 import ServerError from '@/services/errors/ServerError';
 import User, { IUser } from '@/models/User';
@@ -55,16 +54,4 @@ const updateUserTest = async (worker_id: string, user_test: IUserTest): Promise<
   return updateUser(worker_id, { user_test });
 };
 
-const updateUserFail = async (worker_id: string, failure_reason: FailureReasonsTypes): Promise<ResponseFormat> => {
-  return updateUser(worker_id, { failure_reason });
-};
-
-export {
-  createUser,
-  logoutUser,
-  updateUserInfo,
-  updateUserInstructions,
-  updateUserTraining,
-  updateUserTest,
-  updateUserFail
-};
+export { createUser, logoutUser, updateUserInfo, updateUserInstructions, updateUserTraining, updateUserTest };
