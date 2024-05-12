@@ -21,8 +21,7 @@
     "json-2-csv": "^5.5.1",
     "module-alias": "^2.2.3",
     "mongoose": "^8.3.1",
-    "mongoose-autopopulate": "^1.1.0",
-    "time-convert": "^0.0.2"
+    "mongoose-autopopulate": "^1.1.0"
   },
   "devDependencies": {
     "@tsconfig/node-lts": "^20.1.3",

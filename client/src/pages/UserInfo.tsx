@@ -1,18 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
+import { IUserInfo } from '@/interfaces/user';
+import { submitUserInfo } from '@/api/users';
+import { countries } from '@/constants/countries';
+import { Educations, Genders } from '@/enums/users';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import SelectField from '@/components/Form/SelectField';
-
-import { IUserInfo } from '@/interfaces/user';
-import { submitUserInfo } from '@/api/users';
-import { getCountriesList } from '@/utils/countries';
-import { Educations, Genders } from '@/enums/users';
 
 import { formStyle } from '@/styles';
 
@@ -22,28 +21,22 @@ const userFormStyle = {
 };
 
 const MIN_AGE = 18;
+const MAX_AGE = 99;
 
 export default function UserInfo() {
   const navigate = useNavigate();
   const { handleError, clearError, ErrorDisplay } = useError();
   const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
-  const [age, setAge] = useState<number>(MIN_AGE);
+  const [age, setAge] = useState<number | null>(null);
   const [gender, setGender] = useState<string>('');
   const [education, setEducation] = useState<string>('');
   const [nationality, setNationality] = useState<string>('');
 
-  const isSubmitDisabled = age < MIN_AGE || !gender || !education || !nationality;
-
-  const memoizedCountriesField = useMemo(
-    () => <SelectField label='Nationality' options={getCountriesList()} setValue={setNationality} />,
-    []
-  );
+  const isSubmitDisabled = age === null || age < MIN_AGE || age > MAX_AGE || !gender || !education || !nationality;
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const age = Number(e.target.value);
-    const validAge = age < MIN_AGE ? MIN_AGE : age;
-    setAge(validAge);
+    setAge(Number(e.target.value));
   };
 
   const handleSubmit = async () => {
@@ -71,10 +64,10 @@ export default function UserInfo() {
         Please provide the following information before starting the test:
       </Typography>
 
-      <TextField label='Age' type='number' onChange={handleAgeChange} />
+      <TextField label='Age' inputProps={{ type: 'number', min: MIN_AGE, max: MAX_AGE }} onChange={handleAgeChange} />
       <SelectField label='Gender' options={Object.values(Genders)} setValue={setGender} />
       <SelectField label='Education' options={Object.values(Educations)} setValue={setEducation} />
-      {memoizedCountriesField}
+      <SelectField label='Nationality' options={countries} setValue={setNationality} />
 
       <Button
         variant='contained'
