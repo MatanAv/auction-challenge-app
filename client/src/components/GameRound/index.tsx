@@ -14,6 +14,8 @@ import QuestionResult from '@/components/GameRound/Question/QuestionResult';
 
 import { listBoxStyle } from '@/styles';
 
+const gridItemStyle = { display: 'flex', alignItems: 'flex-start', justifyContent: 'center' };
+
 interface GameRoundProps {
   isTraining: boolean;
   round: number;
@@ -76,10 +78,10 @@ export default function GameRound({
       ) : (
         <>
           <Grid container spacing={10}>
-            <Grid item xs={2} md={2}>
+            <Grid item xs={2} md={2} sx={gridItemStyle}>
               <ProgressBar round={round} points={points} bonus={bonus} totalRounds={totalRounds} />
             </Grid>
-            <Grid item xs={8} md={8}>
+            <Grid item xs={8} md={8} sx={gridItemStyle}>
               <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
                 <Typography variant='h4' color={'red'} fontWeight={500}>
                   Round {round}
@@ -87,7 +89,7 @@ export default function GameRound({
                 <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
               </Box>
             </Grid>
-            <Grid item xs={2} md={2}>
+            <Grid item xs={2} md={2} sx={gridItemStyle}>
               <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={handleTimerEnd} />
             </Grid>
           </Grid>
