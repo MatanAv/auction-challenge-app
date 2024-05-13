@@ -2,18 +2,44 @@ import { StatusCodes } from 'http-status-codes';
 import { ResponseFormat } from '@/types/api';
 import { getErrorResponse } from '@/utils/api';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
-import { BONUS_MULTIPLIER, MAX_TIMES_USED } from '@/constants';
 import { updateUserTest, updateUserTraining } from './users';
 import { IUser } from '@/models/User';
 import TestQuestions from '@/models/TestQuestions';
 import UserTestAnswers, { IUserTestAnswer } from '@/models/UserTestAnswers';
+import {
+  BONUS_MULTIPLIER,
+  NON_GROUP_MAX_TIMES_USED,
+  GROUP_MAX_TIMES_USED,
+  TEST_NON_GROUP_QUESTIONS_AMOUNT
+} from '@/constants';
 
-const getRandomQuestions = async (size: number): Promise<ResponseFormat> => {
+const getRandomQuestion = async (): Promise<ResponseFormat> => {
   try {
-    const testQuestions = await TestQuestions.aggregate([
-      { $sample: { size } },
-      { $match: { times_used: { $lt: MAX_TIMES_USED } } }
+    const testQuestions = await TestQuestions.aggregate([{ $sample: { size: 1 } }]);
+    return { status: StatusCodes.OK, data: testQuestions };
+  } catch (error: any) {
+    return getErrorResponse(error);
+  }
+};
+
+const getTestQuestions = async (): Promise<ResponseFormat> => {
+  try {
+    const nonGroupQuestions = await TestQuestions.aggregate([
+      { $match: { times_used: { $lt: NON_GROUP_MAX_TIMES_USED }, group_id: null } },
+      { $sample: { size: TEST_NON_GROUP_QUESTIONS_AMOUNT } }
     ]);
+
+    const groupQuestions =
+      (
+        await TestQuestions.aggregate([
+          { $match: { group_id: { $ne: null }, times_used: { $lt: GROUP_MAX_TIMES_USED } } },
+          { $group: { _id: '$group_id', questions: { $push: '$$ROOT' } } },
+          { $sample: { size: 1 } }
+        ])
+      )[0]?.questions || [];
+
+    const testQuestions = [...nonGroupQuestions, ...groupQuestions];
+
     return { status: StatusCodes.OK, data: testQuestions };
   } catch (error: any) {
     return getErrorResponse(error);
@@ -81,4 +107,4 @@ const handleTimeout = async (
   }
 };
 
-export { getRandomQuestions, submitTraining, submitTest, handleTimeout };
+export { getRandomQuestion, getTestQuestions, submitTraining, submitTest, handleTimeout };

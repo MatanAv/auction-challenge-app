@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export interface ITestQuestion {
   question_id: number;
+  times_used: number;
   class: number;
   group_id?: number;
   win_a: boolean;
@@ -31,11 +32,11 @@ export interface ITestQuestion {
   PB7?: number;
   PB8?: number;
   participation_fee?: number;
-  times_used: number;
 }
 
 const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   question_id: { type: Number, unique: true, required: true },
+  times_used: { type: Number, default: 0 },
   class: { type: Number, required: true },
   group_id: Number,
   win_a: Boolean,
@@ -64,8 +65,7 @@ const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   PB6: Number,
   PB7: Number,
   PB8: Number,
-  participation_fee: Number,
-  times_used: { type: Number, default: 0 }
+  participation_fee: Number
 });
 
 const TestQuestions = mongoose.model('TestQuestions', TestQuestionsSchema);
