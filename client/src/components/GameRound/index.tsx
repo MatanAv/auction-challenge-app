@@ -71,6 +71,7 @@ export default function GameRound({
           question={question}
           selectedOption={selectedOption!}
           round={round}
+          totalRounds={totalRounds}
           isTraining={isTraining}
           handleNext={handleNextRound}
           handleSubmit={handleSubmit}
