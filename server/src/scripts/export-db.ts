@@ -2,8 +2,8 @@ import 'dotenv/config';
 import connectDB from '@/config/db';
 import DbCsvExportService from '@/services/db-csv-export';
 
-require('@/models/TestQuestions');
 import User from '@/models/User';
+import TestQuestions from '@/models/TestQuestions';
 import UserTestAnswers from '@/models/UserTestAnswers';
 import UserSurveyAnswers from '@/models/UserSurveyAnswers';
 
@@ -52,8 +52,18 @@ const exportUserSurveyAnswersCollection = async () => {
   await csvExportService.exportCollectionByHeaders(USER_SURVEY_ANSWERS_HEADERS);
 };
 
+const exportTestQuestionsCollection = async () => {
+  const csvExportService = new DbCsvExportService<any>(TestQuestions);
+  await csvExportService.exportCollection();
+};
+
 const exportAllCollections = async () => {
-  await Promise.all([exportUsersCollection(), exportUserTestAnswersCollection(), exportUserSurveyAnswersCollection()]);
+  await Promise.all([
+    exportUsersCollection(),
+    exportTestQuestionsCollection(),
+    exportUserTestAnswersCollection(),
+    exportUserSurveyAnswersCollection()
+  ]);
 };
 
 const exportDb = async () => {

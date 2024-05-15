@@ -31,7 +31,7 @@ class DbCsvExportService<T> {
 
   async exportCollectionByHeaders(headers: string[]): Promise<void> {
     const data = JSON.stringify(await this.model.find());
-    const csv = json2csv(JSON.parse(data), { keys: headers, emptyFieldValue: 'null' });
+    const csv = json2csv(JSON.parse(data), { keys: headers, emptyFieldValue: '' });
     this.exportFile(csv);
   }
 }
