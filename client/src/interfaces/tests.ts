@@ -2,7 +2,11 @@ import { AnswersValues } from '@/types/users';
 
 export interface ITestQuestion {
   _id: string;
-  times_used: number;
+  question_id: number;
+  class: number;
+  group_id?: number;
+  win_a: boolean;
+  win_b: boolean;
   LotNumA: number;
   LotNumB: number;
   User_Val: number;
@@ -28,6 +32,7 @@ export interface ITestQuestion {
   PB7?: number;
   PB8?: number;
   participation_fee?: number;
+  times_used: number;
 }
 
 export interface IUserTestAnswer {

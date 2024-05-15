@@ -2,19 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
-import { FailureReasons } from '@/enums/users';
-import { sendFailureReason } from '@/api/users';
 import { GameResultsInfo } from './GameResults';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
-import { getQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
-import {
-  GAME_QUESTIONS,
-  TRAINING_QUESTIONS,
-  TRAINING_MIN_ANSWERS,
-  TIME_PER_QUESTION,
-  BONUS_MULTIPLIER
-} from '@/constants/tests';
+import { getTrainingQuestions, getTestQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
+import { TRAINING_MIN_ANSWERS, TIME_PER_QUESTION, GAME_ALERT_ROUND, BONUS_MULTIPLIER } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
@@ -35,20 +27,19 @@ export default function Game({ gameType = 'game' }: GameProps) {
   const [points, setPoints] = useState<number>(0);
 
   const isTraining = gameType === 'training';
-  const questionAmount = isTraining ? TRAINING_QUESTIONS : GAME_QUESTIONS;
   const currentQuestion = isTraining ? questions[0] : questions[round - 1];
 
   const bonus = points > 0 ? points * BONUS_MULTIPLIER : 0;
-  const totalRounds = !isTraining ? GAME_QUESTIONS : round > TRAINING_MIN_ANSWERS ? round : TRAINING_MIN_ANSWERS;
+  const totalRounds = !isTraining ? questions.length : round > TRAINING_MIN_ANSWERS ? round : TRAINING_MIN_ANSWERS;
 
   const submitGame = isTraining ? submitTraining : submitTest;
 
-  const fetchQuestions = async (amount: number) => {
+  const fetchQuestions = async () => {
     clearError();
     startLoading();
 
     try {
-      const { data } = await getQuestions(amount);
+      const { data } = await (isTraining ? getTrainingQuestions() : getTestQuestions());
       setQuestions(data);
     } catch (error) {
       handleError(error);
@@ -69,7 +60,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
     setRound(round + 1);
 
     if (gameType === 'training') {
-      fetchQuestions(questionAmount);
+      fetchQuestions();
     }
   };
 
@@ -95,13 +86,17 @@ export default function Game({ gameType = 'game' }: GameProps) {
       : ({ rounds: round, profit: points, duration } as IUserTest);
 
     await sendTimeout(isTraining, results);
-    sendFailureReason(FailureReasons.Timeout);
-
     navigate('/end');
   };
 
   useEffect(() => {
-    fetchQuestions(questionAmount);
+    if (!isTraining && round === GAME_ALERT_ROUND) {
+      alert(`Everything's been going well so far! Just 6 questions left. Keep up the good work!`);
+    }
+  }, [round]);
+
+  useEffect(() => {
+    fetchQuestions();
   }, []);
 
   if (loading) return <LoadingDisplay />;

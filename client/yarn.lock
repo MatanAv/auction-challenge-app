@@ -1128,11 +1128,6 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-countries-list@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/countries-list/-/countries-list-3.1.0.tgz#1cbe32f58659c7d6a1e744917689f24c84333ea8"
-  integrity sha512-HpTBLZba1VPTZSjUnUwR7SykxV7Z/7/+ZM5x5wi5tO99Qvom6bE2SC+AQ18016ujg3jSlYBbMITrHNnPAHSM9Q==
-
 cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"

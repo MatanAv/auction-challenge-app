@@ -3,10 +3,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
-import { FailureReasons } from '@/enums/users';
 import { IUserInstructions } from '@/interfaces/user';
 import { QUIZ_DURATION } from '@/constants/instructions';
-import { sendFailureReason, submitUserInstructions } from '@/api/users';
+import { submitUserInstructions } from '@/api/users';
 import data from '@/data/training/quiz.json';
 
 import Box from '@mui/material/Box';
@@ -107,10 +106,6 @@ export default function InstructionsSummary() {
   const correctAnswers = useMemo(() => data.map(({ correct_answer }) => correct_answer), []);
   const isSubmitDisabled = hasSubmitted || userAnswers.filter((answer) => answer).length !== data.length;
 
-  // useEffect(() => {
-  //   window.sessionStorage.removeItem('is_navigating');
-  // }, []);
-
   const getQuizSummary = (): IUserInstructions => {
     const summary: IUserInstructions = {
       score: 0,
@@ -138,11 +133,6 @@ export default function InstructionsSummary() {
     try {
       const quizSummary = getQuizSummary();
       await submitUserInstructions(quizSummary);
-
-      if (quizSummary.fails > FAILS_LIMIT) {
-        sendFailureReason(FailureReasons.SummaryQuiz);
-      }
-
       setHasSubmitted(true);
     } catch (error) {
       handleError(error);
@@ -152,34 +142,29 @@ export default function InstructionsSummary() {
   };
 
   const handleRetakeTest = () => {
-    // window.sessionStorage.setItem('is_navigating', 'true');
     return navigate(0);
   };
 
   const handleTimerEnd = async () => {
     const quizSummary = getQuizSummary();
     await submitUserInstructions(quizSummary);
-    sendFailureReason(FailureReasons.Timeout);
     return navigate('/end');
   };
 
   const renderQuestions = () => {
     return data.map(({ id, question, options }, index) => {
-      const questionsOptionsTuple = Object.entries(options);
-      const questionOptions = questionsOptionsTuple.map(([key, value]) => `${key}.  ${value}`);
-
-      const renderedOptions = questionOptions.map((option) => {
-        const isChecked = userAnswers[index] === option[0];
-        const isCorrectAnswer = correctAnswers[index] === option[0];
+      const renderedOptions = Object.entries(options).map(([id, question]) => {
+        const isChecked = userAnswers[index] === id;
+        const isCorrectAnswer = correctAnswers[index] === id;
         const optionStyle = hasSubmitted && isCorrectAnswer ? { color: 'green' } : {};
 
         return (
           <FormControlLabel
             sx={optionStyle}
-            key={`${index}${option[0]}`}
+            key={`${index}${id}`}
             checked={isChecked}
-            value={option[0]}
-            label={option}
+            value={id}
+            label={question}
             control={<Radio />}
           />
         );

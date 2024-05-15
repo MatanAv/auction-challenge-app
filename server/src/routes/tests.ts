@@ -1,13 +1,17 @@
 import { Router } from 'express';
 import { authMiddleware } from '@/middlewares/auth';
-import { getRandomQuestions, submitTraining, submitTest, handleTimeout } from '@/controllers/tests';
+import { getRandomQuestion, getTestQuestions, submitTraining, submitTest, handleTimeout } from '@/controllers/tests';
 
 const testsRouter = Router();
 
-testsRouter.get('/questions', authMiddleware, async (req, res) => {
-  const size = Number(req.query.amount);
+testsRouter.get('/questions/training', authMiddleware, async (req, res) => {
+  const response = await getRandomQuestion();
 
-  const response = await getRandomQuestions(size);
+  res.status(response.status).json(response);
+});
+
+testsRouter.get('/questions/test', authMiddleware, async (req, res) => {
+  const response = await getTestQuestions();
 
   res.status(response.status).json(response);
 });

@@ -23,6 +23,20 @@ const optionBoxStyle = {
   gap: 1
 };
 
+const optionButtonStyle = {
+  mb: 1,
+  boxShadow: 3,
+  minWidth: 50,
+  fontSize: 17,
+  fontWeight: 800,
+  '&.Mui-disabled': {
+    border: 'solid',
+    borderWidth: 1,
+    bgcolor: 'primary.main',
+    color: 'white'
+  }
+};
+
 interface QuestionProps {
   question: ITestQuestion;
   selectedOption: AnswersValues | null;
@@ -54,7 +68,7 @@ export default function Question({ question, selectedOption, setSelected }: Ques
       <Box sx={questionOptionsBoxStyle}>
         <Box sx={optionBoxStyle}>
           <Button
-            sx={{ boxShadow: 3, minWidth: 50, fontSize: 17, fontWeight: 800 }}
+            sx={optionButtonStyle}
             variant='outlined'
             color='primary'
             size='large'
@@ -69,7 +83,7 @@ export default function Question({ question, selectedOption, setSelected }: Ques
 
         <Box sx={optionBoxStyle}>
           <Button
-            sx={{ boxShadow: 4, minWidth: 50, fontSize: 17, fontWeight: 800 }}
+            sx={optionButtonStyle}
             variant='outlined'
             color='primary'
             size='large'

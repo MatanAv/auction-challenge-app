@@ -1,11 +1,9 @@
-import { Genders, Educations, FailureReasons } from '@/enums/users';
+import { Genders, Educations } from '@/enums/users';
 
 type GenderTypes = keyof typeof Genders;
 
 type EducationTypes = keyof typeof Educations;
 
-type FailureReasonsTypes = keyof typeof FailureReasons;
-
 type AnswersValues = 'a' | 'b';
 
-export type { GenderTypes, EducationTypes, FailureReasonsTypes, AnswersValues };
+export type { GenderTypes, EducationTypes, AnswersValues };

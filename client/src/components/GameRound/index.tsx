@@ -8,11 +8,13 @@ import Grid from '@mui/material/Grid';
 import Timer from '@/components/Timer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Question from '@/components/GameRound/Question';
 import ProgressBar from '@/components/GameRound/ProgressBar';
-import Question from '@/components/GameRound/Question/Question';
 import QuestionResult from '@/components/GameRound/Question/QuestionResult';
 
 import { listBoxStyle } from '@/styles';
+
+const gridItemStyle = { display: 'flex', alignItems: 'flex-start', justifyContent: 'center' };
 
 interface GameRoundProps {
   isTraining: boolean;
@@ -69,6 +71,7 @@ export default function GameRound({
           question={question}
           selectedOption={selectedOption!}
           round={round}
+          totalRounds={totalRounds}
           isTraining={isTraining}
           handleNext={handleNextRound}
           handleSubmit={handleSubmit}
@@ -76,10 +79,10 @@ export default function GameRound({
       ) : (
         <>
           <Grid container spacing={10}>
-            <Grid item xs={2} md={2}>
+            <Grid item xs={2} md={2} sx={gridItemStyle}>
               <ProgressBar round={round} points={points} bonus={bonus} totalRounds={totalRounds} />
             </Grid>
-            <Grid item xs={8} md={8}>
+            <Grid item xs={8} md={8} sx={gridItemStyle}>
               <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
                 <Typography variant='h4' color={'red'} fontWeight={500}>
                   Round {round}
@@ -87,7 +90,7 @@ export default function GameRound({
                 <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
               </Box>
             </Grid>
-            <Grid item xs={2} md={2}>
+            <Grid item xs={2} md={2} sx={gridItemStyle}>
               <Timer key={round} countTime={startTime + TIME_PER_QUESTION} onTimeEnd={handleTimerEnd} />
             </Grid>
           </Grid>

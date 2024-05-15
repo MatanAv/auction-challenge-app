@@ -8,8 +8,13 @@ const testsApi = axios.create({
   withCredentials: true
 });
 
-const getQuestions = async (size: number) => {
-  const response = await testsApi.get(`/questions?amount=${size}`);
+const getTrainingQuestions = async () => {
+  const response = await testsApi.get('/questions/training');
+  return response.data;
+};
+
+const getTestQuestions = async () => {
+  const response = await testsApi.get('/questions/test');
   return response.data;
 };
 
@@ -28,4 +33,4 @@ const sendTimeout = async (isTraining: boolean, results: IUserTraining | IUserTe
   return response.data;
 };
 
-export { getQuestions, submitTraining, submitTest, sendTimeout };
+export { getTrainingQuestions, getTestQuestions, submitTraining, submitTest, sendTimeout };

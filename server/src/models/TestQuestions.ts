@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
-import { MAX_TIMES_USED } from '@/constants';
 
 export interface ITestQuestion {
   question_id: number;
   times_used: number;
+  class: number;
+  group_id?: number;
+  win_a: boolean;
+  win_b: boolean;
   LotNumA: number;
   LotNumB: number;
   User_Val: number;
@@ -33,7 +36,11 @@ export interface ITestQuestion {
 
 const TestQuestionsSchema = new mongoose.Schema<ITestQuestion>({
   question_id: { type: Number, unique: true, required: true },
-  times_used: { type: Number, default: 0, max: MAX_TIMES_USED },
+  times_used: { type: Number, default: 0 },
+  class: { type: Number, required: true },
+  group_id: Number,
+  win_a: Boolean,
+  win_b: Boolean,
   LotNumA: Number,
   LotNumB: Number,
   User_Val: Number,

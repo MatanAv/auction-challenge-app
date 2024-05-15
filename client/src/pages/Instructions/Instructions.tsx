@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSlideUrlById } from '@/utils/images';
+import { TIME_PER_QUESTION } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
+import Timer from '@/components/Timer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import NavigationBar from '@/components/NavigationBar';
@@ -10,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { listBoxStyle } from '@/styles';
 
-const MAX_INTRO_SLIDES = 20;
+const TOTAL_INTRO_SLIDES = 19;
 
 const imgStyle = {
   width: '100%',
@@ -24,7 +26,7 @@ function IntroSlides() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const slideSrc = getSlideUrlById(slideId);
-  const isLastSlide = slideId === MAX_INTRO_SLIDES;
+  const isLastSlide = slideId === TOTAL_INTRO_SLIDES;
 
   const handleNavigate = isLastSlide ? () => navigate('/instructions/summary') : undefined;
   const handleImageLoad = () => setIsImageLoaded(true);
@@ -40,13 +42,11 @@ function IntroSlides() {
         variant='h5'
         color={isLastSlide ? 'red' : 'black'}
         fontWeight={600}
-      >{`${slideId} / ${MAX_INTRO_SLIDES}`}</Typography>
+      >{`${slideId} / ${TOTAL_INTRO_SLIDES}`}</Typography>
 
-      {slideId === 1 && (
-        <Typography variant='h4' color='primary' fontWeight={600}>
-          The Choice Challenge App
-        </Typography>
-      )}
+      <Typography variant='h4' color='success.light' fontWeight={600} mt={-5}>
+        The Choice Challenge App
+      </Typography>
 
       <img style={imgStyle} src={slideSrc} onLoad={handleImageLoad} />
       {!isImageLoaded && (
@@ -57,7 +57,7 @@ function IntroSlides() {
 
       <NavigationBar
         currentPage={slideId}
-        totalPages={MAX_INTRO_SLIDES}
+        totalPages={TOTAL_INTRO_SLIDES}
         setPage={setSlideId}
         handleNavigate={handleNavigate}
         nextButtonTitle={isLastSlide ? 'Start Quiz' : 'Next'}
@@ -78,20 +78,23 @@ export default function Instructions({ type }: InstructionsProps) {
   }
 
   return (
-    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 5 }}>
+    <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 3 }}>
       <Typography variant='h4' color='red' fontWeight={500}>
         {type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}
       </Typography>
       {type === 'game' && (
         <Typography variant='subtitle2' color='primary'>
-          You will now participate in 25 different rounds.
+          You will now participate in 24 different rounds.
         </Typography>
       )}
       <Typography variant='body1'>
         For each round you are allocated 6 minutes (which is plenty of time). If you don't respond within 3 minutes, you
         will be warned. If after being warned you don't respond again, the session will be terminated and you will lose
-        your payment. The remaining time (in seconds) for the current round appears as a green circle.
+        your payment. The remaining time (in seconds) for the current round appears as a green rectangle.
       </Typography>
+
+      <Timer countTime={Date.now() + TIME_PER_QUESTION} />
+
       <Button variant='contained' onClick={() => navigate(`/${type}`)}>
         Start {type === 'training' ? 'Training' : 'Game'}
       </Button>

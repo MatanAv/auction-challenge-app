@@ -1,7 +1,7 @@
 import { ITestQuestion } from '@/interfaces/tests';
 import { AnswersValues } from '@/types/users';
 import { getOptionRows } from '@/utils/auction';
-import { GAME_QUESTIONS, TRAINING_MIN_ANSWERS } from '@/constants/tests';
+import { TRAINING_MIN_ANSWERS } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
 import OptionTable from './OptionTable';
@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 
 interface QuestionResultProps {
   round: number;
+  totalRounds: number;
   question: ITestQuestion;
   isTraining: boolean;
   selectedOption: AnswersValues;
@@ -19,6 +20,7 @@ interface QuestionResultProps {
 
 export default function QuestionResult({
   round,
+  totalRounds,
   question,
   isTraining,
   selectedOption,
@@ -28,15 +30,15 @@ export default function QuestionResult({
   const upperCaseOption = selectedOption.toUpperCase();
   const soldForValue = selectedOption === 'a' ? question['VA1'] : question.actual_B_bid;
   const userProfit = question[`profit_${selectedOption}`];
-  const userLost = userProfit <= 0;
+  const userWin = question[`win_${selectedOption}`];
 
   const optionRows = getOptionRows(question, upperCaseOption as 'A' | 'B');
 
-  const isNextAppear = isTraining || round < GAME_QUESTIONS;
-  const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= GAME_QUESTIONS;
+  const isNextAppear = isTraining || round < totalRounds;
+  const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= totalRounds;
 
   const getPrizeCollectedString = () => {
-    if (userLost) return `$${userProfit}`;
+    if (!userWin) return `${userProfit} points`;
 
     const calculatedNumbers = [question.User_Val, soldForValue];
 
@@ -44,7 +46,7 @@ export default function QuestionResult({
       calculatedNumbers.push(question.participation_fee);
     }
 
-    return `${calculatedNumbers.join(' - ')} = $${userProfit}`;
+    return `${calculatedNumbers.join(' - ')} = ${userProfit} points`;
   };
 
   return (
@@ -64,7 +66,8 @@ export default function QuestionResult({
             alignItems: 'flex-start',
             gap: 1.5,
             '& strong': { color: '#2962ff' },
-            '& p': { fontWeight: 500 }
+            '& p': { fontWeight: 500 },
+            '& > *': { textAlign: 'left' }
           }}
         >
           <Typography variant='body1'>
@@ -76,8 +79,8 @@ export default function QuestionResult({
           <Typography variant='body1'>
             Your value is = <strong>${question.User_Val}</strong>
           </Typography>
-          <Typography variant='h6' mt={2} color={userLost ? 'red' : 'green'}>
-            {userLost ? 'You did not win the auction!' : 'You won the auction!'}
+          <Typography variant='h6' mt={2} color={userWin ? 'green' : 'red'}>
+            {userWin ? 'You won the auction!' : 'You did not win the auction!'}
           </Typography>
           <Typography variant='body1'>
             Prize collected: <strong>{getPrizeCollectedString()}</strong>

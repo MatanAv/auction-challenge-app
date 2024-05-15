@@ -10,9 +10,3 @@ export enum Educations {
   MastersDegree = "Master's Degree",
   PhdOrHigher = 'Ph.D. or higher'
 }
-
-export enum FailureReasons {
-  Timeout = 'Timeout',
-  SummaryQuiz = 'SummaryQuiz',
-  UserLeft = 'UserLeft'
-}
