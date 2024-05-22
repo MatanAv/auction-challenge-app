@@ -33,6 +33,7 @@ export default function UserInfo() {
   const [education, setEducation] = useState<string>('');
   const [nationality, setNationality] = useState<string>('');
 
+  const isAgeValueInvalid = !!age && (age < MIN_AGE || age > MAX_AGE);
   const isSubmitDisabled = age === null || age < MIN_AGE || age > MAX_AGE || !gender || !education || !nationality;
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +65,20 @@ export default function UserInfo() {
         Please provide the following information before starting the test:
       </Typography>
 
-      <TextField label='Age' inputProps={{ type: 'number', min: MIN_AGE, max: MAX_AGE }} onChange={handleAgeChange} />
+      <Box display='flex' flexDirection='column' gap={1}>
+        <TextField
+          label='Age'
+          error={isAgeValueInvalid}
+          inputProps={{ type: 'number', min: MIN_AGE, max: MAX_AGE }}
+          onChange={handleAgeChange}
+        />
+        {isAgeValueInvalid && (
+          <Typography variant='caption' color='error'>
+            Age must be between {MIN_AGE} and {MAX_AGE}
+          </Typography>
+        )}
+      </Box>
+
       <SelectField label='Gender' options={Object.values(Genders)} setValue={setGender} />
       <SelectField label='Education' options={Object.values(Educations)} setValue={setEducation} />
       <SelectField label='Nationality' options={countries} setValue={setNationality} />
