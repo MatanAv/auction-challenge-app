@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is a flexible platform developed for researchers to conduct a decision-making experiment under conditions of uncertainty. The experiment simulates an auction and involves around 300 participants. The technological stack includes Node.js, Express, React, MUI, and MongoDB, chosen for their flexibility and rapid deployment capabilities. The application is available at [https://auction-game-seven.vercel.app](https://auction-game-seven.vercel.app).
+This project is a flexible platform developed for researchers to conduct a decision-making experiment under conditions of uncertainty. The experiment simulates an auction and involves around 500 participants. The technological stack includes Node.js, Express, React, MUI, and MongoDB, chosen for their flexibility and rapid deployment capabilities. The application is available at [https://auction-game-seven.vercel.app](https://auction-game-seven.vercel.app).
 
 ## Table of Contents
 
