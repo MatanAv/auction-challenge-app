@@ -2,13 +2,12 @@
 
 ## Introduction
 
-This project is a flexible platform developed for researchers to conduct a decision-making experiment under conditions of uncertainty. The experiment simulates an auction and involves around 300 participants. The technological stack includes Node.js, Express, React, MUI, and MongoDB, chosen for their flexibility and rapid deployment capabilities.
+This project is a flexible platform developed for researchers to conduct a decision-making experiment under conditions of uncertainty. The experiment simulates an auction and involves around 300 participants. The technological stack includes Node.js, Express, React, MUI, and MongoDB, chosen for their flexibility and rapid deployment capabilities. The application is available at [https://auction-challenge-app.vercel.app/](https://auction-challenge-app.vercel.app/).
 
 ## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Technology Stack](#technology-stack)
-- [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
 - [Frontend](#frontend)
 - [Backend](#backend)
@@ -35,42 +34,6 @@ The system met the research needs, providing flexibility for future adjustments.
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
 - **Deployment**: Vercel (client), Render (server)
-
-## Setup and Installation
-
-### Prerequisites
-
-- Node.js
-- MongoDB
-
-### Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/MatanAv/auction-challenge-app.git
-cd auction-challenge-app
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Running the Application
-
-Start the server:
-
-```bash
-npm run server
-```
-
-Start the client:
-
-```bash
-npm run client
-```
 
 ## Usage
 
