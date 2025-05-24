@@ -1,0 +1,20 @@
+{
+    "name": "experiment-app",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/MatanAv/experiment-app.git",
+    "author": "MatanAv <matanav757@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "clean:client": "rimraf client/dist",
+        "clean:server": "rimraf server/dist",
+        "clean": "yarn clean:client && yarn clean:server",
+        "dev:server": "cd server && yarn dev",
+        "dev:client": "cd client && yarn dev",
+        "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\""
+    },
+    "devDependencies": {
+        "concurrently": "9.1.2",
+        "rimraf": "6.0.1"
+    }
+}
