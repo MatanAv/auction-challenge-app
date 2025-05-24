@@ -1,0 +1,16 @@
+.slide_container {
+    height: 600px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.header_container {
+    display: flex;
+    align-items: center;
+
+    h3 {
+        flex: 1;
+        text-align: center;
+        color: rgb(0, 182, 0);
+    }
+}

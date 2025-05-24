@@ -22,62 +22,63 @@ import InstructionsSummary from '@/pages/Instructions/Summary';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
+import '@/styles/index.scss';
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-    errorElement: <Error />
-  },
-  {
-    path: '/instructions',
-    element: <Instructions />
-  },
-  {
-    path: '/instructions/training',
-    element: <Instructions type='training' />
-  },
-  {
-    path: '/instructions/game',
-    element: <Instructions type='game' />
-  },
-  {
-    path: '/instructions/summary',
-    element: <InstructionsSummary />
-  },
-  {
-    path: '/user/info',
-    element: <UserInfo />
-  },
-  {
-    path: '/user/survey',
-    element: <Survey />
-  },
-  {
-    path: '/training',
-    element: <Game gameType='training' />
-  },
-  {
-    path: '/game',
-    element: <Game />
-  },
-  {
-    path: '/results',
-    element: <GameResults />
-  },
-  {
-    path: '/end',
-    element: <End />
-  }
+    {
+        path: '/',
+        element: <Home />,
+        errorElement: <Error />
+    },
+    {
+        path: '/instructions',
+        element: <Instructions />
+    },
+    {
+        path: '/instructions/training',
+        element: <Instructions type='training' />
+    },
+    {
+        path: '/instructions/game',
+        element: <Instructions type='game' />
+    },
+    {
+        path: '/instructions/summary',
+        element: <InstructionsSummary />
+    },
+    {
+        path: '/user/info',
+        element: <UserInfo />
+    },
+    {
+        path: '/user/survey',
+        element: <Survey />
+    },
+    {
+        path: '/training',
+        element: <Game gameType='training' />
+    },
+    {
+        path: '/game',
+        element: <Game />
+    },
+    {
+        path: '/results',
+        element: <GameResults />
+    },
+    {
+        path: '/end',
+        element: <End />
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Layout>
-        <RouterProvider router={router} />
-      </Layout>
-    </ThemeProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Layout>
+                <RouterProvider router={router} />
+            </Layout>
+        </ThemeProvider>
+    </React.StrictMode>
 );

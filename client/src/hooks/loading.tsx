@@ -4,18 +4,18 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export const useLoading = () => {
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const startLoading = () => setLoading(true);
+    const startLoading = () => setLoading(true);
 
-  const stopLoading = () => setLoading(false);
+    const stopLoading = () => setLoading(false);
 
-  const LoadingDisplay = () =>
-    loading && (
-      <Box m={'auto'}>
-        <CircularProgress />
-      </Box>
-    );
+    const LoadingDisplay = () =>
+        loading ? (
+            <Box m={'auto'}>
+                <CircularProgress />
+            </Box>
+        ) : null;
 
-  return { loading, startLoading, stopLoading, LoadingDisplay };
+    return { loading, startLoading, stopLoading, LoadingDisplay };
 };
