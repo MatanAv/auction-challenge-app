@@ -58,7 +58,7 @@ export const IntroSlides = () => {
                 totalPages={TOTAL_INTRO_SLIDES}
                 setPage={setSlideId}
                 handleNavigate={handleNavigate}
-                nextButtonTitle={isLastSlide ? 'Start Quiz' : 'הבא'}
+                nextButtonTitle={isLastSlide ? 'התחל שאלון' : 'הבא'}
             />
         </Box>
     );
