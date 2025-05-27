@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '@/hooks/error';
 import { registerUser } from '@/api/users';
@@ -43,17 +43,35 @@ const UserRegister = () => {
         }
     };
 
+    const handleWorkerIdChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        if (Number(value) > -1 && value.length < 10) {
+            setWorkerId(value);
+        }
+    }, []);
+
     return (
         <Box display='flex' flexDirection='column' gap={3} component='form' noValidate autoComplete='off'>
             <TextField
-                label='Worker ID'
+                sx={{
+                    'input::-webkit-outer-spin-button': {
+                        '-webkit-appearance': 'none',
+                        margin: 0
+                    },
+                    'input::-webkit-inner-spin-button': {
+                        '-webkit-appearance': 'none',
+                        margin: 0
+                    }
+                }}
+                type='number'
+                label='תעודת זהות'
                 value={workerId}
-                onChange={(e) => setWorkerId(e.target.value.trim())}
+                onChange={handleWorkerIdChange}
                 onKeyDown={onEnterDown}
                 InputProps={{
                     endAdornment: (
-                        <Button variant='contained' color='primary' onClick={handleRegister} disabled={!workerId || loading}>
-                            Register
+                        <Button variant='contained' color='primary' onClick={handleRegister} disabled={workerId.length !== 9 || loading}>
+                            שלח
                         </Button>
                     )
                 }}
@@ -68,8 +86,8 @@ const UserRegister = () => {
 export default function Home() {
     return (
         <Box sx={listBoxStyle}>
-            <Typography variant='h5'>Welcome!</Typography>
-            <Typography variant='body1'>In order to start the challenge, please enter your Worker ID:</Typography>
+            <Typography variant='h5'>ברוכים הבאים!</Typography>
+            <Typography variant='body1'>על מנת להתחיל, אנא הכנס את תעודת הזהות שלך:</Typography>
             <UserRegister />
         </Box>
     );
