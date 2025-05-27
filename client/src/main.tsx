@@ -19,6 +19,7 @@ import UserInfo from '@/pages/UserInfo';
 import GameResults from '@/pages/Game/GameResults';
 import Instructions from '@/pages/Instructions/Instructions';
 import InstructionsSummary from '@/pages/Instructions/Summary';
+import { Preferences } from './pages/Preferences/Preferences';
 
 import Layout from '@/components/RootLayout';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
     {
         path: '/instructions/summary',
         element: <InstructionsSummary />
+    },
+    {
+        path: '/preferences',
+        element: <Preferences />
     },
     {
         path: '/user/info',
