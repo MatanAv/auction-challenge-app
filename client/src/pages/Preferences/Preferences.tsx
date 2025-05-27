@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { NUM_PAGES } from './Preferences.model';
 import { pages } from './data/pages';
+import { TableQuestion } from './TableQuestion/TableQuestion';
 
 import NavigationBar from '@/components/NavigationBar';
 import Radio from '@mui/material/Radio';
@@ -25,9 +26,7 @@ export const Preferences = () => {
 
     const userInputValue = (userAnswers[currentPage - 1]?.value as number) || valueRef.current;
 
-    const currentPageData = useMemo(() => {
-        return pages[pagesOrderRef.current[currentPage]] || {};
-    }, [currentPage]);
+    const currentPageData = useMemo(() => pages[pagesOrderRef.current[currentPage]] || {}, [currentPage]);
 
     const { title, description, valueType, minValue, maxValue } = currentPageData;
 
@@ -57,6 +56,10 @@ export const Preferences = () => {
     // pagesOrderRef.current = shuffle(pagesOrderRef.current);
     // }, []);
 
+    const onSubmit = (value: number[]) => {
+        console.log('Submitted values:', value);
+    };
+
     return (
         <div className={styles.preferences_wrapper}>
             <h2>שאלון העדפות</h2>
@@ -85,6 +88,21 @@ export const Preferences = () => {
                                 }}
                                 valueLabelDisplay='on'
                             />
+                        ) : valueType === 'custom-rating' ? (
+                            <RadioGroup
+                                row
+                                key={currentPage}
+                                value={userInputValue}
+                                onChange={(_e, value) => {
+                                    valueRef.current = Number(value);
+                                }}
+                            >
+                                {currentPageData.options?.map((option) => (
+                                    <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
+                                ))}
+                            </RadioGroup>
+                        ) : valueType === 'table' ? (
+                            <TableQuestion onSubmit={onSubmit} />
                         ) : (
                             <RadioGroup
                                 row
