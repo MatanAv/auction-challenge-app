@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { NUM_PAGES } from './Preferences.model';
 import { pages } from './data/pages';
+import { DecisionTree } from './DecisionTree/DecisionTree';
 import { TableQuestion } from './TableQuestion/TableQuestion';
 
 import NavigationBar from '@/components/NavigationBar';
@@ -18,7 +19,7 @@ type Answer = {
 };
 
 export const Preferences = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
 
     const pagesOrderRef = useRef<number[]>(Array.from({ length: NUM_PAGES }, (_, i) => i + 1));
@@ -28,11 +29,11 @@ export const Preferences = () => {
 
     const currentPageData = useMemo(() => pages[pagesOrderRef.current[currentPage]] || {}, [currentPage]);
 
-    const { title, description, valueType, minValue, maxValue } = currentPageData;
+    const { title, description, valueType, minValue, maxValue, options, decisionTreeMap } = currentPageData;
 
-    const handleNavigation = useCallback(() => {
-        console.log('User Answers:', userAnswers);
-    }, [userAnswers]);
+    // const handleNavigation = useCallback(() => {
+    //     console.log('User Answers:', userAnswers);
+    // }, [userAnswers]);
 
     const handleNext = useCallback(() => {
         if (valueRef.current !== undefined) {
@@ -60,6 +61,60 @@ export const Preferences = () => {
         console.log('Submitted values:', value);
     };
 
+    const renderQuestion = useCallback(() => {
+        switch (valueType) {
+            case 'slider':
+                return (
+                    <div>
+                        <span>{minValue}</span>
+                        <Slider
+                            key={currentPage}
+                            step={1}
+                            min={minValue as number}
+                            max={maxValue as number}
+                            value={userInputValue}
+                            onChange={(_e, value) => (valueRef.current = Number(value))}
+                            valueLabelDisplay='on'
+                        />
+                        <span>{maxValue}</span>
+                    </div>
+                );
+            case 'custom-rating':
+                return (
+                    <div>
+                        <span>{minValue}</span>
+                        <RadioGroup
+                            row
+                            key={currentPage}
+                            value={userInputValue}
+                            onChange={(_e, value) => (valueRef.current = Number(value))}
+                        >
+                            {options?.map((option) => (
+                                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
+                            ))}
+                        </RadioGroup>
+                        <span>{maxValue}</span>
+                    </div>
+                );
+            case 'table':
+                return <TableQuestion onSubmit={onSubmit} />;
+            case 'rating':
+                return (
+                    <RadioGroup row key={currentPage} value={userInputValue} onChange={(_e, value) => (valueRef.current = Number(value))}>
+                        {Array.from({ length: 11 }, (_, i) => (
+                            <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} />
+                        ))}
+                    </RadioGroup>
+                );
+            default:
+                return (
+                    <>
+                        <DecisionTree round={0} value='' onClick={() => {}} decisionTreeMap={decisionTreeMap || {}} />
+                    </>
+                );
+        }
+    }, [valueType, minValue, currentPage, maxValue, userInputValue, options, decisionTreeMap]);
+
     return (
         <div className={styles.preferences_wrapper}>
             <h2>שאלון העדפות</h2>
@@ -74,51 +129,7 @@ export const Preferences = () => {
 
                     {description && <p>{description}</p>}
 
-                    <div>
-                        <span>{minValue}</span>
-                        {valueType === 'slider' ? (
-                            <Slider
-                                key={currentPage}
-                                step={1}
-                                min={minValue as number}
-                                max={maxValue as number}
-                                value={userInputValue}
-                                onChange={(_e, value) => {
-                                    valueRef.current = Number(value);
-                                }}
-                                valueLabelDisplay='on'
-                            />
-                        ) : valueType === 'custom-rating' ? (
-                            <RadioGroup
-                                row
-                                key={currentPage}
-                                value={userInputValue}
-                                onChange={(_e, value) => {
-                                    valueRef.current = Number(value);
-                                }}
-                            >
-                                {currentPageData.options?.map((option) => (
-                                    <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
-                                ))}
-                            </RadioGroup>
-                        ) : valueType === 'table' ? (
-                            <TableQuestion onSubmit={onSubmit} />
-                        ) : (
-                            <RadioGroup
-                                row
-                                key={currentPage}
-                                value={userInputValue}
-                                onChange={(_e, value) => {
-                                    valueRef.current = Number(value);
-                                }}
-                            >
-                                {Array.from({ length: 11 }, (_, i) => (
-                                    <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} />
-                                ))}
-                            </RadioGroup>
-                        )}
-                        <span>{maxValue}</span>
-                    </div>
+                    {renderQuestion()}
                 </>
             )}
 
@@ -127,7 +138,7 @@ export const Preferences = () => {
                 setPage={setCurrentPage}
                 totalPages={NUM_PAGES}
                 onNext={handleNext}
-                handleNavigate={handleNavigation}
+                // handleNavigate={handleNavigation}
             />
         </div>
     );

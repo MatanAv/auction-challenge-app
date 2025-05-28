@@ -1,9 +1,13 @@
+import { DecisionTreeMap, question1Map, question3Map } from './decision-tree';
+
 type Page = {
     title?: string;
     description?: string;
     valueType?: 'slider' | 'rating' | 'table' | 'custom-rating';
     minValue?: number | string;
     maxValue?: number | string;
+    numOfSubPages?: number;
+    decisionTreeMap?: DecisionTreeMap;
     options?: {
         value: number;
         label: string;
@@ -11,7 +15,10 @@ type Page = {
 };
 
 export const pages: Record<number, Page> = {
-    1: {},
+    1: {
+        decisionTreeMap: question1Map,
+        numOfSubPages: 5
+    },
     2: {
         title: 'עד כמה אתם מוכנים לקחת סיכונים?',
         description: `אנא השתמשו בסולם מ-0 עד 10, כאשר 0 פירושו שאתם "לחלוטין לא מוכנים לקחת סיכונים" ו-10 פירושו שאתם "מוכנים מאוד לקחת סיכונים".`,
@@ -19,7 +26,10 @@ export const pages: Record<number, Page> = {
         maxValue: 'מוכנים מאוד לקחת סיכונים',
         valueType: 'rating'
     },
-    3: {},
+    3: {
+        decisionTreeMap: question3Map,
+        numOfSubPages: 5
+    },
     4: {
         title: 'עד כמה אתה מוכן לוותר על משהו שמועיל לך היום כדי להפיק מכך תועלת רבה יותר בעתיד?',
         description: `אנא ציין שוב את תשובתך בסולם מ-0 עד 10, כאשר 0 פירושו שאתה "לא מוכן לעשות זאת לחלוטין" ו-10 מציין שאתה "מאוד מוכן לעשות זאת".`,
@@ -76,6 +86,7 @@ export const pages: Record<number, Page> = {
     11: {
         title: 'דמיינו לעצמכם את המצב הבא:',
         description: `יחד עם אדם שאינכם מכירים זכיתם בהגרלה ב-100$. הכללים קובעים את הדברים הבאים: אחד מכם צריך להציע הצעה כיצד לחלק את ה-100$ ביניכם. השני נחשף להצעה וצריך להחליט בין שתי אפשרויות. הוא או היא יכולים לקבל את ההצעה או לדחות אותה. אם הוא או היא מקבלים את ההצעה, הכסף מתחלק לפי ההצעה. אם הוא או היא דוחים את ההצעה, שניכם לא מקבלים דבר. אתם בתפקיד השולח! נא ציינו את הסכום שהייתם מעוניינים לשלוח לאדם השני.`,
+        numOfSubPages: 2,
         valueType: 'slider'
     },
     12: {
