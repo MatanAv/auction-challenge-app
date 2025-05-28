@@ -64,7 +64,7 @@ export const question1Map: DecisionTreeMap = {
     BBBB: 10,
     BBBBA: 2, // Will to take risks = 2
     BBBBB: 1 // Will to take risks = 1
-};
+} as const;
 
 export const question3Map: DecisionTreeMap = {
     '': 154,
@@ -130,4 +130,4 @@ export const question3Map: DecisionTreeMap = {
     BBBB: 103,
     BBBBA: 31,
     BBBBB: 32
-};
+} as const;

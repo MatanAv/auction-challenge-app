@@ -1,11 +1,10 @@
 // import { shuffle } from 'lodash';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { NUM_PAGES } from './Preferences.model';
+import { NUM_PAGES, QUESTIONS_ORDER } from './Preferences.model';
 import { pages } from './data/pages';
 import { DecisionTree } from './DecisionTree/DecisionTree';
 import { TableQuestion } from './TableQuestion/TableQuestion';
 
-import NavigationBar from '@/components/NavigationBar';
 import Radio from '@mui/material/Radio';
 import Slider from '@mui/material/Slider';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -19,21 +18,15 @@ type Answer = {
 };
 
 export const Preferences = () => {
-    const [currentPage, setCurrentPage] = useState<number>(0);
-    const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
-
-    const pagesOrderRef = useRef<number[]>(Array.from({ length: NUM_PAGES }, (_, i) => i + 1));
     const valueRef = useRef<number | undefined>();
-
-    const userInputValue = (userAnswers[currentPage - 1]?.value as number) || valueRef.current;
-
+    const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    // const [currentSubPage, setCurrentSubPage] = useState<number>(0);
+    const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
     const currentPageData = useMemo(() => pages[pagesOrderRef.current[currentPage]] || {}, [currentPage]);
-
     const { title, description, valueType, minValue, maxValue, options, decisionTreeMap } = currentPageData;
 
-    // const handleNavigation = useCallback(() => {
-    //     console.log('User Answers:', userAnswers);
-    // }, [userAnswers]);
+    const userInputValue = (userAnswers[currentPage - 1]?.value as number) || valueRef.current;
 
     const handleNext = useCallback(() => {
         if (valueRef.current !== undefined) {
@@ -53,14 +46,6 @@ export const Preferences = () => {
         }
     }, [currentPage]);
 
-    // useEffect(() => {
-    // pagesOrderRef.current = shuffle(pagesOrderRef.current);
-    // }, []);
-
-    const onSubmit = (value: number[]) => {
-        console.log('Submitted values:', value);
-    };
-
     const renderQuestion = useCallback(() => {
         switch (valueType) {
             case 'slider':
@@ -73,8 +58,8 @@ export const Preferences = () => {
                             min={minValue as number}
                             max={maxValue as number}
                             value={userInputValue}
-                            onChange={(_e, value) => (valueRef.current = Number(value))}
                             valueLabelDisplay='on'
+                            onChange={(_e, value) => (valueRef.current = Number(value))}
                         />
                         <span>{maxValue}</span>
                     </div>
@@ -97,7 +82,7 @@ export const Preferences = () => {
                     </div>
                 );
             case 'table':
-                return <TableQuestion onSubmit={onSubmit} />;
+                return <TableQuestion onSubmit={() => {}} />;
             case 'rating':
                 return (
                     <RadioGroup row key={currentPage} value={userInputValue} onChange={(_e, value) => (valueRef.current = Number(value))}>
@@ -106,14 +91,16 @@ export const Preferences = () => {
                         ))}
                     </RadioGroup>
                 );
+            case 'decision-tree':
+                return <DecisionTree round={0} value='' onClick={() => {}} decisionTreeMap={decisionTreeMap || {}} />;
             default:
-                return (
-                    <>
-                        <DecisionTree round={0} value='' onClick={() => {}} decisionTreeMap={decisionTreeMap || {}} />
-                    </>
-                );
+                return null;
         }
     }, [valueType, minValue, currentPage, maxValue, userInputValue, options, decisionTreeMap]);
+
+    // useEffect(() => {
+    // pagesOrderRef.current = shuffle(pagesOrderRef.current);
+    // }, []);
 
     return (
         <div className={styles.preferences_wrapper}>
@@ -133,13 +120,29 @@ export const Preferences = () => {
                 </>
             )}
 
-            <NavigationBar
-                currentPage={currentPage}
-                setPage={setCurrentPage}
-                totalPages={NUM_PAGES}
-                onNext={handleNext}
-                // handleNavigate={handleNavigation}
-            />
+            <PreferencesNavigationBar currentPage={currentPage} onClickPrevious={() => {}} onClickNext={() => {}} />
+        </div>
+    );
+};
+
+type PreferencesNavigationBarProps = {
+    onClickNext: () => void;
+    onClickPrevious?: () => void;
+    currentPage?: number;
+};
+
+const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
+    return (
+        <div className={styles.navigation_bar}>
+            {props.onClickPrevious && <button onClick={props.onClickPrevious}>הקודם</button>}
+
+            {!!props.currentPage && (
+                <span className={styles.indicator}>
+                    שאלה {props.currentPage} מתוך {NUM_PAGES}
+                </span>
+            )}
+
+            <button onClick={props.onClickNext}>הבא</button>
         </div>
     );
 };

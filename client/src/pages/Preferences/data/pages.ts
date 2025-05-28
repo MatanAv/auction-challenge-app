@@ -3,7 +3,7 @@ import { DecisionTreeMap, question1Map, question3Map } from './decision-tree';
 type Page = {
     title?: string;
     description?: string;
-    valueType?: 'slider' | 'rating' | 'table' | 'custom-rating';
+    valueType?: 'slider' | 'rating' | 'table' | 'custom-rating' | 'decision-tree';
     minValue?: number | string;
     maxValue?: number | string;
     numOfSubPages?: number;
@@ -17,7 +17,8 @@ type Page = {
 export const pages: Record<number, Page> = {
     1: {
         decisionTreeMap: question1Map,
-        numOfSubPages: 5
+        numOfSubPages: 5,
+        valueType: 'decision-tree'
     },
     2: {
         title: 'עד כמה אתם מוכנים לקחת סיכונים?',
@@ -28,7 +29,8 @@ export const pages: Record<number, Page> = {
     },
     3: {
         decisionTreeMap: question3Map,
-        numOfSubPages: 5
+        numOfSubPages: 5,
+        valueType: 'decision-tree'
     },
     4: {
         title: 'עד כמה אתה מוכן לוותר על משהו שמועיל לך היום כדי להפיק מכך תועלת רבה יותר בעתיד?',
@@ -96,4 +98,4 @@ export const pages: Record<number, Page> = {
         maxValue: 'מוכנים מאוד לשאת בעלויות',
         valueType: 'rating'
     }
-};
+} as const;
