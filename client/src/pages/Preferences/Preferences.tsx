@@ -12,39 +12,33 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from './Preferences.module.scss';
 
-type Answer = {
-    id: number;
-    value: number | string;
-};
+type QuestionId = number;
+
+type AnswersMap = Record<QuestionId, string | number | number[]>;
+
+type SubPageMap = Record<QuestionId, number>;
 
 export const Preferences = () => {
     const valueRef = useRef<number | undefined>();
     const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
-    // const [currentSubPage, setCurrentSubPage] = useState<number>(0);
-    const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
-    const currentPageData = useMemo(() => pages[pagesOrderRef.current[currentPage]] || {}, [currentPage]);
+    const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
+    const [userAnswers, setUserAnswers] = useState<AnswersMap>([]);
+    const questionId = pagesOrderRef.current[currentPage];
+    const currentPageData = useMemo(() => pages[questionId] || {}, [questionId]);
     const { title, description, valueType, minValue, maxValue, options, decisionTreeMap } = currentPageData;
 
-    const userInputValue = (userAnswers[currentPage - 1]?.value as number) || valueRef.current;
+    const userInputValue = userAnswers[questionId] || valueRef.current;
 
-    const handleNext = useCallback(() => {
+    const handleNextClick = useCallback(() => {
         if (valueRef.current !== undefined) {
-            const answer: Answer = { id: currentPage, value: valueRef.current };
+            const answerValue = valueRef.current;
 
-            valueRef.current = undefined; // Reset the value for the next page
+            valueRef.current = undefined;
 
-            setUserAnswers((prev) => {
-                const existingAnswerIndex = prev.findIndex((a) => a.id === answer.id);
-                if (existingAnswerIndex !== -1) {
-                    const updatedAnswers = [...prev];
-                    updatedAnswers[existingAnswerIndex] = answer;
-                    return updatedAnswers;
-                }
-                return [...prev, answer];
-            });
+            setUserAnswers((prev) => ({ ...prev, [questionId]: answerValue }));
         }
-    }, [currentPage]);
+    }, [questionId]);
 
     const renderQuestion = useCallback(() => {
         switch (valueType) {
@@ -57,7 +51,7 @@ export const Preferences = () => {
                             step={1}
                             min={minValue as number}
                             max={maxValue as number}
-                            value={userInputValue}
+                            value={userInputValue as number}
                             valueLabelDisplay='on'
                             onChange={(_e, value) => (valueRef.current = Number(value))}
                         />
@@ -120,7 +114,7 @@ export const Preferences = () => {
                 </>
             )}
 
-            <PreferencesNavigationBar currentPage={currentPage} onClickPrevious={() => {}} onClickNext={() => {}} />
+            <PreferencesNavigationBar currentPage={currentPage} onClickPrevious={() => {}} onClickNext={handleNextClick} />
         </div>
     );
 };
@@ -129,6 +123,7 @@ type PreferencesNavigationBarProps = {
     onClickNext: () => void;
     onClickPrevious?: () => void;
     currentPage?: number;
+    disabled?: true;
 };
 
 const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
@@ -142,7 +137,9 @@ const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
                 </span>
             )}
 
-            <button onClick={props.onClickNext}>הבא</button>
+            <button onClick={props.onClickNext} disabled={props.disabled}>
+                הבא
+            </button>
         </div>
     );
 };
