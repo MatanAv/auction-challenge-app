@@ -26,19 +26,48 @@ export const Preferences = () => {
     const [userAnswers, setUserAnswers] = useState<AnswersMap>([]);
     const questionId = pagesOrderRef.current[currentPage];
     const currentPageData = useMemo(() => pages[questionId] || {}, [questionId]);
-    const { title, description, valueType, minValue, maxValue, options, decisionTreeMap } = currentPageData;
+    const { title, description, valueType, minValue, maxValue, options, decisionTreeMap, numOfSubPages } = currentPageData;
 
     const userInputValue = userAnswers[questionId] || valueRef.current;
 
-    const handleNextClick = useCallback(() => {
+    const handleOnClickNext = useCallback(() => {
         if (valueRef.current !== undefined) {
             const answerValue = valueRef.current;
-
             valueRef.current = undefined;
-
             setUserAnswers((prev) => ({ ...prev, [questionId]: answerValue }));
+
+            // next page logic
+            setCurrentPage((prev) => {
+                const nextPage = prev + 1;
+                if (nextPage >= NUM_PAGES) {
+                    // navigate to results page or handle completion
+                    console.log('All questions answered. Proceed to results.');
+                    return prev; // stay on the last page
+                }
+                return nextPage;
+            });
         }
     }, [questionId]);
+
+    const onSliderChange = useCallback((_e: Event, value: number | number[]) => {
+        valueRef.current = Number(value);
+    }, []);
+
+    const onRatingChange = useCallback((_e: React.ChangeEvent<HTMLInputElement>, value: string) => {
+        valueRef.current = Number(value);
+    }, []);
+
+    const onDecisionTreeClick = useCallback(
+        (value: string) => {
+            if (currentSubPage[questionId] === numOfSubPages) {
+                valueRef.current = decisionTreeMap?.[value];
+                handleOnClickNext(); // TODO: fix
+            } else {
+                setCurrentSubPage((prev) => ({ ...prev, [questionId]: (prev[questionId] || 1) + 1 }));
+            }
+        },
+        [currentSubPage, decisionTreeMap, handleOnClickNext, numOfSubPages, questionId]
+    );
 
     const renderQuestion = useCallback(() => {
         switch (valueType) {
@@ -53,7 +82,7 @@ export const Preferences = () => {
                             max={maxValue as number}
                             value={userInputValue as number}
                             valueLabelDisplay='on'
-                            onChange={(_e, value) => (valueRef.current = Number(value))}
+                            onChange={onSliderChange}
                         />
                         <span>{maxValue}</span>
                     </div>
@@ -62,12 +91,7 @@ export const Preferences = () => {
                 return (
                     <div>
                         <span>{minValue}</span>
-                        <RadioGroup
-                            row
-                            key={currentPage}
-                            value={userInputValue}
-                            onChange={(_e, value) => (valueRef.current = Number(value))}
-                        >
+                        <RadioGroup row key={currentPage} value={userInputValue} onChange={onRatingChange}>
                             {options?.map((option) => (
                                 <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
                             ))}
@@ -79,18 +103,29 @@ export const Preferences = () => {
                 return <TableQuestion onSubmit={() => {}} />;
             case 'rating':
                 return (
-                    <RadioGroup row key={currentPage} value={userInputValue} onChange={(_e, value) => (valueRef.current = Number(value))}>
+                    <RadioGroup row key={currentPage} value={userInputValue} onChange={onRatingChange}>
                         {Array.from({ length: 11 }, (_, i) => (
                             <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} />
                         ))}
                     </RadioGroup>
                 );
             case 'decision-tree':
-                return <DecisionTree round={0} value='' onClick={() => {}} decisionTreeMap={decisionTreeMap || {}} />;
+                return <DecisionTree round={0} value='' onClick={onDecisionTreeClick} decisionTreeMap={decisionTreeMap || {}} />;
             default:
                 return null;
         }
-    }, [valueType, minValue, currentPage, maxValue, userInputValue, options, decisionTreeMap]);
+    }, [
+        valueType,
+        minValue,
+        currentPage,
+        maxValue,
+        userInputValue,
+        options,
+        decisionTreeMap,
+        onSliderChange,
+        onRatingChange,
+        onDecisionTreeClick
+    ]);
 
     // useEffect(() => {
     // pagesOrderRef.current = shuffle(pagesOrderRef.current);
@@ -114,7 +149,7 @@ export const Preferences = () => {
                 </>
             )}
 
-            <PreferencesNavigationBar currentPage={currentPage} onClickPrevious={() => {}} onClickNext={handleNextClick} />
+            <PreferencesNavigationBar currentPage={currentPage} onClickPrevious={() => {}} onClickNext={handleOnClickNext} />
         </div>
     );
 };
