@@ -3,7 +3,7 @@ import { DecisionTreeMap, question1Map, question3Map } from './decision-tree';
 type Page = {
     title?: string;
     description?: string;
-    valueType?: 'slider' | 'rating' | 'table' | 'custom-rating' | 'decision-tree';
+    valueType?: 'slider' | 'rating' | 'table' | 'custom-rating' | 'decision-tree' | 'multi-slider';
     minValue?: number | string;
     maxValue?: number | string;
     numOfSubPages?: number;
@@ -87,9 +87,8 @@ export const pages: Record<number, Page> = {
     },
     11: {
         title: 'דמיינו לעצמכם את המצב הבא:',
-        description: `יחד עם אדם שאינכם מכירים זכיתם בהגרלה ב-100$. הכללים קובעים את הדברים הבאים: אחד מכם צריך להציע הצעה כיצד לחלק את ה-100$ ביניכם. השני נחשף להצעה וצריך להחליט בין שתי אפשרויות. הוא או היא יכולים לקבל את ההצעה או לדחות אותה. אם הוא או היא מקבלים את ההצעה, הכסף מתחלק לפי ההצעה. אם הוא או היא דוחים את ההצעה, שניכם לא מקבלים דבר. אתם בתפקיד השולח! נא ציינו את הסכום שהייתם מעוניינים לשלוח לאדם השני.`,
         numOfSubPages: 2,
-        valueType: 'slider'
+        valueType: 'multi-slider'
     },
     12: {
         title: 'עד כמה אתם מוכנים להעניש מישהו שמתנהג אליכם בצורה לא הוגנת, גם אם עלולות להיות לכם עלויות?',
