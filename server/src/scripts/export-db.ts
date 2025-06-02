@@ -10,18 +10,18 @@ import UserPreferencesAnswers from '@/models/UserPreferencesAnswers';
 
 const USER_PREFERENCES_ANSWERS_HEADERS = [
     'worker.worker_id',
-    'answers.q1',
-    'answers.q2',
-    'answers.q3',
-    'answers.q4',
-    'answers.q5',
-    'answers.q6',
-    'answers.q7',
-    'answers.q8',
-    'answers.q9',
-    'answers.q10',
-    'answers.q11',
-    'answers.q12'
+    'answers.1',
+    'answers.2',
+    'answers.3',
+    'answers.4',
+    'answers.5',
+    'answers.6',
+    'answers.7',
+    'answers.8',
+    'answers.9',
+    'answers.10',
+    'answers.11',
+    'answers.12'
 ];
 
 const USER_SURVEY_ANSWERS_HEADERS = ['worker.worker_id', 'answers.q1', 'answers.q2', 'answers.q3', 'answers.comment'];
