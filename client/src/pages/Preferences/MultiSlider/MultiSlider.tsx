@@ -41,6 +41,7 @@ export const MultiSlider = (props: MultiSliderProps) => {
             <div>
                 <span>{MIN_VALUE}</span>
                 <Slider
+                    key={round}
                     step={1}
                     min={MIN_VALUE}
                     max={MAX_VALUE}
