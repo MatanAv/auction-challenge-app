@@ -50,7 +50,12 @@ export default function Survey() {
     };
 
     return (
-        <Box sx={{ ...formStyle, gap: 2.5, width: '60%', textAlign: 'left' }} component='form' noValidate autoComplete='off'>
+        <Box
+            sx={{ ...formStyle, gap: 2.5, width: '60%', textAlign: 'right', direction: 'rtl' }}
+            component='form'
+            noValidate
+            autoComplete='off'
+        >
             <Typography variant='body1' fontWeight={600}>
                 אנא ענה על הסקר הקצר הזה:
             </Typography>
@@ -72,7 +77,7 @@ export default function Survey() {
                     <Typography variant='body1' color='darkorange' fontWeight={500} mb={1.5}>
                         האם יש לך הערות?
                     </Typography>
-                    <TextField label='Comment' fullWidth defaultValue='' onChange={(e) => setComment(e.target.value)} />
+                    <TextField placeholder='הערות' fullWidth defaultValue='' onChange={(e) => setComment(e.target.value)} />
                 </Box>
             </Box>
 

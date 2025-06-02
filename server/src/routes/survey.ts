@@ -5,11 +5,11 @@ import { submitSurvey } from '@/controllers/survey';
 const surveyRouter = Router();
 
 surveyRouter.post('/submit', authMiddleware, async (req, res) => {
-  const { worker_id, answers } = req.body;
+    const { worker_id, answers } = req.body;
 
-  const response = await submitSurvey(worker_id, answers);
+    const response = await submitSurvey(worker_id, answers);
 
-  res.status(response.status).json(response);
+    res.status(response.status).json(response);
 });
 
 /*

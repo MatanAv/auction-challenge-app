@@ -21,32 +21,27 @@ export default function Instructions({ type }: InstructionsProps) {
     }
 
     return (
-        <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 3 }}>
+        <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 3, direction: 'rtl' }}>
             <Typography variant='h4' color='red' fontWeight={500}>
-                {type === 'training' ? 'Training (at least 2 rounds)' : 'Game Rounds'}
+                {type === 'training' ? 'סיבובי אימון - טרום ניסוי (לפחות 2 סיבובים)' : 'סיבובי משחק'}
             </Typography>
             {type === 'game' && (
                 <Typography variant='h5' color='primary'>
-                    You will now participate in 24 different rounds.
+                    כעת תשתתפו ב-15 סבבים שונים.
                 </Typography>
             )}
             <Typography variant='body1'>
-                For each round you are allocated 6 minutes (which is plenty of time). If you don't respond within 3 minutes, you will be
-                warned. If after being warned you don't respond again, the session will be terminated and you will lose your payment. The
-                remaining time (in seconds) for the current round appears as a{' '}
-                <Typography variant='body1' component='span' color={'success.light'} fontWeight={500}>
-                    green
-                </Typography>{' '}
-                rectangle.
+                לכל סיבוב מוקצות לכם 6 דקות (שהן מספיק זמן). אם לא תגיבו תוך 3 דקות, תקבלו אזהרה. אם לאחר שהוזהרתם לא תגיבו שוב, הניסוי
+                יופסק ותאבדו את התגמול שלכם. הזמן הנותר (בשניות) לסיבוב הנוכחי מופיע במסגרת הירוקה.
             </Typography>
 
             <Typography variant='body2' fontWeight={500}>
-                Timer Illustration:
+                טיימר לדוגמא:
             </Typography>
             <Timer countTime={Date.now() + TIME_PER_QUESTION} />
 
             <Button variant='contained' onClick={() => navigate(`/${type}`)}>
-                Start {type === 'training' ? 'Training' : 'Game'}
+                התחל {type === 'training' ? 'תרגול' : 'משחק'}
             </Button>
         </Box>
     );

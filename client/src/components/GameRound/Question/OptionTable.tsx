@@ -11,35 +11,35 @@ import TableContainer from '@mui/material/TableContainer';
 import { blueGrey, grey } from '@mui/material/colors';
 
 const optionsTableStyle = {
-  minWidth: 270,
-  '& *': {
-    textAlign: 'center !important'
-  }
+    minWidth: 270,
+    '& *': {
+        textAlign: 'center !important'
+    }
 };
 
 interface OptionTableProps {
-  rows: OptionEntry[];
+    rows: OptionEntry[];
 }
 
 export default function OptionTable({ rows }: OptionTableProps) {
-  return (
-    <TableContainer sx={optionsTableStyle} component={Paper}>
-      <Table aria-label='simple table'>
-        <TableHead sx={{ bgcolor: blueGrey[600], '& *': { color: 'white !important' } }}>
-          <TableRow>
-            <TableCell>Probability</TableCell>
-            <TableCell>Second Highest Bid</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody sx={{ bgcolor: grey[100], '& *': { fontSize: '0.97rem !important' } }}>
-          {rows.map((row, index) => (
-            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell>{row[0]}</TableCell>
-              <TableCell>${row[1]}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+    return (
+        <TableContainer sx={optionsTableStyle} component={Paper}>
+            <Table aria-label='simple table'>
+                <TableHead sx={{ bgcolor: blueGrey[600], '& *': { color: 'white !important' } }}>
+                    <TableRow>
+                        <TableCell>הסתברות</TableCell>
+                        <TableCell>הצעה שניה בגובהה</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody sx={{ bgcolor: grey[100], '& *': { fontSize: '0.97rem !important' } }}>
+                    {rows.map((row, index) => (
+                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell>{row[0]}</TableCell>
+                            <TableCell>${row[1]}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }

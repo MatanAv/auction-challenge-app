@@ -37,15 +37,13 @@ export const Preferences = () => {
     const isForm = valueType === 'table';
 
     const handleNextPage = useCallback(() => {
-        setCurrentPage((prev) => {
-            const nextPage = prev + 1;
-            if (nextPage >= NUM_PAGES) {
-                console.log('All questions answered. Proceed to results.');
-                return prev;
-            }
-            return nextPage;
-        });
-    }, []);
+        if (currentPage >= NUM_PAGES - 1) {
+            console.log('All questions answered. Proceed to results.');
+            console.log('userAnswers:', userAnswers);
+            return;
+        }
+        setCurrentPage((prev) => prev + 1);
+    }, [currentPage, userAnswers]);
 
     const onSliderChange = useCallback((_e: Event, value: number | number[]) => {
         setCurrentValue(Number(value));

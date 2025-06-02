@@ -1,4 +1,4 @@
-import { Q1Answers, Q2Answers, Q3Answers } from '@/enums/survey';
+import { Q1Answers, Q2Answers } from '@/enums/survey';
 
 const surveyQuestions = [
     {
@@ -10,11 +10,6 @@ const surveyQuestions = [
         id: 'q2',
         title: 'מה היה טווח הקשב שלך בזמן המשימה?',
         options: Object.values(Q2Answers)
-    },
-    {
-        id: 'q3',
-        title: 'Are you happy with the bonus?',
-        options: Object.values(Q3Answers)
     }
 ];
 

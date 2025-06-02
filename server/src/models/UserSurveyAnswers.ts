@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import mongooseAutoPopulate from 'mongoose-autopopulate';
 import { ISurveyAnswers } from '@/interfaces/survey';
-import { Q1Answers, Q2Answers, Q3Answers } from '@/enums/survey';
+import { Q1Answers, Q2Answers } from '@/enums/survey';
 
 export interface IUserSurveyAnswers {
     worker_id: string;
@@ -13,7 +13,6 @@ const UserSurveyAnswersSchema = new mongoose.Schema({
     answers: {
         q1: { type: String, required: true, enum: Object.values(Q1Answers) },
         q2: { type: String, required: true, enum: Object.values(Q2Answers) },
-        q3: { type: String, required: true, enum: Object.values(Q3Answers) },
         comment: String
     }
 });

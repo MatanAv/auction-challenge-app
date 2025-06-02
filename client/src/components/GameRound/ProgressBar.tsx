@@ -6,57 +6,57 @@ import Typography from '@mui/material/Typography';
 import { blueGrey } from '@mui/material/colors';
 
 interface ProgressBarProps {
-  round: number;
-  points: number;
-  bonus: number;
-  totalRounds?: number;
+    round: number;
+    points: number;
+    bonus: number;
+    totalRounds?: number;
 }
 
 const progressBarStyle = {
-  maxWidth: 300,
-  minWidth: 200,
-  backgroundColor: blueGrey[600],
-  color: 'white',
-  display: 'flex',
-  flexDirection: 'column',
-  textAlign: 'left',
-  gap: 0.75,
-  py: 1,
-  px: 2,
-  '& *': {
-    fontSize: '1.2rem !important'
-  }
+    maxWidth: 300,
+    minWidth: 200,
+    backgroundColor: blueGrey[600],
+    color: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: 'left',
+    gap: 0.75,
+    py: 1,
+    px: 2,
+    '& *': {
+        fontSize: '1.2rem !important'
+    }
 };
 
 export default function ProgressBar({ round, points, bonus, totalRounds = round }: ProgressBarProps) {
-  return (
-    <Paper sx={progressBarStyle} elevation={5}>
-      <Box display='flex'>
-        <Typography sx={{ flexGrow: 1 }} variant='body2'>
-          Round :
-        </Typography>
-        <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {round} / {totalRounds}
-        </Typography>
-      </Box>
-      <Divider />
-      <Box display='flex'>
-        <Typography sx={{ flexGrow: 1 }} variant='body2'>
-          Points :
-        </Typography>
-        <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {points}
-        </Typography>
-      </Box>
-      <Divider />
-      <Box display='flex'>
-        <Typography sx={{ flexGrow: 1 }} variant='body2'>
-          Bonus :
-        </Typography>
-        <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
-          {bonus.toPrecision(2)} ¢
-        </Typography>
-      </Box>
-    </Paper>
-  );
+    return (
+        <Paper sx={progressBarStyle} elevation={5}>
+            <Box display='flex'>
+                <Typography sx={{ flexGrow: 1 }} variant='body2'>
+                    סיבוב :
+                </Typography>
+                <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
+                    {round} / {totalRounds}
+                </Typography>
+            </Box>
+            <Divider />
+            <Box display='flex'>
+                <Typography sx={{ flexGrow: 1 }} variant='body2'>
+                    ניקוד :
+                </Typography>
+                <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
+                    {points}
+                </Typography>
+            </Box>
+            <Divider />
+            <Box display='flex'>
+                <Typography sx={{ flexGrow: 1 }} variant='body2'>
+                    בונוס :
+                </Typography>
+                <Typography sx={{ flexGrow: 2, textAlign: 'center' }} variant='body2'>
+                    {bonus.toPrecision(2)} ¢
+                </Typography>
+            </Box>
+        </Paper>
+    );
 }
