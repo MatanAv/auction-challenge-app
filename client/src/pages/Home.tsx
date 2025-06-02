@@ -54,23 +54,30 @@ const UserRegister = () => {
         <Box display='flex' flexDirection='column' gap={3} component='form' noValidate autoComplete='off'>
             <TextField
                 sx={{
+                    direction: 'rtl',
                     'input::-webkit-outer-spin-button': {
-                        '-webkit-appearance': 'none',
+                        WebkitAppearance: 'none',
                         margin: 0
                     },
                     'input::-webkit-inner-spin-button': {
-                        '-webkit-appearance': 'none',
+                        WebkitAppearance: 'none',
                         margin: 0
                     }
                 }}
                 type='number'
-                label='תעודת זהות'
+                placeholder='תעודת זהות'
                 value={workerId}
                 onChange={handleWorkerIdChange}
                 onKeyDown={onEnterDown}
                 InputProps={{
-                    endAdornment: (
-                        <Button variant='contained' color='primary' onClick={handleRegister} disabled={workerId.length !== 9 || loading}>
+                    startAdornment: (
+                        <Button
+                            sx={{ marginRight: 1 }}
+                            variant='contained'
+                            color='primary'
+                            onClick={handleRegister}
+                            disabled={workerId.length !== 9 || loading}
+                        >
                             שלח
                         </Button>
                     )
@@ -85,7 +92,7 @@ const UserRegister = () => {
 
 export default function Home() {
     return (
-        <Box sx={listBoxStyle}>
+        <Box sx={{ ...listBoxStyle, direction: 'rtl' }}>
             <Typography variant='h5'>ברוכים הבאים!</Typography>
             <Typography variant='body1'>על מנת להתחיל, אנא הכנס את תעודת הזהות שלך:</Typography>
             <UserRegister />
