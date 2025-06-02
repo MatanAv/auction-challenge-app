@@ -9,7 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { listBoxStyle } from '@/styles';
 import styles from './IntroSlides.module.scss';
 
-const TOTAL_INTRO_SLIDES = 19;
+const TOTAL_INTRO_SLIDES = 17;
 
 export const IntroSlides = () => {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const IntroSlides = () => {
     }, [slideSrc]);
 
     return (
-        <Box sx={{ ...listBoxStyle, gap: '20px', width: '1300px' }}>
+        <Box sx={{ ...listBoxStyle, gap: '20px', width: '1400px' }}>
             <div className={styles.header_container}>
                 <h4 color={isLastSlide ? 'red' : 'black'}>{`${slideId} / ${TOTAL_INTRO_SLIDES}`}</h4>
                 <h3>The Choice Challenge App</h3>
@@ -39,7 +39,7 @@ export const IntroSlides = () => {
                     style={{ display: isImageLoaded ? 'block' : 'none' }}
                     src={slideSrc}
                     height={600}
-                    width={1200}
+                    width={1300}
                     onLoad={handleImageLoad}
                 />
                 <CircularProgress
@@ -53,13 +53,7 @@ export const IntroSlides = () => {
                 />
             </div>
 
-            <NavigationBar
-                currentPage={slideId}
-                totalPages={TOTAL_INTRO_SLIDES}
-                setPage={setSlideId}
-                handleNavigate={handleNavigate}
-                nextButtonTitle={isLastSlide ? 'התחל שאלון' : 'הבא'}
-            />
+            <NavigationBar currentPage={slideId} totalPages={TOTAL_INTRO_SLIDES} setPage={setSlideId} handleNavigate={handleNavigate} />
         </Box>
     );
 };
