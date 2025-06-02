@@ -12,16 +12,19 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from './Preferences.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { submitPreferences } from '@/api/preferences';
 
 type QuestionId = number;
 
 type AnswerType = string | number | number[];
 
-type AnswersMap = Record<QuestionId, AnswerType>;
-
 type SubPageMap = Record<QuestionId, number>;
 
+export type AnswersMap = Record<QuestionId, AnswerType>;
+
 export const Preferences = () => {
+    const navigate = useNavigate();
     const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
@@ -38,12 +41,12 @@ export const Preferences = () => {
 
     const handleNextPage = useCallback(() => {
         if (currentPage >= NUM_PAGES - 1) {
-            console.log('All questions answered. Proceed to results.');
-            console.log('userAnswers:', userAnswers);
+            submitPreferences(userAnswers);
+            navigate('/training');
             return;
         }
         setCurrentPage((prev) => prev + 1);
-    }, [currentPage, userAnswers]);
+    }, [currentPage, navigate, userAnswers]);
 
     const onSliderChange = useCallback((_e: Event, value: number | number[]) => {
         setCurrentValue(Number(value));
