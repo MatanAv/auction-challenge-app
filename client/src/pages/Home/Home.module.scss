@@ -1,0 +1,50 @@
+.home_wrapper {
+    direction: rtl;
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    text-align: right;
+
+    .terms {
+        height: 500px;
+        background-color: #efefef;
+        border: solid 1px #ccc;
+        border-radius: 10px;
+        overflow-y: auto;
+
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 8px 32px;
+
+        .terms_subtitle {
+            color: #ce5200;
+        }
+
+        .terms_section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        label {
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type='text'] {
+            padding: 0 4px;
+        }
+
+        button[type='submit'] {
+            padding: 4px;
+            align-self: flex-start;
+        }
+    }
+}

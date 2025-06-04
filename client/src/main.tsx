@@ -11,7 +11,7 @@ import theme from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 
 import End from '@/pages/End';
-import Home from '@/pages/Home';
+import Home from '@/pages/Home/Home';
 import Game from '@/pages/Game';
 import Error from '@/pages/Error';
 import Survey from '@/pages/Survey';

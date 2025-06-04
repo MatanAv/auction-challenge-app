@@ -39,6 +39,8 @@ const USER_TEST_ANSWERS_HEADERS = [
 
 const USERS_HEADERS = [
     'worker_id',
+    'full_name',
+    'createdAt',
     'user_info.age',
     'user_info.gender',
     'user_info.education',
