@@ -19,6 +19,7 @@ import UserInfo from '@/pages/UserInfo';
 import GameResults from '@/pages/Game/GameResults';
 import Instructions from '@/pages/Instructions/Instructions';
 import InstructionsSummary from '@/pages/Instructions/Summary';
+import { PrePreferences } from './pages/PrePreferences/PrePreferences';
 import { Preferences } from './pages/Preferences/Preferences';
 
 import Layout from '@/components/RootLayout';
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
     {
         path: '/instructions/summary',
         element: <InstructionsSummary />
+    },
+    {
+        path: '/intro/preferences',
+        element: <PrePreferences />
     },
     {
         path: '/preferences',

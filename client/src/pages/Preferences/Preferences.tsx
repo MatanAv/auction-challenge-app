@@ -1,5 +1,6 @@
 // import { shuffle } from 'lodash';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { Parser } from 'html-to-react';
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { pages } from './data/pages';
 import { NUM_PAGES, QUESTIONS_ORDER } from './Preferences.model';
 import { MultiSlider } from './MultiSlider/MultiSlider';
@@ -25,6 +26,7 @@ export type AnswersMap = Record<QuestionId, AnswerType>;
 
 export const Preferences = () => {
     const navigate = useNavigate();
+    // const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
     const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
@@ -39,14 +41,40 @@ export const Preferences = () => {
     const showPrevious = currentPage > 0 || currentSubPage[questionId] > 1;
     const isForm = valueType === 'table';
 
-    const handleNextPage = useCallback(() => {
-        if (currentPage >= NUM_PAGES - 1) {
-            submitPreferences(userAnswers);
-            navigate('/training');
-            return;
+    const onNavigationClickPrevious = useCallback(() => {
+        if (currentSubPage[questionId] > 1) {
+            const previousSubPageValue = (userInputValue as string | number[])?.slice(0, currentRound);
+            setCurrentValue(previousSubPageValue);
+            setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] - 1 }));
+        } else if (currentPage > 0) {
+            setCurrentValue(userAnswers[questionId - 1]);
+            setCurrentPage((prev) => prev - 1);
+        } else {
+            navigate('/intro/preferences');
         }
-        setCurrentPage((prev) => prev + 1);
-    }, [currentPage, navigate, userAnswers]);
+    }, [currentPage, currentRound, currentSubPage, navigate, questionId, userAnswers, userInputValue]);
+
+    const onNavigationClickNext = useCallback(
+        (value?: AnswerType) => {
+            const answerValue = currentValue !== undefined ? currentValue : value;
+            setCurrentValue(userAnswers[questionId + 1]);
+
+            if (answerValue !== undefined) {
+                const newUserAnswers = { ...userAnswers, [questionId]: answerValue };
+                setUserAnswers(newUserAnswers);
+
+                if (currentSubPage[questionId] !== numOfSubPages) {
+                    setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] + 1 }));
+                } else if (currentPage < NUM_PAGES - 1) {
+                    setCurrentPage((prev) => prev + 1);
+                } else {
+                    submitPreferences(newUserAnswers);
+                    navigate('/instructions/training');
+                }
+            }
+        },
+        [currentPage, currentSubPage, currentValue, navigate, numOfSubPages, questionId, userAnswers]
+    );
 
     const onSliderChange = useCallback((_e: Event, value: number | number[]) => {
         setCurrentValue(Number(value));
@@ -64,45 +92,12 @@ export const Preferences = () => {
         setCurrentValue(value);
     }, []);
 
-    const onTableSubmit = useCallback(
-        (value: number[]) => {
-            setUserAnswers((prev) => ({ ...prev, [questionId]: value }));
-            handleNextPage();
-        },
-        [handleNextPage, questionId]
-    );
-
-    const onNavigationClickPrevious = useCallback(() => {
-        if (currentSubPage[questionId] > 1) {
-            const previousSubPageValue = (userInputValue as string | number[])?.slice(0, currentRound);
-            setCurrentValue(previousSubPageValue);
-            setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] - 1 }));
-        } else {
-            setCurrentValue(userAnswers[questionId - 1]);
-            setCurrentPage((prev) => prev - 1);
-        }
-    }, [currentRound, currentSubPage, questionId, userAnswers, userInputValue]);
-
-    const onNavigationClickNext = useCallback(() => {
-        if (currentValue !== undefined) {
-            const answerValue = currentValue;
-            setCurrentValue(undefined);
-            setUserAnswers((prev) => ({ ...prev, [questionId]: answerValue }));
-
-            if (currentSubPage[questionId] !== numOfSubPages) {
-                setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] + 1 }));
-            } else {
-                handleNextPage();
-            }
-        }
-    }, [currentSubPage, currentValue, handleNextPage, numOfSubPages, questionId]);
-
     const renderQuestion = useCallback(() => {
         switch (valueType) {
             case 'slider':
                 return (
-                    <>
-                        <span>{minValue}</span>
+                    <Fragment key={currentPage}>
+                        <span>{maxValue}</span>
                         <Slider
                             key={currentPage}
                             step={1}
@@ -111,9 +106,10 @@ export const Preferences = () => {
                             defaultValue={userInputValue as number}
                             valueLabelDisplay='on'
                             onChange={onSliderChange}
+                            sx={{ width: '500px' }}
                         />
-                        <span>{maxValue}</span>
-                    </>
+                        <span>{minValue}</span>
+                    </Fragment>
                 );
             case 'multi-slider':
                 return (
@@ -126,29 +122,29 @@ export const Preferences = () => {
                 );
             case 'custom-rating':
                 return (
-                    <>
-                        <span>{minValue}</span>
-                        <RadioGroup key={currentPage} row defaultValue={userInputValue} onChange={onRatingChange}>
+                    <Fragment key={currentPage}>
+                        <span>{maxValue}</span>
+                        <RadioGroup key={currentPage} defaultValue={userInputValue} onChange={onRatingChange}>
                             {options?.map((option) => (
                                 <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
                             ))}
                         </RadioGroup>
-                        <span>{maxValue}</span>
-                    </>
+                        <span>{minValue}</span>
+                    </Fragment>
                 );
             case 'table':
                 return (
                     <TableQuestion
                         key={currentPage}
                         value={userInputValue ? (userInputValue as number[]) : undefined}
-                        onSubmit={onTableSubmit}
+                        onSubmit={onNavigationClickNext}
                     />
                 );
             case 'rating':
                 return (
                     <RadioGroup key={currentPage} row defaultValue={userInputValue} onChange={onRatingChange}>
                         {Array.from({ length: 11 }, (_, i) => (
-                            <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} />
+                            <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} labelPlacement='top' />
                         ))}
                     </RadioGroup>
                 );
@@ -173,42 +169,38 @@ export const Preferences = () => {
         minValue,
         onDecisionTreeClick,
         onMultiSliderChange,
+        onNavigationClickNext,
         onRatingChange,
         onSliderChange,
-        onTableSubmit,
         options,
         userInputValue,
         valueType
     ]);
 
-    // useEffect(() => {
-    // pagesOrderRef.current = shuffle(pagesOrderRef.current);
-    // }, []);
-
     return (
         <div className={styles.preferences_wrapper}>
-            <h2>שאלון העדפות</h2>
+            <h2 className={styles.title}>שאלון העדפות - שאלה {currentPage + 1}</h2>
 
             {currentPageData && (
-                <>
-                    <h3>
-                        שאלה {currentPage + 1}: {title ?? ''}
-                    </h3>
+                <div className={styles.question_wrapper}>
+                    <div className={styles.question_header}>
+                        {title && <h5>{Parser().parse(title)}</h5>}
 
-                    {description && <p>{description}</p>}
+                        {description && <p>{description}</p>}
+                    </div>
 
-                    {renderQuestion()}
-
-                    <PreferencesNavigationBar
-                        currentPage={currentPage}
-                        onClickPrevious={onNavigationClickPrevious}
-                        onClickNext={onNavigationClickNext}
-                        disabled={!isForm && currentValue === undefined}
-                        showPrevious={showPrevious}
-                        isForm={isForm}
-                    />
-                </>
+                    <div className={styles.question}>{renderQuestion()}</div>
+                </div>
             )}
+
+            <PreferencesNavigationBar
+                currentPage={currentPage}
+                onClickPrevious={onNavigationClickPrevious}
+                onClickNext={onNavigationClickNext}
+                disabled={!isForm && currentValue === undefined}
+                showPrevious={showPrevious}
+                isForm={isForm}
+            />
         </div>
     );
 };
@@ -225,11 +217,11 @@ type PreferencesNavigationBarProps = {
 const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
     return (
         <div className={styles.navigation_bar}>
-            {props.showPrevious && <button onClick={props.onClickPrevious}>הקודם</button>}
+            <button onClick={props.onClickPrevious}>הקודם</button>
 
-            <span className={styles.indicator}>
+            <h5 className={styles.indicator}>
                 שאלה {props.currentPage + 1} מתוך {NUM_PAGES}
-            </span>
+            </h5>
 
             {props.isForm ? (
                 <button key={props.currentPage} form='table-form' type='submit' disabled={props.disabled}>

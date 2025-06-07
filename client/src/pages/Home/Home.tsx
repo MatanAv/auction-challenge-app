@@ -8,6 +8,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import styles from './Home.module.scss';
 
 const ISRAELI_ID_PATTERN = '^[0-9]{9}$';
+const FORMATTED_DATE = new Date().toLocaleDateString('he-IL', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+});
 
 const UserRegister = () => {
     const navigate = useNavigate();
@@ -54,6 +59,11 @@ const UserRegister = () => {
                 <label htmlFor='worker_id'>
                     תעודת זהות:
                     <input type='text' name='worker_id' maxLength={9} minLength={9} pattern={ISRAELI_ID_PATTERN} required />
+                </label>
+
+                <label>
+                    תאריך:
+                    <input type='text' value={FORMATTED_DATE} disabled />
                 </label>
 
                 <button type='submit' disabled={loading}>

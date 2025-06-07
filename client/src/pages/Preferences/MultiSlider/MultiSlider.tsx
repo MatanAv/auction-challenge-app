@@ -1,5 +1,6 @@
-import Slider from '@mui/material/Slider';
 import { useCallback } from 'react';
+import Slider from '@mui/material/Slider';
+import styles from './MultiSlider.module.scss';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
@@ -23,7 +24,7 @@ export const MultiSlider = (props: MultiSliderProps) => {
     );
 
     return (
-        <>
+        <div className={styles.question_wrapper}>
             {round === 0 && (
                 <p>
                     יחד עם אדם שאינכם מכירים זכיתם בהגרלה ב-100 דולר. הכללים קובעים את התנאים הבאים: אחד מכם צריך להציע כיצד לחלק את 100
@@ -38,8 +39,8 @@ export const MultiSlider = (props: MultiSliderProps) => {
                 <p>אתם בתפקיד המחליט! אנא ציינו את הסכום המינימלי שאתם מוכנים לקבל.</p>
             )}
 
-            <div>
-                <span>{MIN_VALUE}</span>
+            <div className={styles.slider_wrapper}>
+                <span>{MAX_VALUE}</span>
                 <Slider
                     key={round}
                     step={1}
@@ -48,9 +49,10 @@ export const MultiSlider = (props: MultiSliderProps) => {
                     defaultValue={value[round]}
                     onChange={handleOnSliderChange}
                     valueLabelDisplay='on'
+                    sx={{ width: '500px' }}
                 />
-                <span>{MAX_VALUE}</span>
+                <span>{MIN_VALUE}</span>
             </div>
-        </>
+        </div>
     );
 };

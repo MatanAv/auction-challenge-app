@@ -206,8 +206,8 @@ export default function InstructionsSummary() {
                     <Box sx={{ width: '80%', m: 'auto' }}>{renderQuestions()}</Box>
 
                     {isReview ? (
-                        <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={() => navigate('/instructions/training')}>
-                            עבור לתרגול
+                        <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={() => navigate('/intro/preferences')}>
+                            עבור לשאלון העדפות
                         </Button>
                     ) : (
                         <Button variant='contained' color='primary' sx={{ mt: 2 }} disabled={isSubmitDisabled} onClick={handleSubmit}>
