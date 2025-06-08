@@ -38,7 +38,7 @@ export default function QuestionResult({
     const isFinishAppear = isTraining ? round >= TRAINING_MIN_ANSWERS : round >= totalRounds;
 
     const getPrizeCollectedString = () => {
-        if (!userWin) return `${userProfit} נקודות`;
+        if (!userWin) return userProfit;
 
         const calculatedNumbers = [question.User_Val, soldForValue];
 
@@ -46,7 +46,7 @@ export default function QuestionResult({
             calculatedNumbers.push(question.participation_fee);
         }
 
-        return `${calculatedNumbers.join(' - ')}`;
+        return `${calculatedNumbers.join(' - ')} = ${userProfit}`;
     };
 
     return (
@@ -83,16 +83,16 @@ export default function QuestionResult({
                         {userWin ? 'זכית במכרז!' : 'הפסדת במכרז!'}
                     </Typography>
 
-                    <Typography variant='body1'>סך הזכייה:</Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                        <Box sx={{ direction: 'ltr' }} component={'span'}>
-                            <Typography variant='body1'>
-                                <strong>{getPrizeCollectedString()} = נקודות</strong>
-                            </Typography>
-                        </Box>
-                        <Typography sx={{ direction: 'ltr', ml: 0.5 }} variant='body1' component={'span'}>
-                            <strong>{userProfit}</strong>
-                        </Typography>
+                    <Box>
+                        <div style={{ direction: 'rtl', display: 'flex', gap: '8px' }}>
+                            <span style={{ fontWeight: 'bold' }}>פרס שנצבר:</span>
+                            <span>
+                                <strong>נקודות</strong>
+                            </span>
+                            <span style={{ direction: 'ltr' }}>
+                                <strong> {getPrizeCollectedString()}</strong>
+                            </span>
+                        </div>
                     </Box>
                 </Box>
             </Box>
