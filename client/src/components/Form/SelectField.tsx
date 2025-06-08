@@ -17,7 +17,7 @@ export default function SelectField({ label, options, setValue }: SelectFieldPro
     return (
         <FormControl>
             <InputLabel id={labelId}>{label}</InputLabel>
-            <Select sx={{ textAlign: 'left' }} defaultValue='' labelId={labelId} label={label} onChange={handleSelect}>
+            <Select defaultValue='' labelId={labelId} onChange={handleSelect}>
                 {options.map((option) => (
                     <MenuItem key={option} value={option}>
                         {option}

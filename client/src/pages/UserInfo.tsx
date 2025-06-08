@@ -4,7 +4,7 @@ import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
 import { IUserInfo } from '@/interfaces/user';
 import { submitUserInfo } from '@/api/users';
-import { Educations, Genders } from '@/enums/users';
+import { educationToHebrewMap, genderToHebrewMap } from '@/enums/users';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -27,12 +27,12 @@ export default function UserInfo() {
     const { handleError, clearError, ErrorDisplay } = useError();
     const { startLoading, stopLoading, LoadingDisplay } = useLoading();
 
-    const [age, setAge] = useState<number | null>(null);
+    const [age, setAge] = useState<number>(0);
     const [gender, setGender] = useState<string>('');
     const [education, setEducation] = useState<string>('');
 
     const isAgeValueInvalid = !!age && (age < MIN_AGE || age > MAX_AGE);
-    const isSubmitDisabled = age === null || age < MIN_AGE || age > MAX_AGE || !gender || !education;
+    const isSubmitDisabled = age === undefined || age < MIN_AGE || age > MAX_AGE || !gender || !education;
 
     const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAge(Number(e.target.value));
@@ -43,8 +43,8 @@ export default function UserInfo() {
         startLoading();
 
         try {
-            const userInfo = { age, gender, education };
-            await submitUserInfo(userInfo as IUserInfo);
+            const userInfo: IUserInfo = { age, gender: genderToHebrewMap[gender], education: educationToHebrewMap[education] };
+            await submitUserInfo(userInfo);
             navigate('/instructions/game');
         } catch (error) {
             handleError(error);
@@ -59,7 +59,7 @@ export default function UserInfo() {
                 פרטים אישיים
             </Typography>
 
-            <Typography variant='body1' fontWeight={600}>
+            <Typography sx={{ direction: 'rtl' }} variant='body1' fontWeight={600}>
                 אנא מלאו פרטים נוספים לפני שנתחיל:
             </Typography>
 
@@ -77,8 +77,8 @@ export default function UserInfo() {
                 )}
             </Box>
 
-            <SelectField label='מין' options={Object.values(Genders)} setValue={setGender} />
-            <SelectField label='השכלה' options={Object.values(Educations)} setValue={setEducation} />
+            <SelectField label='מין' options={Object.keys(genderToHebrewMap)} setValue={setGender} />
+            <SelectField label='השכלה' options={Object.keys(educationToHebrewMap)} setValue={setEducation} />
 
             <Button variant='contained' color='primary' sx={{ maxWidth: 150 }} onClick={handleSubmit} disabled={isSubmitDisabled}>
                 התחל משחק

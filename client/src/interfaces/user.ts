@@ -1,9 +1,9 @@
-import type { GenderTypes, EducationTypes } from '@/types/users';
+import type { Educations, Genders } from '@/enums/users';
 
 export interface IUserInfo {
     age: number;
-    gender: GenderTypes;
-    education: EducationTypes;
+    gender: Genders;
+    education: Educations;
 }
 
 export interface IUserInstructions {
