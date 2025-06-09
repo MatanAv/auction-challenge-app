@@ -1,7 +1,9 @@
 import { shuffle } from 'lodash';
 import { Parser } from 'html-to-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCallback, useRef, useState } from 'react';
 import { pages } from './data/pages';
+import { submitPreferences } from '@/api/preferences';
 import { NUM_PAGES, QUESTIONS_ORDER } from './Preferences.model';
 import { MultiSlider } from './MultiSlider/MultiSlider';
 import { DecisionTree } from './DecisionTree/DecisionTree';
@@ -13,8 +15,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from './Preferences.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { submitPreferences } from '@/api/preferences';
 
 type QuestionId = number;
 
@@ -33,34 +33,39 @@ export const Preferences = () => {
     const [userAnswers, setUserAnswers] = useState<AnswersMap>([]);
     const questionId = pagesOrderRef.current[currentPage];
     const currentRound = currentSubPage[questionId] - 1;
-    const currentPageData = useMemo(() => pages[questionId] || {}, [questionId]);
+    const currentPageData = pages[questionId];
     const { title, description, valueType, minValue, maxValue, options, decisionTreeMap = {}, numOfSubPages } = currentPageData;
 
-    const userInputValue = userAnswers[questionId];
-    const showPrevious = currentPage > 0 || currentSubPage[questionId] > 1;
+    const currentUserAnswer = userAnswers[questionId];
     const isForm = valueType === 'table';
+    const nextDisabled = !isForm && currentValue === undefined;
+    const prevDisabled = !(currentPage > 0 || currentSubPage[questionId] > 1);
 
     const onNavigationClickPrevious = useCallback(() => {
         if (currentSubPage[questionId] > 1) {
-            const previousSubPageValue = (userInputValue as string | number[])?.slice(0, currentRound);
+            const previousSubPageValue = (currentUserAnswer as string | number[])?.slice(0, currentRound);
             setCurrentValue(previousSubPageValue);
             setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] - 1 }));
         } else if (currentPage > 0) {
-            setCurrentValue(userAnswers[questionId - 1]);
+            const previousPageQuestionId = pagesOrderRef.current[currentPage - 1];
+            setCurrentValue(userAnswers[previousPageQuestionId]);
             setCurrentPage((prev) => prev - 1);
         } else {
             navigate('/intro/preferences');
         }
-    }, [currentPage, currentRound, currentSubPage, navigate, questionId, userAnswers, userInputValue]);
+    }, [currentPage, currentRound, currentSubPage, navigate, questionId, userAnswers, currentUserAnswer]);
 
     const onNavigationClickNext = useCallback(
         (value?: AnswerType) => {
             const answerValue = currentValue !== undefined ? currentValue : value;
-            setCurrentValue(userAnswers[questionId + 1]);
+            const isLastSubPage = currentSubPage[questionId] === numOfSubPages;
+            const nextPageQuestionId = pagesOrderRef.current[currentPage + 1];
+            const nextCurrentValue = !isLastSubPage ? undefined : userAnswers[nextPageQuestionId];
+            setCurrentValue(nextCurrentValue);
 
             if (answerValue !== undefined) {
                 const newUserAnswers = { ...userAnswers, [questionId]: answerValue };
-                setUserAnswers(newUserAnswers);
+                setUserAnswers((prev) => ({ ...prev, [questionId]: answerValue }));
 
                 if (currentSubPage[questionId] !== numOfSubPages) {
                     setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] + 1 }));
@@ -102,7 +107,7 @@ export const Preferences = () => {
                             step={1}
                             min={minValue as number}
                             max={maxValue as number}
-                            defaultValue={userInputValue as number}
+                            defaultValue={currentUserAnswer as number}
                             valueLabelDisplay='on'
                             onChange={onSliderChange}
                             sx={{ width: '500px' }}
@@ -113,9 +118,9 @@ export const Preferences = () => {
             case 'multi-slider':
                 return (
                     <MultiSlider
-                        key={currentPage}
+                        key={`${currentPage}-${currentRound}`}
                         round={currentRound}
-                        value={(userInputValue as number[]) || [0, 0]}
+                        value={(currentUserAnswer as number[]) || [0, 0]}
                         onSliderChange={onMultiSliderChange}
                     />
                 );
@@ -123,7 +128,7 @@ export const Preferences = () => {
                 return (
                     <div key={currentPage}>
                         <span>{maxValue}</span>
-                        <RadioGroup key={currentPage} defaultValue={userInputValue} onChange={onRatingChange}>
+                        <RadioGroup key={currentPage} defaultValue={currentUserAnswer} onChange={onRatingChange}>
                             {options?.map((option) => (
                                 <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
                             ))}
@@ -135,7 +140,7 @@ export const Preferences = () => {
                 return (
                     <TableQuestion
                         key={currentPage}
-                        value={userInputValue ? (userInputValue as number[]) : undefined}
+                        value={currentUserAnswer ? (currentUserAnswer as number[]) : undefined}
                         onSubmit={onNavigationClickNext}
                     />
                 );
@@ -143,7 +148,7 @@ export const Preferences = () => {
                 return (
                     <div className={styles.rating_wrapper} key={currentPage}>
                         <span className={styles.rating_label}>{maxValue}</span>
-                        <RadioGroup row dir='ltr' defaultValue={userInputValue} onChange={onRatingChange}>
+                        <RadioGroup row dir='ltr' defaultValue={currentUserAnswer} onChange={onRatingChange}>
                             {Array.from({ length: 11 }, (_, i) => (
                                 <FormControlLabel
                                     key={i}
@@ -161,9 +166,9 @@ export const Preferences = () => {
             case 'decision-tree':
                 return (
                     <DecisionTree
-                        key={currentPage}
+                        key={`${currentPage}-${currentRound}`}
                         round={currentRound}
-                        value={typeof userInputValue === 'string' ? userInputValue : ''}
+                        value={typeof currentUserAnswer === 'string' ? currentUserAnswer : ''}
                         onClick={onDecisionTreeClick}
                         decisionTreeMap={decisionTreeMap}
                     />
@@ -183,7 +188,7 @@ export const Preferences = () => {
         onRatingChange,
         onSliderChange,
         options,
-        userInputValue,
+        currentUserAnswer,
         valueType
     ]);
 
@@ -207,8 +212,8 @@ export const Preferences = () => {
                 currentPage={currentPage}
                 onClickPrevious={onNavigationClickPrevious}
                 onClickNext={onNavigationClickNext}
-                disabled={!isForm && currentValue === undefined}
-                showPrevious={showPrevious}
+                nextDisabled={nextDisabled}
+                prevDisabled={prevDisabled}
                 isForm={isForm}
             />
         </div>
@@ -219,15 +224,15 @@ type PreferencesNavigationBarProps = {
     currentPage: number;
     onClickNext: () => void;
     onClickPrevious: () => void;
-    disabled?: boolean;
-    showPrevious?: boolean;
+    nextDisabled?: boolean;
+    prevDisabled?: boolean;
     isForm?: boolean;
 };
 
 const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
     return (
         <div className={styles.navigation_bar}>
-            <button onClick={props.onClickPrevious} disabled={!props.showPrevious}>
+            <button onClick={props.onClickPrevious} disabled={props.prevDisabled}>
                 הקודם
             </button>
 
@@ -236,11 +241,11 @@ const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
             </h5>
 
             {props.isForm ? (
-                <button key={props.currentPage} form='table-form' type='submit' disabled={props.disabled}>
+                <button key={props.currentPage} form='table-form' type='submit' disabled={props.nextDisabled}>
                     הבא
                 </button>
             ) : (
-                <button key={props.currentPage} onClick={props.onClickNext} disabled={props.disabled}>
+                <button key={props.currentPage} onClick={props.onClickNext} disabled={props.nextDisabled}>
                     הבא
                 </button>
             )}
