@@ -81,7 +81,7 @@ export default function Survey() {
                 </Box>
             </Box>
 
-            <Button sx={{ width: 300 }} variant='contained' color='primary' onClick={handleSubmit}>
+            <Button sx={{ width: '150px' }} variant='contained' color='primary' onClick={handleSubmit}>
                 שלח תוצאות
             </Button>
 
