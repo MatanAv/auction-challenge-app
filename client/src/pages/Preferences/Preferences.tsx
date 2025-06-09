@@ -1,4 +1,4 @@
-// import { shuffle } from 'lodash';
+import { shuffle } from 'lodash';
 import { Parser } from 'html-to-react';
 import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { pages } from './data/pages';
@@ -26,8 +26,7 @@ export type AnswersMap = Record<QuestionId, AnswerType>;
 
 export const Preferences = () => {
     const navigate = useNavigate();
-    // const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
-    const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
+    const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
     const [currentValue, setCurrentValue] = useState<AnswerType | undefined>();
@@ -217,7 +216,9 @@ type PreferencesNavigationBarProps = {
 const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
     return (
         <div className={styles.navigation_bar}>
-            <button onClick={props.onClickPrevious}>הקודם</button>
+            <button onClick={props.onClickPrevious} disabled={!props.showPrevious}>
+                הקודם
+            </button>
 
             <h5 className={styles.indicator}>
                 שאלה {props.currentPage + 1} מתוך {NUM_PAGES}
