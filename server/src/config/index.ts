@@ -10,10 +10,8 @@ const config = {
         }
     },
     db: {
-        BASE_URI:
-            process.env.NODE_ENV === 'production'
-                ? `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
-                : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}`,
+        // BASE_URI:`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`,
+        BASE_URI: `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}`, // For local development
         URI_PARAMS: `?retryWrites=true&w=majority&appName=${process.env.DB_NAME}` || ''
     },
     game: {
