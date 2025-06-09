@@ -1,4 +1,5 @@
 import { FormEventHandler, useCallback } from 'react';
+import styles from './TableQuestion.module.scss';
 
 type TableQuestionProps = {
     value?: number[];
@@ -14,8 +15,6 @@ export const TableQuestion = (props: TableQuestionProps) => {
             const formData = new FormData(event.currentTarget);
             const values = Array.from(formData.entries()).map(([, value]) => value);
 
-            console.log('Submitted values:', values);
-
             if (values.some((value) => !!value === false)) {
                 alert('אנא מלאו את כל השדות.');
                 return;
@@ -28,7 +27,7 @@ export const TableQuestion = (props: TableQuestionProps) => {
 
     return (
         <form id='table-form' onSubmit={handleSubmit}>
-            <table>
+            <table className={styles.table}>
                 <thead>
                     <tr>
                         <td>כמות שנשלחה</td>
