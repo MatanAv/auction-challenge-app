@@ -77,8 +77,8 @@ export default function UserInfo() {
                 )}
             </Box>
 
-            <SelectField label='מין' options={Object.keys(genderToHebrewMap)} setValue={setGender} />
-            <SelectField label='השכלה' options={Object.keys(educationToHebrewMap)} setValue={setEducation} />
+            <SelectField label='מין' value={gender} options={Object.keys(genderToHebrewMap)} setValue={setGender} />
+            <SelectField label='השכלה' value={education} options={Object.keys(educationToHebrewMap)} setValue={setEducation} />
 
             <Button variant='contained' color='primary' sx={{ maxWidth: 150 }} onClick={handleSubmit} disabled={isSubmitDisabled}>
                 התחל משחק
