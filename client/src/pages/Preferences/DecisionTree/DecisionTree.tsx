@@ -27,7 +27,7 @@ export const DecisionTree = (props: DecisionTreeProps) => {
     const valueB = isQuestion1 ? decisionTreeMap[valueWithoutRound] : decisionTreeMap[valueWithoutRound + 'B'];
 
     const buttonAText = isQuestion1 ? Q1_A_BUTTON_TEXT : `${valueA}$ בעוד 12 חודשים`;
-    const buttonBText = isQuestion1 ? `${valueB}$ היום` : Q3_B_BUTTON_TEXT;
+    const buttonBText = isQuestion1 ? `${valueB}$` : Q3_B_BUTTON_TEXT;
 
     const handleOnClick = useCallback(
         (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,7 +51,7 @@ export const DecisionTree = (props: DecisionTreeProps) => {
             {isQuestion1 ? <Question1Description /> : <Question3Description />}
 
             <div className={styles.round_wrapper}>
-                <h5>
+                <h5 className={styles.round_title}>
                     תרחיש {round + 1} מתוך {NUM_ROUNDS}:
                 </h5>
 

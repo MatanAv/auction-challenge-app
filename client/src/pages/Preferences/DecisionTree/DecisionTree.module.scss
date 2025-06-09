@@ -16,10 +16,15 @@
         gap: 24px;
         text-align: right;
 
+        .round_title {
+            text-align: center;
+        }
+
         .question_wrapper {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            min-height: 105px;
         }
 
         .options_wrapper {
@@ -29,7 +34,6 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            height: 130px;
         }
     }
 }
