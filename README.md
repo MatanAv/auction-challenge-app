@@ -1,4 +1,4 @@
-# Auction Challenge App
+# Auction Challenge Hebrew App
 
 ## Introduction
 
@@ -6,12 +6,12 @@ This project is a flexible platform developed for researchers to conduct a decis
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Technology Stack](#technology-stack)
-- [Setup and Installation](#setup-and-installation)
-- [Usage](#usage)
-- [Frontend](#frontend)
-- [Backend](#backend)
+-   [Project Overview](#project-overview)
+-   [Technology Stack](#technology-stack)
+-   [Setup and Installation](#setup-and-installation)
+-   [Usage](#usage)
+-   [Frontend](#frontend)
+-   [Backend](#backend)
 
 ## Project Overview
 
@@ -31,17 +31,17 @@ The system met the research needs, providing flexibility for future adjustments.
 
 ## Technology Stack
 
-- **Frontend**: React, MUI
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **Deployment**: Vercel (client), Render (server)
+-   **Frontend**: React, MUI
+-   **Backend**: Node.js, Express
+-   **Database**: MongoDB
+-   **Deployment**: Vercel (client), Render (server)
 
 ## Setup and Installation
 
 ### Prerequisites
 
-- Node.js
-- MongoDB
+-   Node.js
+-   MongoDB
 
 ### Installation
 
@@ -91,13 +91,13 @@ The frontend is built with React and MUI, providing a responsive and intuitive u
 
 ### Pages
 
-- Login Page: User authentication.
-- Instructions Page: Step-by-step instructions with a progress bar.
-- Understanding Test Page: A quiz to ensure user understanding.
-- Training Page: Practice rounds for users.
-- User Details Form Page: Collects user information.
-- Test Page: Main test interface with a timer and status bar.
-- Survey Page: Collects final user feedback.
+-   Login Page: User authentication.
+-   Instructions Page: Step-by-step instructions with a progress bar.
+-   Understanding Test Page: A quiz to ensure user understanding.
+-   Training Page: Practice rounds for users.
+-   User Details Form Page: Collects user information.
+-   Test Page: Main test interface with a timer and status bar.
+-   Survey Page: Collects final user feedback.
 
 ## Backend
 
