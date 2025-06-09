@@ -37,6 +37,23 @@
             display: flex;
             align-items: center;
             gap: 16px;
+
+            .slider_wrapper {
+                display: flex;
+                align-items: center;
+                gap: 32px;
+            }
+
+            .rating_wrapper {
+                display: flex;
+                align-items: center;
+                gap: 32px;
+
+                .rating_label {
+                    max-width: 110px;
+                    text-align: center;
+                }
+            }
         }
     }
 }

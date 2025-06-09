@@ -40,7 +40,7 @@ export const MultiSlider = (props: MultiSliderProps) => {
             )}
 
             <div className={styles.slider_wrapper}>
-                <span>{MAX_VALUE}</span>
+                <span>{MAX_VALUE}$</span>
                 <Slider
                     key={round}
                     step={1}
@@ -51,7 +51,7 @@ export const MultiSlider = (props: MultiSliderProps) => {
                     valueLabelDisplay='on'
                     sx={{ width: '500px' }}
                 />
-                <span>{MIN_VALUE}</span>
+                <span>{MIN_VALUE}$</span>
             </div>
         </div>
     );

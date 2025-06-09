@@ -82,7 +82,7 @@ export default function Survey() {
             </Box>
 
             <Button sx={{ width: 300 }} variant='contained' color='primary' onClick={handleSubmit}>
-                שלח HIT
+                שלח תוצאות
             </Button>
 
             <LoadingDisplay />

@@ -1,6 +1,6 @@
 import { shuffle } from 'lodash';
 import { Parser } from 'html-to-react';
-import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { pages } from './data/pages';
 import { NUM_PAGES, QUESTIONS_ORDER } from './Preferences.model';
 import { MultiSlider } from './MultiSlider/MultiSlider';
@@ -95,8 +95,8 @@ export const Preferences = () => {
         switch (valueType) {
             case 'slider':
                 return (
-                    <Fragment key={currentPage}>
-                        <span>{maxValue}</span>
+                    <div className={styles.slider_wrapper} key={currentPage}>
+                        <span>{maxValue}$</span>
                         <Slider
                             key={currentPage}
                             step={1}
@@ -107,8 +107,8 @@ export const Preferences = () => {
                             onChange={onSliderChange}
                             sx={{ width: '500px' }}
                         />
-                        <span>{minValue}</span>
-                    </Fragment>
+                        <span>{minValue}$</span>
+                    </div>
                 );
             case 'multi-slider':
                 return (
@@ -121,7 +121,7 @@ export const Preferences = () => {
                 );
             case 'custom-rating':
                 return (
-                    <Fragment key={currentPage}>
+                    <div key={currentPage}>
                         <span>{maxValue}</span>
                         <RadioGroup key={currentPage} defaultValue={userInputValue} onChange={onRatingChange}>
                             {options?.map((option) => (
@@ -129,7 +129,7 @@ export const Preferences = () => {
                             ))}
                         </RadioGroup>
                         <span>{minValue}</span>
-                    </Fragment>
+                    </div>
                 );
             case 'table':
                 return (
@@ -141,11 +141,22 @@ export const Preferences = () => {
                 );
             case 'rating':
                 return (
-                    <RadioGroup key={currentPage} row defaultValue={userInputValue} onChange={onRatingChange}>
-                        {Array.from({ length: 11 }, (_, i) => (
-                            <FormControlLabel key={i} value={i} control={<Radio />} label={i.toString()} labelPlacement='top' />
-                        ))}
-                    </RadioGroup>
+                    <div className={styles.rating_wrapper} key={currentPage}>
+                        <span className={styles.rating_label}>{maxValue}</span>
+                        <RadioGroup row dir='ltr' defaultValue={userInputValue} onChange={onRatingChange}>
+                            {Array.from({ length: 11 }, (_, i) => (
+                                <FormControlLabel
+                                    key={i}
+                                    sx={{ maxWidth: '20px' }}
+                                    value={i}
+                                    control={<Radio />}
+                                    label={i.toString()}
+                                    labelPlacement='top'
+                                />
+                            ))}
+                        </RadioGroup>
+                        <span className={styles.rating_label}>{minValue}</span>
+                    </div>
                 );
             case 'decision-tree':
                 return (
