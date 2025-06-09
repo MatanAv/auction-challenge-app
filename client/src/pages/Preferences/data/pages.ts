@@ -8,10 +8,10 @@ type Page = {
     maxValue?: number | string;
     numOfSubPages?: number;
     decisionTreeMap?: DecisionTreeMap;
-    options?: {
+    options?: ReadonlyArray<{
         value: number;
         label: string;
-    }[];
+    }>;
 };
 
 export const pages: Record<number, Page> = {
