@@ -9,7 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { listBoxStyle } from '@/styles';
 import styles from './IntroSlides.module.scss';
 
-const TOTAL_INTRO_SLIDES = 17;
+const TOTAL_INTRO_SLIDES = 16;
 
 export const IntroSlides = () => {
     const navigate = useNavigate();
