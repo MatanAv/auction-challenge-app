@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash';
+// import { shuffle } from 'lodash';
 import { Parser } from 'html-to-react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useRef, useState } from 'react';
@@ -14,6 +14,7 @@ import Slider from '@mui/material/Slider';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
+import cn from 'classnames';
 import styles from './Preferences.module.scss';
 
 type QuestionId = number;
@@ -26,7 +27,8 @@ export type AnswersMap = Record<QuestionId, AnswerType>;
 
 export const Preferences = () => {
     const navigate = useNavigate();
-    const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
+    // const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
+    const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
     const [currentValue, setCurrentValue] = useState<AnswerType | undefined>();
@@ -43,8 +45,7 @@ export const Preferences = () => {
 
     const onNavigationClickPrevious = useCallback(() => {
         if (currentSubPage[questionId] > 1) {
-            const previousSubPageValue = (currentUserAnswer as string | number[])?.slice(0, currentRound);
-            setCurrentValue(previousSubPageValue);
+            setCurrentValue(userAnswers[questionId]);
             setCurrentSubPage((prev) => ({ ...prev, [questionId]: prev[questionId] - 1 }));
         } else if (currentPage > 0) {
             const previousPageQuestionId = pagesOrderRef.current[currentPage - 1];
@@ -53,14 +54,20 @@ export const Preferences = () => {
         } else {
             navigate('/intro/preferences');
         }
-    }, [currentPage, currentRound, currentSubPage, navigate, questionId, userAnswers, currentUserAnswer]);
+    }, [currentPage, currentSubPage, navigate, questionId, userAnswers]);
 
     const onNavigationClickNext = useCallback(
         (value?: AnswerType) => {
             const answerValue = currentValue !== undefined ? currentValue : value;
             const isLastSubPage = currentSubPage[questionId] === numOfSubPages;
             const nextPageQuestionId = pagesOrderRef.current[currentPage + 1];
-            const nextCurrentValue = !isLastSubPage ? undefined : userAnswers[nextPageQuestionId];
+
+            const nextCurrentValue = isLastSubPage
+                ? userAnswers[nextPageQuestionId]
+                : (userAnswers[questionId] as string | number[])?.[currentRound] === (currentValue as string | number[])?.[currentRound]
+                ? userAnswers[questionId]
+                : undefined;
+
             setCurrentValue(nextCurrentValue);
 
             if (answerValue !== undefined) {
@@ -77,7 +84,7 @@ export const Preferences = () => {
                 }
             }
         },
-        [currentPage, currentSubPage, currentValue, navigate, numOfSubPages, questionId, userAnswers]
+        [currentPage, currentRound, currentSubPage, currentValue, navigate, numOfSubPages, questionId, userAnswers]
     );
 
     const onSliderChange = useCallback((_e: Event, value: number | number[]) => {
@@ -197,7 +204,7 @@ export const Preferences = () => {
             <h2 className={styles.title}>שאלון העדפות - שאלה {currentPage + 1}</h2>
 
             {currentPageData && (
-                <div className={styles.question_wrapper}>
+                <div className={cn(styles.question_wrapper, { [styles.custom_question]: !!numOfSubPages })}>
                     <div className={styles.question_header}>
                         {title && <h5>{Parser().parse(title)}</h5>}
 

@@ -3,24 +3,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
+    // justify-content: center;
+    // gap: 72px;
     font-size: 1.2rem;
+    height: 84vh;
+    justify-content: space-between;
 
     .title {
-        height: 10vh;
         display: flex;
         align-items: center;
     }
 
     .question_wrapper {
-        height: 47vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 48px;
         text-align: right;
+        gap: 56px;
+
+        &.custom_question {
+            gap: 0;
+        }
 
         .question_header {
             display: flex;

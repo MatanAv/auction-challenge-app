@@ -33,9 +33,12 @@ export const DecisionTree = (props: DecisionTreeProps) => {
         (event: React.MouseEvent<HTMLButtonElement>) => {
             const newValue = event.currentTarget.value as 'A' | 'B';
             setSelectedOption(newValue);
-            onClick(valueWithoutRound + newValue);
+
+            if (newValue !== value[round]) {
+                onClick(valueWithoutRound + newValue);
+            }
         },
-        [onClick, valueWithoutRound]
+        [onClick, round, value, valueWithoutRound]
     );
 
     useEffect(() => {
