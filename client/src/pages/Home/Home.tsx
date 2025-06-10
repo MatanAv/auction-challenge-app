@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import styles from './Home.module.scss';
 
+const HE_EN_FULL_NAME_PATTERN = '^[א-תa-zA-Z]+ [א-תa-zA-Z\\s]{2,}$';
 const ISRAELI_ID_PATTERN = '^[0-9]{9}$';
 const FORMATTED_DATE = new Date().toLocaleDateString('he-IL', {
     year: 'numeric',
@@ -53,7 +54,7 @@ const UserRegister = () => {
 
                 <label htmlFor='full_name'>
                     שם מלא:
-                    <input type='text' name='full_name' minLength={3} required />
+                    <input type='text' name='full_name' minLength={3} pattern={HE_EN_FULL_NAME_PATTERN} required />
                 </label>
 
                 <label htmlFor='worker_id'>
