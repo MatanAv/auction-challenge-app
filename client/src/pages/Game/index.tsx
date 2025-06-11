@@ -104,7 +104,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
     if (!currentQuestion) return <ErrorDisplay />;
 
     return (
-        <Box display='flex' flexDirection='column' alignItems='center' gap={3}>
+        <Box display='flex' flexDirection='column' alignItems='center' gap={1}>
             <GameRound
                 key={round}
                 isTraining={isTraining}

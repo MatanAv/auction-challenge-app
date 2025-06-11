@@ -65,7 +65,7 @@ export default function GameRound({
     };
 
     return (
-        <Box sx={{ ...listBoxStyle, gap: 10, direction: 'rtl' }}>
+        <Box sx={{ ...listBoxStyle, height: '82vh', justifyContent: 'space-between', gap: 0, direction: 'rtl' }}>
             {isResultView ? (
                 <QuestionResult
                     question={question}
@@ -78,13 +78,13 @@ export default function GameRound({
                 />
             ) : (
                 <>
-                    <Grid container spacing={10}>
+                    <Grid container spacing={12}>
                         <Grid item xs={2} md={2} sx={gridItemStyle}>
                             <ProgressBar round={round} points={points} bonus={bonus} totalRounds={totalRounds} />
                         </Grid>
                         <Grid item xs={8} md={8} sx={gridItemStyle}>
-                            <Box sx={{ ...listBoxStyle, alignItems: 'center' }}>
-                                <Typography variant='h4' color={'red'} fontWeight={500}>
+                            <Box sx={{ ...listBoxStyle, gap: 0, alignItems: 'center' }}>
+                                <Typography variant='h4' color={'red'} fontWeight={500} mb='16px'>
                                     סיבוב {round}
                                 </Typography>
                                 <Question question={question} selectedOption={selectedOption} setSelected={setSelectedOption} />
