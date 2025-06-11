@@ -68,66 +68,66 @@ export const question1Map: DecisionTreeMap = {
 
 export const question3Map: DecisionTreeMap = {
     '': 154,
-    A: 185,
-    AA: 202,
-    AAA: 210,
-    AAAA: 215,
-    AAAAA: 1,
-    AAAAB: 2,
-    AAAB: 206,
-    AAABA: 3,
-    AAABB: 4,
-    AAB: 193,
-    AABA: 197,
-    AABAA: 5,
-    AABAB: 6,
-    AABB: 189,
-    AABBA: 7,
-    AABBB: 8,
-    AB: 169,
-    ABA: 177,
-    ABAA: 181,
-    ABAAA: 9,
-    ABAAB: 10,
-    ABAB: 173,
-    ABABA: 11,
-    ABABB: 12,
-    ABB: 161,
-    ABBA: 165,
-    ABBAA: 13,
-    ABBAB: 14,
-    ABBB: 158,
-    ABBBA: 15,
-    ABBBB: 16,
-    B: 125,
-    BA: 139,
-    BAA: 146,
-    BAAA: 150,
-    BAAAA: 17,
-    BAAAB: 18,
-    BAAB: 143,
-    BAABA: 19,
-    BAABB: 20,
-    BAB: 132,
-    BABA: 136,
-    BABAA: 21,
-    BABAB: 22,
-    BABB: 129,
-    BABBA: 23,
-    BABBB: 24,
-    BB: 112,
-    BBA: 119,
-    BBAA: 122,
-    BBAAA: 25,
-    BBAAB: 26,
-    BBAB: 116,
-    BBABA: 27,
-    BBABB: 28,
-    BBB: 106,
-    BBBA: 109,
-    BBBAA: 29,
-    BBBAB: 30,
-    BBBB: 103,
-    BBBBA: 31,
-    BBBBB: 32
+    B: 185,
+    BB: 202,
+    BBB: 210,
+    BBBB: 215,
+    BBBBB: 1, // Patience = 1
+    BBBBA: 2, // Patience = 2
+    BBBA: 206,
+    BBBAB: 3, // Patience = 3
+    BBBAA: 4, // Patience = 4
+    BBA: 193,
+    BBAB: 197,
+    BBABB: 5, // Patience = 5
+    BBABA: 6, // Patience = 6
+    BBAA: 189,
+    BBAAB: 7, // Patience = 7
+    BBAAA: 8, // Patience = 8
+    BA: 169,
+    BAB: 177,
+    BABB: 181,
+    BABBB: 9, // Patience = 9
+    BABBA: 10, // Patience = 10
+    BABA: 173,
+    BABAB: 11, // Patience = 11
+    BABAA: 12, // Patience = 12
+    BAA: 161,
+    BAAB: 165,
+    BAABB: 13, // Patience = 13
+    BAABA: 14, // Patience = 14
+    BAAA: 158,
+    BAAAB: 15, // Patience = 15
+    BAAAA: 16, // Patience = 16
+    A: 125,
+    AB: 139,
+    ABB: 146,
+    ABBB: 150,
+    ABBBB: 17, // Patience = 17
+    ABBBA: 18, // Patience = 18
+    ABBA: 143,
+    ABBAB: 19, // Patience = 19
+    ABBAA: 20, // Patience = 20
+    ABA: 132,
+    ABAB: 136,
+    ABABB: 21, // Patience = 21
+    ABABA: 22, // Patience = 22
+    ABAA: 129,
+    ABAAB: 23, // Patience = 23
+    ABAAA: 24, // Patience = 24
+    AA: 112,
+    AAB: 119,
+    AABB: 122,
+    AABBB: 25, // Patience = 25
+    AABBA: 26, // Patience = 26
+    AABA: 116,
+    AABAB: 27, // Patience = 27
+    AABAA: 28, // Patience = 28
+    AAA: 106,
+    AAAB: 109,
+    AAABB: 29, // Patience = 29
+    AAABA: 30, // Patience = 30
+    AAAA: 103,
+    AAAAB: 31, // Patience = 31
+    AAAAA: 32 // Patience = 32
 } as const;
