@@ -28,7 +28,6 @@ export type AnswersMap = Record<QuestionId, AnswerType>;
 export const Preferences = () => {
     const navigate = useNavigate();
     const pagesOrderRef = useRef<number[]>(getShuffledQuestionsOrder());
-    // const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
     const [currentValue, setCurrentValue] = useState<AnswerType | undefined>();

@@ -1,9 +1,8 @@
-import type { GenderTypes, EducationTypes } from '@/types/users';
+import type { GenderTypes } from '@/types/users';
 
 export interface IUserInfo {
     age: number;
     gender: GenderTypes;
-    education: EducationTypes;
 }
 
 export interface IUserInstructions {
