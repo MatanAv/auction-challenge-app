@@ -1,4 +1,4 @@
-// import { shuffle } from 'lodash';
+import { shuffle } from 'lodash';
 import { Parser } from 'html-to-react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useRef, useState } from 'react';
@@ -27,8 +27,8 @@ export type AnswersMap = Record<QuestionId, AnswerType>;
 
 export const Preferences = () => {
     const navigate = useNavigate();
-    // const pagesOrderRef = useRef<number[]>(shuffle(QUESTIONS_ORDER));
-    const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
+    const pagesOrderRef = useRef<number[]>(getShuffledQuestionsOrder());
+    // const pagesOrderRef = useRef<number[]>(QUESTIONS_ORDER);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentSubPage, setCurrentSubPage] = useState<SubPageMap>({ 1: 1, 3: 1, 11: 1 });
     const [currentValue, setCurrentValue] = useState<AnswerType | undefined>();
@@ -259,3 +259,16 @@ const PreferencesNavigationBar = (props: PreferencesNavigationBarProps) => {
         </div>
     );
 };
+
+function getShuffledQuestionsOrder() {
+    const shuffled = shuffle(QUESTIONS_ORDER);
+    const index7 = shuffled.indexOf(7);
+    const index9 = shuffled.indexOf(9);
+
+    if (index7 > index9) {
+        shuffled[index7] = 9;
+        shuffled[index9] = 7;
+    }
+
+    return shuffled;
+}
