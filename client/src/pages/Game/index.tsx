@@ -6,7 +6,7 @@ import { GameResultsInfo } from './GameResults';
 import { IUserTest, IUserTraining } from '@/interfaces/user';
 import { ITestQuestion, IUserTestAnswer } from '@/interfaces/tests';
 import { getTrainingQuestions, getTestQuestions, sendTimeout, submitTest, submitTraining } from '@/api/tests';
-import { TRAINING_MIN_ANSWERS, TIME_PER_QUESTION, GAME_ALERT_ROUND, BONUS_MULTIPLIER } from '@/constants/tests';
+import { TRAINING_MIN_ANSWERS, TIME_PER_QUESTION, BONUS_MULTIPLIER } from '@/constants/tests';
 
 import Box from '@mui/material/Box';
 import GameRound from '@/components/GameRound';
@@ -90,12 +90,6 @@ export default function Game({ gameType = 'game' }: GameProps) {
     };
 
     useEffect(() => {
-        if (!isTraining && round === GAME_ALERT_ROUND) {
-            alert(`הכל הולך מצוין עד עכשיו! נשארו רק 6 שאלות. המשך כך!`);
-        }
-    }, [round]);
-
-    useEffect(() => {
         fetchQuestions();
     }, []);
 
@@ -104,7 +98,7 @@ export default function Game({ gameType = 'game' }: GameProps) {
     if (!currentQuestion) return <ErrorDisplay />;
 
     return (
-        <Box display='flex' flexDirection='column' alignItems='center' gap={3}>
+        <Box display='flex' flexDirection='column' alignItems='center' gap={1}>
             <GameRound
                 key={round}
                 isTraining={isTraining}

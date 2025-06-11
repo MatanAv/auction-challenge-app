@@ -56,11 +56,11 @@ export default function Question({ question, selectedOption, setSelected }: Ques
     return (
         <Box sx={{ ...listBoxStyle }}>
             <Box sx={{ ...listBoxStyle, alignItems: 'center', gap: 1 }}>
-                <Typography variant='h5'>הערך שלך הוא:</Typography>
-                <Typography variant='h4' color='coral' fontWeight={1000} p={1}>
+                <Typography variant='h6'>הערך שלך הוא:</Typography>
+                <Typography variant='h4' sx={{ fontSize: '32px' }} color='coral' fontWeight={1000} mb='8px'>
                     ${question.User_Val}
                 </Typography>
-                <Typography variant='subtitle1' color='black'>
+                <Typography variant='subtitle1' color='black' mb='2px'>
                     בחר איזו הגדרת מכירה פומבית אתה מעדיף (A / B) :
                 </Typography>
             </Box>

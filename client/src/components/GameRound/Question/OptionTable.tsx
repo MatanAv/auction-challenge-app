@@ -27,15 +27,15 @@ export default function OptionTable({ rows }: OptionTableProps) {
             <Table aria-label='simple table'>
                 <TableHead sx={{ bgcolor: blueGrey[600], '& *': { color: 'white !important' } }}>
                     <TableRow>
-                        <TableCell>הסתברות</TableCell>
-                        <TableCell>הצעה שניה בגובהה</TableCell>
+                        <TableCell sx={{ padding: '10px 16px' }}>הסתברות</TableCell>
+                        <TableCell sx={{ padding: '10px 16px' }}>הצעה שניה בגובהה</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody sx={{ bgcolor: grey[100], '& *': { fontSize: '0.97rem !important' } }}>
+                <TableBody sx={{ bgcolor: grey[100], '& *': { fontSize: '0.95rem !important' } }}>
                     {rows.map((row, index) => (
                         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell>{row[0]}</TableCell>
-                            <TableCell>${row[1]}</TableCell>
+                            <TableCell sx={{ padding: '10px 16px' }}>{row[0]}</TableCell>
+                            <TableCell sx={{ padding: '10px 16px' }}>${row[1]}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

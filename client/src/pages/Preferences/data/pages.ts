@@ -86,7 +86,6 @@ export const pages: Record<number, Page> = {
         ]
     },
     11: {
-        title: 'דמיינו לעצמכם את המצב הבא:',
         numOfSubPages: 2,
         valueType: 'multi-slider'
     },

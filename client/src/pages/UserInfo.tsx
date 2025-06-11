@@ -4,7 +4,7 @@ import { useError } from '@/hooks/error';
 import { useLoading } from '@/hooks/loading';
 import { IUserInfo } from '@/interfaces/user';
 import { submitUserInfo } from '@/api/users';
-import { educationToHebrewMap, genderToHebrewMap } from '@/enums/users';
+import { genderToHebrewMap } from '@/enums/users';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -29,10 +29,9 @@ export default function UserInfo() {
 
     const [age, setAge] = useState<number>(0);
     const [gender, setGender] = useState<string>('');
-    const [education, setEducation] = useState<string>('');
 
     const isAgeValueInvalid = !!age && (age < MIN_AGE || age > MAX_AGE);
-    const isSubmitDisabled = age === undefined || age < MIN_AGE || age > MAX_AGE || !gender || !education;
+    const isSubmitDisabled = age === undefined || age < MIN_AGE || age > MAX_AGE || !gender;
 
     const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAge(Number(e.target.value));
@@ -43,7 +42,7 @@ export default function UserInfo() {
         startLoading();
 
         try {
-            const userInfo: IUserInfo = { age, gender: genderToHebrewMap[gender], education: educationToHebrewMap[education] };
+            const userInfo: IUserInfo = { age, gender: genderToHebrewMap[gender] };
             await submitUserInfo(userInfo);
             navigate('/instructions/game');
         } catch (error) {
@@ -65,6 +64,7 @@ export default function UserInfo() {
 
             <Box display='flex' flexDirection='column' gap={1}>
                 <TextField
+                    sx={{ direction: 'rtl' }}
                     label='גיל'
                     error={isAgeValueInvalid}
                     inputProps={{ type: 'number', min: MIN_AGE, max: MAX_AGE }}
@@ -78,7 +78,6 @@ export default function UserInfo() {
             </Box>
 
             <SelectField label='מין' value={gender} options={Object.keys(genderToHebrewMap)} setValue={setGender} />
-            <SelectField label='השכלה' value={education} options={Object.keys(educationToHebrewMap)} setValue={setEducation} />
 
             <Button variant='contained' color='primary' sx={{ maxWidth: 150 }} onClick={handleSubmit} disabled={isSubmitDisabled}>
                 התחל משחק
