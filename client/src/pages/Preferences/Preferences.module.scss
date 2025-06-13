@@ -42,10 +42,21 @@
             align-items: center;
             gap: 16px;
 
-            .slider_wrapper {
+            .input_number_wrapper {
                 display: flex;
                 align-items: center;
                 gap: 32px;
+
+                .input_number {
+                    text-align: center;
+                    padding: 12px;
+                    min-width: 200px;
+                    font-size: 1.1rem;
+
+                    &::placeholder {
+                        width: 100%;
+                    }
+                }
             }
 
             .rating_wrapper {

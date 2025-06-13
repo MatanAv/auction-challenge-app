@@ -2,12 +2,13 @@ import { FormEventHandler, useCallback } from 'react';
 import styles from './TableQuestion.module.scss';
 
 type TableQuestionProps = {
+    formId: string;
     value?: number[];
     onSubmit: (value: number[]) => void;
 };
 
 export const TableQuestion = (props: TableQuestionProps) => {
-    const { value, onSubmit } = props;
+    const { formId, value, onSubmit } = props;
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
         (event) => {
@@ -26,7 +27,7 @@ export const TableQuestion = (props: TableQuestionProps) => {
     );
 
     return (
-        <form id='table-form' onSubmit={handleSubmit}>
+        <form id={formId} onSubmit={handleSubmit}>
             <table className={styles.table}>
                 <thead>
                     <tr>

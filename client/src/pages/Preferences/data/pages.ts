@@ -3,7 +3,8 @@ import { DecisionTreeMap, question1Map, question3Map } from './decision-tree';
 type Page = {
     title?: string;
     description?: string;
-    valueType?: 'slider' | 'rating' | 'table' | 'custom-rating' | 'decision-tree' | 'multi-slider';
+    valueType?: 'input-number' | 'rating' | 'table' | 'custom-rating' | 'decision-tree' | 'multi-input-number';
+    formId?: string;
     minValue?: number | string;
     maxValue?: number | string;
     numOfSubPages?: number;
@@ -43,7 +44,8 @@ export const pages: Record<number, Page> = {
         title: 'אם תזכה ב-1000$, כמה מהם היית תורם לצדקה?',
         minValue: 0,
         maxValue: 1000,
-        valueType: 'slider'
+        valueType: 'input-number',
+        formId: 'input-number-single'
     },
     6: {
         title: 'עד כמה אתה מוכן לתת למטרות טובות מבלי לצפות לתמורה? (סולם 0-10)',
@@ -57,7 +59,8 @@ export const pages: Record<number, Page> = {
         description: `שניכם מקבלים 20 דולר. אתם יכולים לשלוח כל חלק מ-$20 שלכם לאדם השני. אתם שולחים ראשונים. כל סכום שתשלחו לאדם השני ישלש את ערכו. לאחר מכן האדם השני יחליט כמה מהסכום שבידו לשלוח בחזרה אליכם. כמה הייתם בוחרים לשלוח? (0-20 $)`,
         minValue: 0,
         maxValue: 20,
-        valueType: 'slider'
+        valueType: 'input-number',
+        formId: 'input-number-single'
     },
     8: {
         title: 'באופן כללי, עד כמה אתם סומכים על אנשים אחרים שיחזירו טובה?',
@@ -69,7 +72,8 @@ export const pages: Record<number, Page> = {
     9: {
         title: 'עכשיו תארו לעצמכם שאתם אלו <u>המקבלים</u> את הכסף מהשותף האנונימי.',
         description: `הוא שולח לכם חלק מה-20 דולר שלו. כל סכום שנשלח משלש את ערכו. עכשיו אתם מחליטים כמה להחזיר. עבור כל תרחיש, כמה הייתם מחזירים?`,
-        valueType: 'table'
+        valueType: 'table',
+        formId: 'table-form'
     },
     10: {
         title: 'אנא חשבו מה הייתם עושים במצב הבא:',
@@ -87,7 +91,8 @@ export const pages: Record<number, Page> = {
     },
     11: {
         numOfSubPages: 2,
-        valueType: 'multi-slider'
+        valueType: 'multi-input-number',
+        formId: 'input-number-multi'
     },
     12: {
         title: 'עד כמה אתם מוכנים להעניש מישהו שמתנהג אליכם בצורה לא הוגנת, גם אם עלולות להיות לכם עלויות?',

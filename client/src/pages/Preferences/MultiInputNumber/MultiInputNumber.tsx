@@ -1,26 +1,29 @@
 import { useCallback } from 'react';
-import Slider from '@mui/material/Slider';
-import styles from './MultiSlider.module.scss';
+import styles from './MultiInputNumber.module.scss';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
 
-type MultiSliderProps = {
+type MultiInputNumberProps = {
     round: number;
     value: number[];
-    onSliderChange: (value: number[]) => void;
+    formId: string;
+    onSubmit: (value: number[]) => void;
 };
 
-export const MultiSlider = (props: MultiSliderProps) => {
-    const { round, value, onSliderChange } = props;
+export const MultiInputNumber = (props: MultiInputNumberProps) => {
+    const { round, value, onSubmit, formId } = props;
 
-    const handleOnSliderChange = useCallback(
-        (_event: Event, sliderValue: number | number[]) => {
+    const handleSubmit = useCallback(
+        (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const inputValue = formData.get('input-number') as string;
             const newValue = [...value];
-            newValue[round] = sliderValue as number;
-            onSliderChange(newValue);
+            newValue[round] = Number(inputValue);
+            onSubmit(newValue);
         },
-        [onSliderChange, round, value]
+        [onSubmit, round, value]
     );
 
     return (
@@ -42,20 +45,19 @@ export const MultiSlider = (props: MultiSliderProps) => {
                 <p>אתם בתפקיד המחליט! אנא ציינו את הסכום המינימלי שאתם מוכנים לקבל.</p>
             )}
 
-            <div className={styles.slider_wrapper}>
-                <span>{MAX_VALUE}$</span>
-                <Slider
-                    key={round}
-                    step={1}
+            <form id={formId} className={styles.input_number_wrapper} onSubmit={handleSubmit}>
+                <input
+                    className={styles.input_number}
+                    name='input-number'
+                    type='number'
+                    placeholder={`${MIN_VALUE} - ${MAX_VALUE} $`}
+                    defaultValue={value[round]}
                     min={MIN_VALUE}
                     max={MAX_VALUE}
-                    defaultValue={value[round]}
-                    onChange={handleOnSliderChange}
-                    valueLabelDisplay='on'
-                    sx={{ width: '500px' }}
+                    step={1}
+                    required
                 />
-                <span>{MIN_VALUE}$</span>
-            </div>
+            </form>
         </div>
     );
 };
