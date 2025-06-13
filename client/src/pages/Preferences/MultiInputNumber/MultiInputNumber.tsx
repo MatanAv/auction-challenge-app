@@ -1,19 +1,18 @@
 import { useCallback } from 'react';
-import styles from './MultiSlider.module.scss';
+import styles from './MultiInputNumber.module.scss';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
 
-type MultiSliderProps = {
+type MultiInputNumberProps = {
     round: number;
     value: number[];
     formId: string;
     onSubmit: (value: number[]) => void;
 };
 
-export const MultiSlider = (props: MultiSliderProps) => {
+export const MultiInputNumber = (props: MultiInputNumberProps) => {
     const { round, value, onSubmit, formId } = props;
-    const defaultValue = value[round] || 0;
 
     const handleSubmit = useCallback(
         (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,13 +45,13 @@ export const MultiSlider = (props: MultiSliderProps) => {
                 <p>אתם בתפקיד המחליט! אנא ציינו את הסכום המינימלי שאתם מוכנים לקבל.</p>
             )}
 
-            <form id={formId} className={styles.slider_wrapper} onSubmit={handleSubmit}>
+            <form id={formId} className={styles.input_number_wrapper} onSubmit={handleSubmit}>
                 <input
-                    className={styles.slider_input}
+                    className={styles.input_number}
                     name='input-number'
                     type='number'
                     placeholder={`${MIN_VALUE} - ${MAX_VALUE} $`}
-                    defaultValue={defaultValue}
+                    defaultValue={value[round]}
                     min={MIN_VALUE}
                     max={MAX_VALUE}
                     step={1}

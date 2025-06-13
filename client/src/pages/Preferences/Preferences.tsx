@@ -5,10 +5,10 @@ import { useCallback, useRef, useState } from 'react';
 import { pages } from './data/pages';
 import { submitPreferences } from '@/api/preferences';
 import { NUM_PAGES, QUESTIONS_ORDER } from './Preferences.model';
-import { MultiSlider } from './MultiSlider/MultiSlider';
+
 import { DecisionTree } from './DecisionTree/DecisionTree';
 import { TableQuestion } from './TableQuestion/TableQuestion';
-
+import { MultiInputNumber } from './MultiInputNumber/MultiInputNumber';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -18,7 +18,7 @@ import styles from './Preferences.module.scss';
 
 type QuestionId = number;
 
-type AnswerType = string | number | number[];
+type AnswerType = string | number | (number | undefined)[];
 
 type SubPageMap = Record<QuestionId, number>;
 
@@ -106,10 +106,15 @@ export const Preferences = () => {
         switch (valueType) {
             case 'input-number':
                 return (
-                    <form key={currentPage} id={formId} className={styles.slider_wrapper} onSubmit={handleSubmitInputNumber}>
+                    <form
+                        key={currentPage}
+                        id={formId ?? 'input-number-single'}
+                        className={styles.input_number_wrapper}
+                        onSubmit={handleSubmitInputNumber}
+                    >
                         <input
                             key={currentPage}
-                            className={styles.slider_input}
+                            className={styles.input_number}
                             name='input-number'
                             type='number'
                             placeholder={`${minValue} - ${maxValue} $`}
@@ -123,10 +128,10 @@ export const Preferences = () => {
                 );
             case 'multi-input-number':
                 return (
-                    <MultiSlider
+                    <MultiInputNumber
                         key={`${currentPage}-${currentRound}`}
                         round={currentRound}
-                        value={(currentUserAnswer as number[]) || [0, 0]}
+                        value={(currentUserAnswer as number[]) || [undefined, undefined]}
                         formId={formId ?? 'input-number-multi'}
                         onSubmit={onNavigationClickNext}
                     />
