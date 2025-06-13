@@ -46,6 +46,17 @@
                 display: flex;
                 align-items: center;
                 gap: 32px;
+
+                .slider_input {
+                    text-align: center;
+                    padding: 12px;
+                    min-width: 200px;
+                    font-size: 1.1rem;
+
+                    &::placeholder {
+                        width: 100%;
+                    }
+                }
             }
 
             .rating_wrapper {
